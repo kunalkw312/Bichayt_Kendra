@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bichayt-shop-v5'; // Bump version to force update
+const CACHE_NAME = 'bichayt-shop-v6'; // Updated version
 const ASSETS = [
   './',
   './index.html',
