@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bichayt Kendra Manager</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Manage Bichayt Kendra Bills and Customers">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -12,73 +21,35 @@
         
         /* === PRINT STYLES (A4 Optimization) === */
         @media print {
-            @page { size: A4; margin: 5mm; } /* Minimal margin to maximize space */
-            
+            @page { size: A4; margin: 5mm; }
             body, html { 
-                background-color: white; 
-                height: 100%; 
-                margin: 0; 
-                padding: 0;
-                font-size: 11pt; /* Slightly smaller text for compact fit */
+                background-color: white; height: 100%; margin: 0; padding: 0; font-size: 11pt;
             }
-
-            /* Hide Web Elements */
             .no-print, #tab-nav, #settings-modal, #toast, button { display: none !important; }
-
-            /* Main Container Adjustments */
             #main-container { 
-                box-shadow: none !important; 
-                border: 2px solid black !important;
-                width: 100% !important; 
-                max-width: 100% !important; 
-                margin: 0 !important;
+                box-shadow: none !important; border: 2px solid black !important;
+                width: 100% !important; max-width: 100% !important; margin: 0 !important;
             }
-
-            /* Force Black & White / High Contrast */
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color: black !important; }
-            
-            /* COMPACT LAYOUT OVERRIDES */
-            /* Force side-by-side layout even if browser thinks width is small */
             .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-            
-            /* Reduce Spacing */
             .p-4, .p-6, .p-8 { padding: 10px !important; }
             .mb-6 { margin-bottom: 8px !important; }
             .mt-12 { margin-top: 10px !important; }
             .pt-8 { padding-top: 10px !important; }
             .gap-4 { gap: 8px !important; }
-            
-            /* Header Compact */
-            .bg-blue-600 { 
-                background-color: #f0f0f0 !important; 
-                border-bottom: 2px solid black; 
-                padding: 10px !important;
-            }
-
-            /* Remove colored backgrounds to save ink & space */
-            .bg-yellow-50, .bg-blue-50, .bg-gray-50 { 
-                background-color: transparent !important; 
-                border: 1px solid #ccc !important;
-                padding: 8px !important;
-            }
-
-            /* Input styling for print */
+            .bg-blue-600 { background-color: #f0f0f0 !important; border-bottom: 2px solid black; padding: 10px !important; }
+            .bg-yellow-50, .bg-blue-50, .bg-gray-50 { background-color: transparent !important; border: 1px solid #ccc !important; padding: 8px !important; }
             input { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; }
             ::placeholder { color: transparent; }
-            
-            /* Font Scaling */
             h1 { font-size: 18pt !important; }
             h3 { font-size: 12pt !important; margin-bottom: 4px !important; }
             .text-xl { font-size: 14pt !important; }
             .text-lg { font-size: 12pt !important; }
             .text-sm { font-size: 10pt !important; }
             .text-xs { font-size: 9pt !important; }
-
-            /* Tax specific */
             .tax-input { display: none; }
             .tax-label-print { display: inline !important; }
         }
-        
         .tax-label-print { display: none; }
     </style>
 </head>
@@ -112,7 +83,11 @@
                 <span class="hidden sm:inline">Bichayt Kendra</span>
                 <span class="sm:hidden">Bichayt</span>
             </h1>
-            <button onclick="toggleSettings()" class="text-gray-500 p-2"><i class="fas fa-cog text-xl"></i></button>
+            <div class="flex gap-2">
+                <!-- Install Button (Hidden by default, shown by JS if installable) -->
+                <button id="btn-install" class="hidden text-blue-600 font-bold text-sm bg-blue-50 px-3 py-1 rounded-full"><i class="fas fa-download mr-1"></i> Install App</button>
+                <button onclick="toggleSettings()" class="text-gray-500 p-2"><i class="fas fa-cog text-xl"></i></button>
+            </div>
         </div>
 
         <!-- TABS -->
@@ -156,7 +131,6 @@
                         </div>
                         <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
                             <label class="block text-xs font-bold text-yellow-800 uppercase mb-2">Rental Period</label>
-                            <!-- Responsive Date Inputs: Stack on mobile, side-by-side on desktop -->
                             <div class="flex flex-col sm:flex-row gap-2 mb-2">
                                 <div class="w-full sm:w-1/2">
                                     <span class="text-[10px] text-gray-500">Start Date</span>
@@ -191,13 +165,9 @@
                     <!-- ITEMS -->
                     <div class="mb-6">
                         <h3 class="font-bold text-gray-800 mb-2 text-sm uppercase">Items (Per Day)</h3>
-                        <!-- Added overflow-x-auto to allow scrolling on small screens if table is wide -->
                         <div class="overflow-x-auto">
-                            <!-- Min-width ensures table doesn't squash too small, user scrolls instead -->
                             <table class="w-full min-w-[500px]"><tbody id="items-list"></tbody></table>
                         </div>
-                        
-                        <!-- Add Item Row -->
                         <div class="mt-4 flex gap-2 no-print bg-gray-50 p-3 rounded-lg border border-dashed border-gray-300 items-center">
                             <input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 p-2 border rounded text-base w-full">
                             <input type="number" id="new-item-price" placeholder="₹" class="w-20 p-2 border rounded text-base">
@@ -210,27 +180,14 @@
                         <div class="w-full md:w-1/2">
                             <div class="flex justify-between mb-2 text-sm text-gray-500 italic"><span>Cost Per Day</span><span>₹ <span id="daily-total">0</span></span></div>
                             <div class="flex justify-between mb-2 text-sm text-gray-800 font-medium border-b border-gray-200 pb-2"><span>x <span id="days-display">1</span> Days</span><span>₹ <span id="subtotal">0</span></span></div>
-                            
-                            <!-- CGST FIXED -->
                             <div class="flex justify-between mb-1 text-sm text-gray-600 items-center">
-                                <div class="flex items-center">
-                                    <span>CGST</span>
-                                    <input type="number" id="cgst-rate" value="9" readonly class="tax-input w-10 text-center border-b border-gray-300 mx-1 text-xs bg-gray-100 text-gray-500">
-                                    <span class="tax-label-print ml-1 text-xs">(<span id="cgst-print-rate">9</span>%)</span>
-                                </div>
+                                <div class="flex items-center"><span>CGST</span><input type="number" id="cgst-rate" value="9" readonly class="tax-input w-10 text-center border-b border-gray-300 mx-1 text-xs bg-gray-100 text-gray-500"><span class="tax-label-print ml-1 text-xs">(<span id="cgst-print-rate">9</span>%)</span></div>
                                 <span>+ ₹ <span id="cgst-amt">0</span></span>
                             </div>
-                            
-                            <!-- SGST FIXED -->
                             <div class="flex justify-between mb-2 text-sm text-gray-600 items-center">
-                                 <div class="flex items-center">
-                                    <span>SGST</span>
-                                    <input type="number" id="sgst-rate" value="9" readonly class="tax-input w-10 text-center border-b border-gray-300 mx-1 text-xs bg-gray-100 text-gray-500">
-                                    <span class="tax-label-print ml-1 text-xs">(<span id="sgst-print-rate">9</span>%)</span>
-                                </div>
+                                 <div class="flex items-center"><span>SGST</span><input type="number" id="sgst-rate" value="9" readonly class="tax-input w-10 text-center border-b border-gray-300 mx-1 text-xs bg-gray-100 text-gray-500"><span class="tax-label-print ml-1 text-xs">(<span id="sgst-print-rate">9</span>%)</span></div>
                                 <span>+ ₹ <span id="sgst-amt">0</span></span>
                             </div>
-                            
                             <div class="flex justify-between mt-3 pt-3 border-t-2 border-gray-800 text-xl font-bold text-gray-900"><span>Grand Total</span><span>₹ <span id="final-total">0</span></span></div>
                         </div>
                     </div>
@@ -260,11 +217,7 @@
                     <button onclick="performSearch()" id="btn-search" class="bg-blue-600 text-white px-6 rounded-lg font-bold">Search</button>
                 </div>
             </div>
-
-            <div id="search-results" class="space-y-4 pb-12">
-                <!-- Results will appear here -->
-                <div class="text-center text-gray-400 mt-12">Search to see records...</div>
-            </div>
+            <div id="search-results" class="space-y-4 pb-12"><div class="text-center text-gray-400 mt-12">Search to see records...</div></div>
         </div>
 
     </div>
@@ -272,168 +225,110 @@
     <script>
         const STANDARD_RATE = 1500;
         const STANDARD_AREA = 15 * 15; 
+        let items = [ { id: 1, name: 'Mattress (Gadda)', price: 50, qty: 0 }, { id: 2, name: 'Pillow', price: 20, qty: 0 }, { id: 3, name: 'Bedsheet', price: 30, qty: 0 }, { id: 4, name: 'Plastic Chair', price: 10, qty: 0 } ];
         
-        let items = [
-            { id: 1, name: 'Mattress (Gadda)', price: 50, qty: 0 },
-            { id: 2, name: 'Pillow', price: 20, qty: 0 },
-            { id: 3, name: 'Bedsheet', price: 30, qty: 0 },
-            { id: 4, name: 'Plastic Chair', price: 10, qty: 0 },
-        ];
+        // PWA Installation Logic
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('btn-install');
+            installBtn.classList.remove('hidden');
+            installBtn.addEventListener('click', () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') { installBtn.classList.add('hidden'); }
+                    deferredPrompt = null;
+                });
+            });
+        });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed', err));
+            });
+        }
 
         window.onload = function() {
-            // Updated to force DD/MM/YYYY
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB');
             const savedUrl = localStorage.getItem('scriptUrl');
             if(savedUrl) document.getElementById('script-url').value = savedUrl;
-            
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start-date').value = today;
             document.getElementById('end-date').value = today;
-
             renderTableRows(); 
         };
 
-        // --- TOAST FUNCTION ---
         function showToast(message, type) {
             const toast = document.getElementById('toast');
             const icon = document.getElementById('toast-icon');
             const msg = document.getElementById('toast-message');
-
             msg.innerText = message;
-            
-            // Base classes
             toast.className = "fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-2xl text-white font-bold transition-all duration-300 z-[100] no-print flex items-center gap-3 min-w-[300px] justify-center";
-            
-            if (type === 'success') {
-                toast.classList.add('bg-green-600');
-                icon.className = "fas fa-check-circle";
-            } else {
-                toast.classList.add('bg-red-600');
-                icon.className = "fas fa-exclamation-triangle";
-            }
-
+            if (type === 'success') { toast.classList.add('bg-green-600'); icon.className = "fas fa-check-circle"; } 
+            else { toast.classList.add('bg-red-600'); icon.className = "fas fa-exclamation-triangle"; }
             toast.classList.remove('hidden');
-            
-            // Hide after 4 seconds
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 4000);
+            setTimeout(() => { toast.classList.add('hidden'); }, 4000);
         }
 
-        // --- TAB LOGIC ---
         function switchTab(tab) {
             const newBtn = document.getElementById('tab-new');
             const searchBtn = document.getElementById('tab-search');
             const newView = document.getElementById('view-new-bill');
             const searchView = document.getElementById('view-search');
-
             if(tab === 'new') {
-                newView.classList.remove('hidden');
-                searchView.classList.add('hidden');
-                newBtn.classList.add('bg-blue-600', 'text-white');
-                newBtn.classList.remove('bg-white', 'text-gray-600');
-                searchBtn.classList.remove('bg-blue-600', 'text-white');
-                searchBtn.classList.add('bg-white', 'text-gray-600');
+                newView.classList.remove('hidden'); searchView.classList.add('hidden');
+                newBtn.classList.add('bg-blue-600', 'text-white'); newBtn.classList.remove('bg-white', 'text-gray-600');
+                searchBtn.classList.remove('bg-blue-600', 'text-white'); searchBtn.classList.add('bg-white', 'text-gray-600');
             } else {
-                newView.classList.add('hidden');
-                searchView.classList.remove('hidden');
-                searchBtn.classList.add('bg-blue-600', 'text-white');
-                searchBtn.classList.remove('bg-white', 'text-gray-600');
-                newBtn.classList.remove('bg-blue-600', 'text-white');
-                newBtn.classList.add('bg-white', 'text-gray-600');
+                newView.classList.add('hidden'); searchView.classList.remove('hidden');
+                searchBtn.classList.add('bg-blue-600', 'text-white'); searchBtn.classList.remove('bg-white', 'text-gray-600');
+                newBtn.classList.remove('bg-blue-600', 'text-white'); newBtn.classList.add('bg-white', 'text-gray-600');
             }
         }
 
-        // --- SEARCH LOGIC ---
         async function performSearch() {
             const query = document.getElementById('search-query').value;
             const scriptUrl = localStorage.getItem('scriptUrl');
             const resultDiv = document.getElementById('search-results');
             const btn = document.getElementById('btn-search');
-
             if(!scriptUrl) { alert("Please set URL in settings"); return; }
             if(!query) { alert("Enter text to search"); return; }
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            resultDiv.innerHTML = '';
-
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; resultDiv.innerHTML = '';
             try {
-                // Fetch using GET request
                 const response = await fetch(`${scriptUrl}?q=${encodeURIComponent(query)}`);
                 const data = await response.json();
-
-                if(data.length === 0) {
-                    resultDiv.innerHTML = '<div class="text-center text-gray-500">No results found</div>';
-                } else {
+                if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-500">No results found</div>'; } 
+                else {
                     data.forEach(bill => {
                         const isPaid = bill.status === 'Paid';
                         const statusColor = isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
-                        // Force DD/MM/YYYY in search results too
                         const displayDate = new Date(bill.date).toLocaleString('en-GB');
-                        
-                        const html = `
-                            <div class="bg-white p-5 rounded-lg shadow border-l-4 ${isPaid ? 'border-green-500' : 'border-red-500'}">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h3 class="font-bold text-lg">${bill.name}</h3>
-                                        <p class="text-gray-600 text-sm"><i class="fas fa-phone mr-1"></i> ${bill.phone}</p>
-                                        <p class="text-gray-500 text-xs mt-1">${displayDate}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-xl font-bold">₹ ${bill.total}</div>
-                                        <span class="inline-block px-2 py-1 rounded text-xs font-bold ${statusColor} mt-1">${bill.status}</span>
-                                    </div>
-                                </div>
-                                <div class="mt-3 text-sm text-gray-500 bg-gray-50 p-2 rounded">
-                                    ${bill.details || 'No details'}
-                                </div>
-                                ${!isPaid ? `
-                                    <button onclick="markAsPaid(this, ${bill.rowIndex})" class="mt-3 w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700">
-                                        <i class="fas fa-check-circle mr-2"></i> Mark as Paid
-                                    </button>
-                                ` : ''}
-                            </div>
-                        `;
+                        const html = `<div class="bg-white p-5 rounded-lg shadow border-l-4 ${isPaid ? 'border-green-500' : 'border-red-500'}"><div class="flex justify-between items-start"><div><h3 class="font-bold text-lg">${bill.name}</h3><p class="text-gray-600 text-sm"><i class="fas fa-phone mr-1"></i> ${bill.phone}</p><p class="text-gray-500 text-xs mt-1">${displayDate}</p></div><div class="text-right"><div class="text-xl font-bold">₹ ${bill.total}</div><span class="inline-block px-2 py-1 rounded text-xs font-bold ${statusColor} mt-1">${bill.status}</span></div></div><div class="mt-3 text-sm text-gray-500 bg-gray-50 p-2 rounded">${bill.details || 'No details'}</div>${!isPaid ? `<button onclick="markAsPaid(this, ${bill.rowIndex})" class="mt-3 w-full bg-green-600 text-white py-2 rounded font-bold hover:bg-green-700"><i class="fas fa-check-circle mr-2"></i> Mark as Paid</button>` : ''}</div>`;
                         resultDiv.insertAdjacentHTML('beforeend', html);
                     });
                 }
-
-            } catch(e) {
-                console.error(e);
-                alert("Search failed. Check console.");
-            }
+            } catch(e) { console.error(e); alert("Search failed."); }
             btn.innerHTML = 'Search';
         }
 
         async function markAsPaid(btn, rowIndex) {
-            if(!confirm("Are you sure you received the payment? This will stop reminders.")) return;
-
+            if(!confirm("Are you sure?")) return;
             const scriptUrl = localStorage.getItem('scriptUrl');
             const originalText = btn.innerHTML;
             btn.innerHTML = 'Updating...';
-
             try {
-                await fetch(scriptUrl, {
-                    method: 'POST', mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'mark_paid', row: rowIndex })
-                });
-
-                // Since no-cors doesn't give response, we simulate success UI
-                btn.parentElement.classList.remove('border-red-500');
-                btn.parentElement.classList.add('border-green-500');
+                await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'mark_paid', row: rowIndex }) });
+                btn.parentElement.classList.remove('border-red-500'); btn.parentElement.classList.add('border-green-500');
                 btn.parentElement.querySelector('.bg-red-100').className = 'inline-block px-2 py-1 rounded text-xs font-bold bg-green-100 text-green-800 mt-1';
-                btn.parentElement.querySelector('.bg-green-100').innerText = 'Paid';
-                btn.remove();
-                showToast("Marked as Paid! Notification stopped.", "success");
-
-            } catch(e) {
-                showToast("Error updating status.", "error");
-                btn.innerHTML = originalText;
-            }
+                btn.parentElement.querySelector('.bg-green-100').innerText = 'Paid'; btn.remove();
+                showToast("Marked as Paid!", "success");
+            } catch(e) { showToast("Error updating status.", "error"); btn.innerHTML = originalText; }
         }
 
-        // --- MATH & PRINT (Updated for Safety) ---
         function calcDays() {
             const startStr = document.getElementById('start-date').value;
             const endStr = document.getElementById('end-date').value;
@@ -453,21 +348,15 @@
             if ((l*w) > 0) mandapDaily = Math.round(((l*w) / STANDARD_AREA) * STANDARD_RATE);
             document.getElementById('mandap-details').innerText = `Size: ${l}x${w} (${l*w} sq.ft)`;
             document.getElementById('mandap-price').innerText = mandapDaily;
-
             const itemsDaily = items.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const days = parseInt(document.getElementById('total-days').innerText) || 1;
             const dailyTotal = mandapDaily + itemsDaily;
             const subtotal = dailyTotal * days;
             document.getElementById('daily-total').innerText = dailyTotal;
             document.getElementById('subtotal').innerText = subtotal;
-
-            // TAXES FIXED at 9%
-            const cgstRate = 9; 
-            const sgstRate = 9;
-            
+            const cgstRate = 9; const sgstRate = 9;
             const cgstAmt = Math.round((subtotal * cgstRate) / 100);
             const sgstAmt = Math.round((subtotal * sgstRate) / 100);
-            
             document.getElementById('cgst-amt').innerText = cgstAmt;
             document.getElementById('sgst-amt').innerText = sgstAmt;
             document.getElementById('cgst-print-rate').innerText = cgstRate;
@@ -480,13 +369,7 @@
             items.forEach((item, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-gray-50 hover:bg-gray-50 group';
-                tr.innerHTML = `
-                    <td class="py-3 font-medium text-gray-700 text-sm">${item.name}</td>
-                    <td class="py-3 text-center"><input type="number" oninput="handleInput(${index}, 'price', this.value)" value="${item.price}" class="w-16 text-center bg-transparent border-b border-gray-200 focus:border-blue-500 outline-none p-1 text-base"></td>
-                    <td class="py-3 text-center"><input type="number" oninput="handleInput(${index}, 'qty', this.value)" value="${item.qty}" class="w-16 text-center bg-gray-100 rounded p-1 focus:bg-white focus:ring-2 ring-blue-500 outline-none p-1 text-base"></td>
-                    <td class="py-3 text-right font-medium text-gray-800 text-sm">₹ <span id="row-total-${index}">${item.price * item.qty}</span></td>
-                    <td class="no-print text-center"><button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 p-2"><i class="fas fa-trash"></i></button></td>
-                `;
+                tr.innerHTML = `<td class="py-3 font-medium text-gray-700 text-sm">${item.name}</td><td class="py-3 text-center"><input type="number" oninput="handleInput(${index}, 'price', this.value)" value="${item.price}" class="w-16 text-center bg-transparent border-b border-gray-200 focus:border-blue-500 outline-none p-1 text-base"></td><td class="py-3 text-center"><input type="number" oninput="handleInput(${index}, 'qty', this.value)" value="${item.qty}" class="w-16 text-center bg-gray-100 rounded p-1 focus:bg-white focus:ring-2 ring-blue-500 outline-none p-1 text-base"></td><td class="py-3 text-right font-medium text-gray-800 text-sm">₹ <span id="row-total-${index}">${item.price * item.qty}</span></td><td class="no-print text-center"><button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 p-2"><i class="fas fa-trash"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             recalcAll();
@@ -507,55 +390,28 @@
             const btn = document.getElementById('btn-print');
             const originalText = btn.innerHTML;
             const scriptUrl = localStorage.getItem('scriptUrl');
-            
-            // Force Print after 1s even if save is slow
             let printTriggered = false;
             const triggerPrint = () => {
-                if(!printTriggered) {
-                    printTriggered = true;
-                    btn.innerHTML = originalText;
-                    window.print();
-                }
+                if(!printTriggered) { printTriggered = true; btn.innerHTML = originalText; window.print(); }
             };
-            
-            // Update time right before printing with forced DD/MM/YYYY
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB');
-
             if (scriptUrl) {
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
-                
-                // Set fallback timeout for print
                 setTimeout(triggerPrint, 1500); 
-
                 const mandapDetails = parseFloat(document.getElementById('mandap-price').innerText) > 0 ? `Mandap: ${document.getElementById('mandap-l').value}x${document.getElementById('mandap-w').value}` : '';
                 const itemDetails = items.filter(i => i.qty > 0).map(i => `${i.name} x${i.qty}`).join(', ');
-                
                 const payload = {
-                    action: 'create',
-                    name: custName,
-                    phone: document.getElementById('cust-phone').value,
-                    startDate: document.getElementById('start-date').value,
-                    endDate: document.getElementById('end-date').value,
-                    days: document.getElementById('total-days').innerText,
-                    details: [mandapDetails, itemDetails].filter(Boolean).join(' | '),
-                    subtotal: document.getElementById('subtotal').innerText,
-                    cgst: document.getElementById('cgst-amt').innerText,
-                    sgst: document.getElementById('sgst-amt').innerText,
-                    total: document.getElementById('final-total').innerText
+                    action: 'create', name: custName, phone: document.getElementById('cust-phone').value,
+                    startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value,
+                    days: document.getElementById('total-days').innerText, details: [mandapDetails, itemDetails].filter(Boolean).join(' | '),
+                    subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText,
+                    sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText
                 };
                 try { 
                     await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
-                    showToast("Bill Saved Successfully!", "success");
-                    triggerPrint();
-                } catch (error) { 
-                    console.error(error); 
-                    showToast("Network Error! Bill NOT Saved.", "error");
-                    triggerPrint(); 
-                }
-            } else {
-                showToast("No Script URL! Bill NOT Saved.", "error");
-                triggerPrint();
-            }
+                    showToast("Bill Saved Successfully!", "success"); triggerPrint();
+                } catch (error) { console.error(error); showToast("Network Error!", "error"); triggerPrint(); }
+            } else { showToast("No Script URL!", "error"); triggerPrint(); }
         }
     </script>
 </body>
