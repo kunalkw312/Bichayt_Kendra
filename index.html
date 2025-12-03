@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <!-- TABS -->
+        <!-- TABS (Fixed Active State Logic) -->
         <div id="tab-nav" class="max-w-4xl w-full mx-auto mb-4 flex gap-2 no-print">
             <button onclick="switchTab('new')" id="tab-new" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold shadow text-sm">New Bill</button>
             <button onclick="switchTab('search')" id="tab-search" class="flex-1 py-3 bg-white text-gray-600 rounded-lg font-bold shadow hover:bg-gray-50 text-sm">Search Bills</button>
@@ -118,7 +118,6 @@
                             <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Phone Number</label><input type="number" id="cust-phone" class="w-full text-base font-medium border-b-2 border-gray-200 focus:border-blue-500 outline-none py-1"></div>
                         </div>
                         
-                        <!-- Web Date View -->
                         <div id="date-section-web" class="bg-yellow-50 p-4 rounded-lg border border-yellow-100 print-col">
                             <label class="block text-xs font-bold text-yellow-800 uppercase mb-2">Duration</label>
                             <div class="flex flex-col sm:flex-row gap-3 mb-2">
@@ -128,7 +127,6 @@
                             <div class="text-right border-t border-yellow-200 pt-2"><span class="text-sm text-gray-600">Total Days:</span><span class="text-lg font-bold text-yellow-900 ml-1"><span id="total-days">1</span></span></div>
                         </div>
 
-                        <!-- Print Date View (Compact) -->
                         <div id="date-section-print" class="print-col">
                             <div class="font-bold uppercase text-xs mb-1">Duration (<span id="print-total-days">1</span> Days)</div>
                             <div>From: <span id="print-start-date">...</span></div>
@@ -146,23 +144,25 @@
                         <div class="mt-2 flex justify-between items-center border-t border-blue-200 pt-2"><div class="text-sm text-blue-700"><div id="mandap-details">Size: 0x0</div></div><div class="text-xl font-bold text-blue-900">₹ <span id="mandap-price">0</span></div></div>
                     </div>
 
+                    <!-- ITEMS LIST (Tight Padding Update) -->
                     <div class="mb-4">
                         <h3 class="font-bold text-gray-800 mb-2 text-sm uppercase">Items</h3>
                         <div class="overflow-x-auto border rounded-lg border-gray-100">
                             <table class="w-full min-w-[600px]">
                                 <thead class="bg-gray-50 border-b">
-                                    <tr class="text-xs text-gray-500">
-                                        <th class="p-2 text-left col-item">Item Name</th>
-                                        <th class="p-2 text-center col-rate">Rate</th>
-                                        <th class="p-2 text-center col-qty">Qty</th>
-                                        <th class="p-2 text-center bg-yellow-50/50 col-days">Days</th>
-                                        <th class="p-2 text-right col-total">Total</th>
-                                        <th class="p-2 w-8 no-print"></th>
+                                    <tr class="text-sm text-gray-500">
+                                        <th class="p-2 text-left w-[40%] col-item">Item Name</th>
+                                        <th class="p-1 text-center w-[15%] col-rate">Rate</th>
+                                        <th class="p-1 text-center w-[10%] col-qty">Qty</th>
+                                        <th class="p-1 text-center w-[10%] bg-yellow-50/50 col-days">Days</th>
+                                        <th class="p-2 text-right w-[25%] col-total">Total</th>
+                                        <th class="p-1 w-8 no-print"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="items-list"></tbody>
                             </table>
                         </div>
+                        
                         <div class="mt-2 flex gap-2 no-print bg-gray-50 p-2 rounded-lg border border-dashed border-gray-300 items-center">
                             <input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 p-1 border rounded text-sm">
                             <input type="number" id="new-item-price" placeholder="Rate" class="w-20 p-1 border rounded text-sm">
@@ -188,14 +188,11 @@
 
             <div class="max-w-4xl w-full mx-auto mt-6 no-print pb-24">
                 <button onclick="printAndSave()" id="btn-print" class="w-full bg-blue-600 text-white py-4 rounded-xl shadow-lg font-bold text-xl flex items-center justify-center hover:bg-blue-700 active:scale-95 transition-transform"><i class="fas fa-print mr-3"></i> <span id="save-btn-text">Print & Save Bill</span></button>
-                <div id="edit-mode-bar" class="hidden mt-2 text-center">
-                    <span class="text-sm text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full font-bold">⚠️ Editing Old Invoice</span>
-                    <button onclick="exitEditMode()" class="text-xs text-red-600 underline ml-2">Cancel Edit</button>
-                </div>
+                <div id="edit-mode-bar" class="hidden mt-2 text-center"><span class="text-sm text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full font-bold">⚠️ Editing Old Invoice</span><button onclick="exitEditMode()" class="text-xs text-red-600 underline ml-2">Cancel Edit</button></div>
             </div>
         </div>
 
-        <!-- SEARCH VIEW -->
+        <!-- SEARCH -->
         <div id="view-search" class="hidden max-w-4xl w-full mx-auto">
             <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Search & Recent</h2>
@@ -208,15 +205,12 @@
 
     <script>
         // ==========================================
-        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxh9cpKSEXCVPWU-G0EkhJjdMLAHjRpKKNfFZ3a8ej3usTGGjqPV-zbiiXK_2XtAOx/exec"; 
+        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuhWcN2LaCEyTP6K4mMNOIWScKJxujz6AGqKLrYm-pXrPV_O_OfmKsLSrUuvxUE7Y/exec"; 
         // ==========================================
 
         const STANDARD_RATE = 1500;
         const STANDARD_AREA = 15 * 15; 
-        
         let items = [ { id: 1, name: 'Mattress (Gadda)', price: 50, qty: 0, days: 1 }, { id: 2, name: 'Pillow', price: 20, qty: 0, days: 1 }, { id: 3, name: 'Bedsheet', price: 30, qty: 0, days: 1 }, { id: 4, name: 'Plastic Chair', price: 10, qty: 0, days: 1 } ];
-        
-        // EDIT MODE STATE
         let editingRowIndex = null;
 
         // PWA Setup
@@ -237,81 +231,88 @@
             renderTableRows(); 
         };
 
-        // --- EDITING & DELETING LOGIC ---
+        // --- TAB LOGIC (Fixed) ---
+        function switchTab(tab) {
+            const newView = document.getElementById('view-new-bill');
+            const searchView = document.getElementById('view-search');
+            const tabNew = document.getElementById('tab-new');
+            const tabSearch = document.getElementById('tab-search');
 
-        function fetchRecent() {
-            performSearch('recent');
+            if(tab === 'new') {
+                newView.classList.remove('hidden');
+                searchView.classList.add('hidden');
+                // Set Active Style for New
+                tabNew.classList.remove('bg-white', 'text-gray-600');
+                tabNew.classList.add('bg-blue-600', 'text-white');
+                // Set Inactive Style for Search
+                tabSearch.classList.remove('bg-blue-600', 'text-white');
+                tabSearch.classList.add('bg-white', 'text-gray-600');
+            } else {
+                newView.classList.add('hidden');
+                searchView.classList.remove('hidden');
+                // Set Active Style for Search
+                tabSearch.classList.remove('bg-white', 'text-gray-600');
+                tabSearch.classList.add('bg-blue-600', 'text-white');
+                // Set Inactive Style for New
+                tabNew.classList.remove('bg-blue-600', 'text-white');
+                tabNew.classList.add('bg-white', 'text-gray-600');
+                fetchRecent();
+            }
         }
 
+        function fetchRecent() { performSearch('recent'); }
+
         async function editInvoice(rowIndex, dataStr) {
-            // Decode data passed from button
             const data = JSON.parse(decodeURIComponent(dataStr));
-            
-            // 1. Set State
             editingRowIndex = rowIndex;
             document.getElementById('save-btn-text').innerText = "Update Invoice";
             document.getElementById('edit-mode-bar').classList.remove('hidden');
             document.getElementById('bill-mode-label').innerText = "EDIT MODE: Row " + rowIndex;
             
-            // 2. Fill Form
             document.getElementById('cust-name').value = data.name;
             document.getElementById('cust-phone').value = data.phone;
-            // Format dates from sheet (often messy) to input YYYY-MM-DD
             try {
                 document.getElementById('start-date').value = new Date(data.startDate).toISOString().split('T')[0];
                 document.getElementById('end-date').value = new Date(data.endDate).toISOString().split('T')[0];
             } catch(e) {}
             
-            calcDays(); // Recalc days based on dates
+            calcDays();
             
-            // 3. Parse Details String back to Items
-            // Expected Format: "MANDAP: 30x40ft...\nItem: 50pcs x 3days"
-            items.forEach(i => { i.qty = 0; i.days = 1; }); // Reset
+            items.forEach(i => { i.qty = 0; i.days = 1; });
             document.getElementById('mandap-l').value = 0;
             document.getElementById('mandap-w').value = 0;
 
             const lines = data.details.split('\n');
             lines.forEach(line => {
                 if (line.includes('MANDAP:')) {
-                    // Extract L and W roughly
                     const match = line.match(/(\d+)x(\d+)ft/);
-                    if(match) {
-                        document.getElementById('mandap-l').value = match[1];
-                        document.getElementById('mandap-w').value = match[2];
-                    }
+                    if(match) { document.getElementById('mandap-l').value = match[1]; document.getElementById('mandap-w').value = match[2]; }
                 } else {
-                    // Item Line: "Name: 50pcs x 3days"
                     const parts = line.split(':');
                     if(parts.length > 1) {
                         const name = parts[0].trim();
                         const nums = parts[1].match(/(\d+)pcs x (\d+)days/);
                         if(nums) {
                             const foundItem = items.find(i => i.name === name);
-                            if(foundItem) {
-                                foundItem.qty = parseInt(nums[1]);
-                                foundItem.days = parseInt(nums[2]);
-                            } else {
-                                // New item not in default list
-                                items.push({ id: Date.now(), name: name, price: 0, qty: parseInt(nums[1]), days: parseInt(nums[2]) });
-                            }
+                            if(foundItem) { foundItem.qty = parseInt(nums[1]); foundItem.days = parseInt(nums[2]); }
+                            else { items.push({ id: Date.now(), name: name, price: 0, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); }
                         }
                     }
                 }
             });
 
-            // 4. Switch View
             switchTab('new');
-            renderTableRows(); // Re-render with new data
-            showToast("Invoice Loaded for Editing", "success");
+            renderTableRows();
+            showToast("Invoice Loaded", "success");
         }
 
         async function deleteInvoice(rowIndex) {
-            if(!confirm("Permanently delete this invoice?")) return;
+            if(!confirm("Delete this invoice?")) return;
             const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
             try {
                 await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', row: rowIndex }) });
-                showToast("Deleted! Refreshing...", "success");
-                setTimeout(() => fetchRecent(), 1500); // Refresh list
+                showToast("Deleted!", "success");
+                setTimeout(() => fetchRecent(), 1500);
             } catch(e) { showToast("Error deleting", "error"); }
         }
 
@@ -327,80 +328,7 @@
             showToast("Edit Cancelled", "success");
         }
 
-        // --- STANDARD FUNCTIONS ---
-
-        function switchTab(tab) {
-            const newView = document.getElementById('view-new-bill');
-            const searchView = document.getElementById('view-search');
-            if(tab === 'new') {
-                newView.classList.remove('hidden'); searchView.classList.add('hidden');
-                document.getElementById('tab-new').classList.add('bg-blue-600', 'text-white');
-                document.getElementById('tab-new').classList.remove('bg-white', 'text-gray-600');
-                document.getElementById('tab-search').classList.remove('bg-blue-600', 'text-white');
-            } else {
-                newView.classList.add('hidden'); searchView.classList.remove('hidden');
-                document.getElementById('tab-search').classList.add('bg-blue-600', 'text-white');
-                document.getElementById('tab-search').classList.remove('bg-white', 'text-gray-600');
-                document.getElementById('tab-new').classList.remove('bg-blue-600', 'text-white');
-                fetchRecent(); // Load recent on click
-            }
-        }
-
-        async function performSearch(type = 'search') {
-            const query = document.getElementById('search-query').value;
-            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
-            const resultDiv = document.getElementById('search-results');
-            
-            if(!scriptUrl) { alert("Please set URL in settings"); return; }
-            if(type === 'search' && !query) { alert("Enter text"); return; }
-            
-            resultDiv.innerHTML = '<div class="text-center mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i><br>Loading...</div>';
-            
-            // Build URL
-            let url = `${scriptUrl}?q=${encodeURIComponent(query)}`;
-            if(type === 'recent') url = `${scriptUrl}?type=recent`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                resultDiv.innerHTML = '';
-                if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-500">No results found</div>'; return; }
-                
-                data.forEach(bill => {
-                    const isPaid = bill.status === 'Paid';
-                    const displayDate = new Date(bill.date).toLocaleString('en-GB');
-                    // Store data string for edit function
-                    const dataStr = encodeURIComponent(JSON.stringify(bill));
-                    
-                    const html = `
-                        <div class="bg-white p-4 rounded-lg shadow border border-gray-100 flex flex-col gap-3 relative">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-bold text-lg">${bill.name}</h3>
-                                    <p class="text-gray-600 text-sm">${bill.phone}</p>
-                                    <p class="text-xs text-gray-400 mt-1">${displayDate}</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-xl font-bold">₹ ${bill.total}</div>
-                                    <span class="inline-block px-2 py-1 rounded text-xs font-bold ${isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} mt-1">${bill.status}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex gap-2 border-t pt-3 mt-1">
-                                <button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-pencil-alt"></i> Edit</button>
-                                ${!isPaid ? `<button onclick="markAsPaid(${bill.rowIndex})" class="flex-1 py-2 bg-green-50 text-green-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-check"></i> Paid</button>` : ''}
-                                <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-red-50 text-red-500 rounded"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    `;
-                    resultDiv.insertAdjacentHTML('beforeend', html);
-                });
-            } catch(e) { console.error(e); resultDiv.innerHTML = 'Error loading.'; }
-        }
-
-        // --- MATH & CORE ---
-        
+        // --- CALCULATION & RENDERING ---
         function calcDays() {
             const startStr = document.getElementById('start-date').value;
             const endStr = document.getElementById('end-date').value;
@@ -410,10 +338,7 @@
                 if (diffDays < 1) diffDays = 1;
                 document.getElementById('total-days').innerText = diffDays;
                 document.getElementById('print-total-days').innerText = diffDays;
-                
-                // Update print text
                 updatePrintDates();
-                
                 items.forEach(item => item.days = diffDays);
                 renderTableRows();
             }
@@ -455,7 +380,7 @@
                 const itemTotal = item.price * item.qty * item.days;
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-gray-50 hover:bg-gray-50 group';
-                tr.innerHTML = `<td class="p-2 text-gray-700 col-item text-sm font-medium">${item.name}</td><td class="p-2 text-center col-rate"><input type="number" oninput="handleRowInput(${index}, 'price', this.value)" value="${item.price}" class="w-full text-center bg-transparent border-b border-gray-200 focus:border-blue-500 outline-none text-sm"></td><td class="p-2 text-center col-qty"><input type="number" oninput="handleRowInput(${index}, 'qty', this.value)" value="${item.qty}" class="w-full text-center bg-gray-100 rounded p-1 focus:bg-white border-none outline-none text-sm font-bold"></td><td class="p-2 text-center bg-yellow-50/30 col-days"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${item.days}" class="w-full text-center bg-transparent border-b border-yellow-300 focus:border-yellow-600 outline-none font-bold text-yellow-800 text-sm"></td><td class="p-2 text-right font-bold text-gray-800 col-total text-sm">₹ <span id="item-total-${index}">${itemTotal}</span></td><td class="no-print text-center p-2"><button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 text-sm"><i class="fas fa-trash"></i></button></td>`;
+                tr.innerHTML = `<td class="p-2 text-gray-700 col-item text-sm font-medium">${item.name}</td><td class="p-1 text-center col-rate"><input type="number" oninput="handleRowInput(${index}, 'price', this.value)" value="${item.price}" class="w-full text-center bg-transparent border-b border-gray-200 focus:border-blue-500 outline-none text-sm"></td><td class="p-1 text-center col-qty"><input type="number" oninput="handleRowInput(${index}, 'qty', this.value)" value="${item.qty}" class="w-full text-center bg-gray-100 rounded p-1 focus:bg-white border-none outline-none text-sm font-bold"></td><td class="p-1 text-center bg-yellow-50/30 col-days"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${item.days}" class="w-full text-center bg-transparent border-b border-yellow-300 focus:border-yellow-600 outline-none font-bold text-yellow-800 text-sm"></td><td class="p-2 text-right font-bold text-gray-800 col-total text-sm">₹ <span id="item-total-${index}">${itemTotal}</span></td><td class="no-print text-center p-1"><button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 text-sm"><i class="fas fa-trash"></i></button></td>`;
                 tbody.appendChild(tr);
             });
             recalcGrandTotalsOnly();
@@ -492,7 +417,7 @@
                 const finalDetailsString = detailsArray.join('\n');
 
                 const payload = {
-                    action: editingRowIndex ? 'edit' : 'create', // DECIDE ACTION
+                    action: editingRowIndex ? 'edit' : 'create',
                     row: editingRowIndex,
                     name: custName, phone: document.getElementById('cust-phone').value,
                     startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value,
@@ -504,6 +429,50 @@
                 try { await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showToast(editingRowIndex ? "Updated!" : "Saved!", "success"); triggerPrint(); if(editingRowIndex) exitEditMode(); } 
                 catch (error) { console.error(error); showToast("Network Error!", "error"); triggerPrint(); }
             } else { showToast("No Script URL!", "error"); triggerPrint(); }
+        }
+
+        async function performSearch(type = 'search') {
+            const query = document.getElementById('search-query').value;
+            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
+            const resultDiv = document.getElementById('search-results');
+            const btn = document.getElementById('btn-search');
+            
+            if(!scriptUrl) { alert("Please set URL in settings"); return; }
+            if(type === 'search' && !query) { alert("Enter text"); return; }
+            
+            resultDiv.innerHTML = '<div class="text-center mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i><br>Loading...</div>';
+            
+            let url = `${scriptUrl}?q=${encodeURIComponent(query)}`;
+            if(type === 'recent') url = `${scriptUrl}?type=recent`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                resultDiv.innerHTML = '';
+                if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-500">No results found</div>'; return; }
+                
+                data.forEach(bill => {
+                    const isPaid = bill.status === 'Paid';
+                    const displayDate = new Date(bill.date).toLocaleString('en-GB');
+                    const dataStr = encodeURIComponent(JSON.stringify(bill));
+                    
+                    const html = `
+                        <div class="bg-white p-4 rounded-lg shadow border border-gray-100 flex flex-col gap-3 relative">
+                            <div class="flex justify-between items-start">
+                                <div><h3 class="font-bold text-lg">${bill.name}</h3><p class="text-gray-600 text-sm">${bill.phone}</p><p class="text-xs text-gray-400 mt-1">${displayDate}</p></div>
+                                <div class="text-right"><div class="text-xl font-bold">₹ ${bill.total}</div><span class="inline-block px-2 py-1 rounded text-xs font-bold ${isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} mt-1">${bill.status}</span></div>
+                            </div>
+                            <div class="flex gap-2 border-t pt-3 mt-1">
+                                <button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-pencil-alt"></i> Edit</button>
+                                ${!isPaid ? `<button onclick="markAsPaid(${bill.rowIndex})" class="flex-1 py-2 bg-green-50 text-green-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-check"></i> Paid</button>` : ''}
+                                <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-red-50 text-red-500 rounded"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    resultDiv.insertAdjacentHTML('beforeend', html);
+                });
+            } catch(e) { console.error(e); resultDiv.innerHTML = 'Error loading.'; }
         }
         
         async function markAsPaid(rowIndex) {
