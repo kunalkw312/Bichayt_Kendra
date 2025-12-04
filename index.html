@@ -34,42 +34,82 @@
         .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* === PRINT STYLES (Strict A4 Layout) === */
+        /* === PRINT STYLES (Strict A4 Layout & B/W) === */
         @media print {
-            @page { size: A4; margin: 0; }
-            body { background: white; margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: black; }
+            @page { size: A4; margin: 5mm 8mm; } /* Tight margins for single page fit */
+            
+            body { 
+                background: white; 
+                margin: 0; 
+                padding: 0; 
+                font-family: 'Inter', sans-serif; 
+                color: black;
+                filter: grayscale(100%); /* Force B&W */
+            }
             
             .no-print, #tab-nav, #settings-modal, #toast, #btn-install, .fab-button, .gst-toggle-container { display: none !important; }
-            #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 10mm !important; }
             
-            .print-header { border-bottom: 2px solid black; margin-bottom: 20px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
-            .print-title { font-size: 24pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: black !important; }
-            .print-meta { text-align: right; font-size: 10pt; }
-            .gstin-display { font-size: 10pt; font-weight: bold; margin-top: 4px; display: block !important; }
+            #main-container { 
+                box-shadow: none !important; 
+                border: none !important; 
+                margin: 0 !important; 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                padding: 0 !important; 
+            }
+            
+            /* Compact Header */
+            .print-header { 
+                border-bottom: 2px solid black; 
+                margin-bottom: 10px; 
+                padding-bottom: 5px; 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: flex-start; 
+            }
+            .print-title { font-size: 20pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; line-height: 1; }
+            .print-meta { text-align: right; font-size: 9pt; line-height: 1.4; }
+            .gstin-display { font-size: 9pt; font-weight: bold; margin-top: 2px; display: block !important; }
 
-            .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px; }
-            .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            .border-b-2 { border-bottom: 1px solid #ddd !important; }
+            /* Compact Grid */
+            .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 10px; }
             
-            input { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; font-weight: 500; font-size: 11pt; }
+            /* Remove Backgrounds */
+            .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { 
+                background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; 
+            }
+            .border-b-2 { border-bottom: 1px solid #ccc !important; }
             
-            table { width: 100% !important; border-collapse: collapse; margin-top: 15px; }
-            th { border-bottom: 2px solid black; text-align: left; padding: 5px; font-size: 10pt; font-weight: bold; text-transform: uppercase; }
-            td { border-bottom: 1px solid #eee; padding: 6px 5px; font-size: 11pt; }
+            /* Compact Inputs */
+            input { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; font-weight: 500; font-size: 10pt; }
+            
+            /* Compact Table */
+            table { width: 100% !important; border-collapse: collapse; margin-top: 5px; }
+            th { border-bottom: 1px solid black; text-align: left; padding: 2px 4px; font-size: 9pt; font-weight: bold; text-transform: uppercase; }
+            td { border-bottom: 1px solid #eee; padding: 2px 4px; font-size: 9.5pt; } /* Smaller font for rows */
             .text-center { text-align: center; } .text-right { text-align: right; }
             
-            .totals-section { float: right; width: 40%; margin-top: 20px; border-top: 2px solid black; padding-top: 10px; }
-            .totals-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11pt; }
-            .totals-final { font-size: 14pt; font-weight: bold; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 5px; }
+            /* Compact Totals */
+            .totals-section { float: right; width: 45%; margin-top: 10px; border-top: 1px solid black; padding-top: 5px; }
+            .totals-row { display: flex; justify-content: space-between; margin-bottom: 2px; font-size: 10pt; }
+            .totals-final { font-size: 12pt; font-weight: bold; margin-top: 5px; border-top: 1px solid #ccc; padding-top: 2px; }
 
-            .print-footer { position: fixed; bottom: 10mm; left: 10mm; right: 10mm; text-align: center; font-size: 9pt; color: #666; }
-            .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
-            .sig-line { border-top: 1px solid black; width: 150px; padding-top: 5px; font-weight: bold; }
+            /* Footer */
+            .print-footer { 
+                position: fixed; 
+                bottom: 0; 
+                left: 0; 
+                right: 0; 
+                text-align: center; 
+                font-size: 8pt; 
+                color: #000;
+                padding-bottom: 5mm;
+            }
+            .signatures { display: flex; justify-content: space-between; margin-top: 30px; margin-bottom: 10px; px: 10mm; }
+            .sig-line { border-top: 1px solid black; width: 120px; padding-top: 2px; font-weight: bold; font-size: 9pt; }
 
             .show-print { display: block !important; }
             .hide-print { display: none !important; }
-            
-            /* Hide tax rows if tax is 0 */
             .no-tax-print { display: none !important; }
         }
         
@@ -143,6 +183,7 @@
                         <div>
                             <h2 class="text-2xl font-bold tracking-tight">Invoice</h2>
                             <p class="text-white/80 text-sm mt-0.5">Bichayt Kendra & Events</p>
+                            <!-- GSTIN DISPLAY -->
                             <p class="text-white/60 text-xs mt-1 font-mono uppercase" id="screen-gstin-display"></p>
                         </div>
                         <div class="text-right bg-white/10 px-3 py-1 rounded-lg backdrop-blur-sm border border-white/20">
@@ -161,9 +202,13 @@
                     <div>
                         <div class="print-title">Invoice</div>
                         <div>Bichayt Kendra & Events</div>
+                        <!-- PRINT GSTIN DISPLAY -->
                         <div class="gstin-display" id="print-gstin-display"></div>
                     </div>
-                    <div class="print-meta">Date: <span id="print-date-text"></span><br>ID: <span id="print-id-text">...</span></div>
+                    <div class="print-meta">
+                        Date: <span id="print-date-text"></span><br>
+                        ID: <span id="print-id-text">...</span>
+                    </div>
                 </div>
 
                 <div class="p-6">
@@ -187,7 +232,11 @@
                             </div>
                             <div class="mt-3 flex justify-end"><div class="text-sm font-bold text-gray-700 bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">Total: <span class="text-yellow-600 text-lg" id="total-days">1</span> Days</div></div>
                         </div>
-                        <div class="show-print print-col"><strong>Duration:</strong> <span id="print-total-days">1</span> Days<br>From: <span id="print-start-date"></span><br>To: &nbsp;&nbsp;&nbsp;&nbsp;<span id="print-end-date"></span></div>
+                        <div class="show-print print-col">
+                            <strong>Duration:</strong> <span id="print-total-days">1</span> Days<br>
+                            From: <span id="print-start-date"></span><br>
+                            To: &nbsp;&nbsp;&nbsp;&nbsp;<span id="print-end-date"></span>
+                        </div>
                     </div>
 
                     <!-- Mandap -->
@@ -241,7 +290,13 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="print-footer hide-print show-print"><p>Thank you for your business!</p><div class="signatures"><div class="sig-line">Customer Sign</div><div class="sig-line">Shop Owner Sign</div></div></div>
+                    <div class="print-footer hide-print show-print">
+                        <p>Thank you for your business!</p>
+                        <div class="signatures">
+                            <div class="sig-line">Customer Sign</div>
+                            <div class="sig-line">Shop Owner Sign</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,6 +316,7 @@
     <script>
         // ==========================================
         const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzrKvkCYR9nq_DIcUwp4Hed237yoYgvI4aTBMT_gEX-At2PzYOKz7RbO3ApyGoz9Kzc1g/exec"; 
+        const DEFAULT_GSTIN = "24585435642"; // Hardcoded Default
         // ==========================================
 
         const STANDARD_RATE = 1500;
@@ -278,7 +334,9 @@
             if (!savedUrl && DEFAULT_SCRIPT_URL && DEFAULT_SCRIPT_URL.trim() !== "") { localStorage.setItem('scriptUrl', DEFAULT_SCRIPT_URL); savedUrl = DEFAULT_SCRIPT_URL; }
             if (savedUrl) document.getElementById('script-url').value = savedUrl;
             
+            // GSTIN LOAD
             let gstin = localStorage.getItem('shopGstin');
+            if (!gstin) { gstin = DEFAULT_GSTIN; localStorage.setItem('shopGstin', gstin); } // Set default if missing
             if (gstin) { document.getElementById('shop-gstin').value = gstin; updateGstinDisplay(gstin); }
 
             // Dates
