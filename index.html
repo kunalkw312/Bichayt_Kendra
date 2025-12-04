@@ -59,13 +59,11 @@
 
     <div class="min-h-screen p-2 md:p-6 flex flex-col">
         
-        <!-- HEADER -->
         <div class="max-w-4xl w-full mx-auto mb-4 flex justify-between items-center no-print px-1">
             <h1 class="text-xl font-bold text-gray-800 flex items-center"><i class="fas fa-store text-blue-600 mr-2"></i><span class="hidden sm:inline">Bichayt Kendra</span><span class="sm:hidden">Bichayt</span></h1>
             <div class="flex gap-2"><button id="btn-install" class="hidden text-blue-600 font-bold text-xs bg-blue-50 px-3 py-1 rounded-full"><i class="fas fa-download mr-1"></i> App</button><button onclick="toggleSettings()" class="text-gray-500 p-2"><i class="fas fa-cog text-xl"></i></button></div>
         </div>
 
-        <!-- TABS (FIXED COLORS) -->
         <div id="tab-nav" class="max-w-4xl w-full mx-auto mb-4 flex gap-2 no-print">
             <button onclick="switchTab('new')" id="tab-new" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold shadow text-sm transition-colors duration-200">New Bill</button>
             <button onclick="switchTab('search')" id="tab-search" class="flex-1 py-3 bg-white text-gray-600 rounded-lg font-bold shadow text-sm transition-colors duration-200 hover:bg-gray-100">Search Bills</button>
@@ -157,10 +155,12 @@
     </div>
 
     <script>
-        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUxAx0DtUf8D5Kg_fCV93cPyg9Jk0_aFF-c8_WilUp_TEoHwvBdu4btRx8nU55WhzeNw/exec"; 
+        // ==========================================
+        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2eO62_-S1uKKK7-rDGljGegma9V0wIA8PkGNoeIfuQn0GeZkEoq3IRL1TN88lVvGk0w/exec"; 
+        // ==========================================
+
         const STANDARD_RATE = 1500;
         const STANDARD_AREA = 15 * 15; 
-        
         let items = [ { id: 1, name: 'Mattress (Gadda)', price: 50, qty: 0, days: 1 }, { id: 2, name: 'Pillow', price: 20, qty: 0, days: 1 }, { id: 3, name: 'Bedsheet', price: 30, qty: 0, days: 1 }, { id: 4, name: 'Plastic Chair', price: 10, qty: 0, days: 1 } ];
         let editingRowIndex = null;
 
@@ -170,9 +170,16 @@
 
         window.onload = function() {
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB');
-            let savedUrl = localStorage.getItem('scriptUrl');
-            if (!savedUrl && DEFAULT_SCRIPT_URL && DEFAULT_SCRIPT_URL !== "") { savedUrl = DEFAULT_SCRIPT_URL; localStorage.setItem('scriptUrl', savedUrl); }
-            if (savedUrl) document.getElementById('script-url').value = savedUrl;
+            
+            // --- FIX FOR URL UPDATING ---
+            // If the code has a URL, force it into storage
+            if (DEFAULT_SCRIPT_URL && DEFAULT_SCRIPT_URL.trim() !== "") {
+                localStorage.setItem('scriptUrl', DEFAULT_SCRIPT_URL);
+                document.getElementById('script-url').value = DEFAULT_SCRIPT_URL;
+            } else {
+                let savedUrl = localStorage.getItem('scriptUrl');
+                if (savedUrl) document.getElementById('script-url').value = savedUrl;
+            }
             
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start-date').value = today;
@@ -181,7 +188,6 @@
             renderTableRows(); 
         };
 
-        // --- FIXED TAB SWITCHING ---
         function switchTab(tab) {
             const newView = document.getElementById('view-new-bill');
             const searchView = document.getElementById('view-search');
@@ -191,26 +197,17 @@
             if(tab === 'new') {
                 newView.classList.remove('hidden');
                 searchView.classList.add('hidden');
-                
-                // Style Active (New)
                 tabNew.classList.remove('bg-white', 'text-gray-600');
                 tabNew.classList.add('bg-blue-600', 'text-white');
-                
-                // Style Inactive (Search)
                 tabSearch.classList.remove('bg-blue-600', 'text-white');
                 tabSearch.classList.add('bg-white', 'text-gray-600');
             } else {
                 newView.classList.add('hidden');
                 searchView.classList.remove('hidden');
-                
-                // Style Active (Search)
                 tabSearch.classList.remove('bg-white', 'text-gray-600');
                 tabSearch.classList.add('bg-blue-600', 'text-white');
-                
-                // Style Inactive (New)
                 tabNew.classList.remove('bg-blue-600', 'text-white');
                 tabNew.classList.add('bg-white', 'text-gray-600');
-                
                 fetchRecent();
             }
         }
@@ -275,13 +272,12 @@
         function addNewItem() { const name = document.getElementById('new-item-name').value; const price = document.getElementById('new-item-price').value; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; if (name && price) { items.push({ id: Date.now(), name, price: parseFloat(price), qty: 0, days: globalDays }); renderTableRows(); document.getElementById('new-item-name').value = ''; document.getElementById('new-item-price').value = ''; } }
         function deleteItem(index) { if(confirm('Remove?')) { items.splice(index, 1); renderTableRows(); } }
         
-        // --- API & SEARCH ---
         async function performSearch(type = 'search') {
             const query = document.getElementById('search-query').value;
             const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
             const resultDiv = document.getElementById('search-results');
             
-            if(!scriptUrl) { alert("Please set URL"); return; }
+            if(!scriptUrl || scriptUrl === "") { alert("Please set URL"); return; }
             if(type === 'search' && !query) { alert("Enter text"); return; }
             
             resultDiv.innerHTML = '<div class="text-center mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i><br>Loading...</div>';
