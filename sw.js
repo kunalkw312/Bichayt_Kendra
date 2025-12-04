@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bichayt-shop-v7'; // Updated version
+const CACHE_NAME = 'bichayt-shop-v8'; // Updated version
 const ASSETS = [
   './',
   './index.html',
