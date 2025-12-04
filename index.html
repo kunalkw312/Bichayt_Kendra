@@ -85,7 +85,6 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div class="max-w-5xl mx-auto min-h-screen flex flex-col">
         
         <!-- HEADER -->
@@ -128,7 +127,6 @@
                 </div>
 
                 <div class="p-4 md:p-6">
-                    <!-- Customer & Dates -->
                     <div class="print-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div class="space-y-4 print-col">
                             <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-primary group-focus-within:text-primary transition-colors">Customer Name</label><input type="text" id="cust-name" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
@@ -151,7 +149,6 @@
                             <div class="absolute top-0 right-0 bg-blue-100 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl no-print">MANDAP AREA</div>
                             <div class="flex items-center gap-2 mb-3"><div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 no-print text-xs"><i class="fas fa-dungeon"></i></div><h3 class="font-bold text-gray-800 text-sm">Mandap / Tent</h3></div>
                             <div class="grid grid-cols-3 gap-3 items-end">
-                                <!-- Replaced value="0" with placeholder="0" -->
                                 <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 mb-1 block">Length (ft)</label><input type="number" id="mandap-l" placeholder="0" oninput="recalcGrandTotalsOnly()" class="w-full p-2 text-center text-base font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
                                 <div class="flex justify-center pb-3 text-gray-300 font-bold text-lg">×</div>
                                 <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 mb-1 block">Width (ft)</label><input type="number" id="mandap-w" placeholder="0" oninput="recalcGrandTotalsOnly()" class="w-full p-2 text-center text-base font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
@@ -243,7 +240,6 @@
 
         function recalcGrandTotalsOnly() {
             const globalDays = parseInt(document.getElementById('total-days').innerText) || 1;
-            // Use OR 0 for calculation to handle empty inputs
             const l = parseFloat(document.getElementById('mandap-l').value) || 0;
             const w = parseFloat(document.getElementById('mandap-w').value) || 0;
             let mandapTotal = 0;
@@ -287,8 +283,6 @@
                 const itemTotal = item.price * item.qty * item.days;
                 const tr = document.createElement('tr');
                 tr.className = 'group hover:bg-gray-50 transition-colors';
-                
-                // Logic to display empty string if value is 0
                 const priceVal = item.price === 0 ? '' : item.price;
                 const qtyVal = item.qty === 0 ? '' : item.qty;
                 const daysVal = item.days === 0 ? '' : item.days;
@@ -298,14 +292,7 @@
             });
             recalcGrandTotalsOnly();
         }
-        function handleRowInput(index, field, value) { 
-            // Save as number (0 if empty)
-            items[index][field] = parseFloat(value) || 0; 
-            const newRowTotal = items[index].price * items[index].qty * items[index].days; 
-            const span = document.getElementById(`item-total-${index}`); 
-            if(span) span.innerText = newRowTotal; 
-            recalcGrandTotalsOnly(); 
-        }
+        function handleRowInput(index, field, value) { items[index][field] = parseFloat(value) || 0; const newRowTotal = items[index].price * items[index].qty * items[index].days; const span = document.getElementById(`item-total-${index}`); if(span) span.innerText = newRowTotal; recalcGrandTotalsOnly(); }
         function addNewItem() { const name = document.getElementById('new-item-name').value; const price = document.getElementById('new-item-price').value; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; if (name && price) { items.push({ id: Date.now(), name, price: parseFloat(price), qty: 0, days: globalDays }); renderTableRows(); document.getElementById('new-item-name').value = ''; document.getElementById('new-item-price').value = ''; } }
         function deleteItem(index) { if(confirm('Remove?')) { items.splice(index, 1); renderTableRows(); } }
 
@@ -396,17 +383,79 @@
             try {
                 const response = await fetch(url);
                 const data = await response.json();
+                
+                // CLIENT SORT: NEWEST FIRST
                 data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
                 resultDiv.innerHTML = '';
                 if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-400 mt-12 py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200"><i class="far fa-folder-open text-4xl mb-2"></i><br>No records found</div>'; return; }
                 
+                const today = new Date();
+                today.setHours(0,0,0,0);
+
                 data.forEach(bill => {
                     if(bill.name.toLowerCase() === 'name') return;
                     const isPaid = bill.status === 'Paid';
                     const displayDate = new Date(bill.date).toLocaleDateString('en-GB');
                     const dataStr = encodeURIComponent(JSON.stringify(bill));
                     
-                    const html = `<div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group"><div class="absolute top-0 right-0 w-2 h-full ${isPaid ? 'bg-secondary' : 'bg-red-500'}"></div><div class="flex justify-between items-start mb-3 pr-4"><div><h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3><div class="flex items-center gap-2 text-gray-500 text-sm mt-1"><i class="fas fa-phone-alt text-xs"></i> ${bill.phone}</div><div class="flex items-center gap-2 text-gray-400 text-xs mt-1"><i class="far fa-clock"></i> ${displayDate}</div></div><div class="text-right"><div class="text-xl font-bold text-gray-900">₹ ${bill.total}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${isPaid ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} mt-1"><i class="fas ${isPaid ? 'fa-check-circle' : 'fa-clock'}"></i> ${bill.status}</span></div></div><div class="flex gap-2 pt-3 border-t border-gray-50"><button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-100 transition-colors"><i class="fas fa-pen"></i> Edit</button>${!isPaid ? `<button onclick="markAsPaid(${bill.rowIndex})" class="flex-1 py-2 bg-green-50 text-green-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-100 transition-colors"><i class="fas fa-check"></i> Paid</button>` : ''}<button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition-colors"><i class="fas fa-trash-alt"></i></button></div></div>`;
+                    // Logic for Status Colors
+                    const endDate = new Date(bill.endDate || bill.date);
+                    const isOngoing = !isPaid && endDate >= today;
+                    
+                    let cardClass, textClass, statusIcon, statusText;
+
+                    if (isPaid) {
+                        cardClass = "bg-green-50 border-green-200";
+                        textClass = "text-green-700";
+                        statusIcon = "fa-check-circle";
+                        statusText = "Paid";
+                    } else if (isOngoing) {
+                        cardClass = "bg-blue-50 border-blue-200";
+                        textClass = "text-blue-700";
+                        statusIcon = "fa-hourglass-half";
+                        statusText = "Ongoing";
+                    } else {
+                        cardClass = "bg-red-50 border-red-200";
+                        textClass = "text-red-700";
+                        statusIcon = "fa-exclamation-circle";
+                        statusText = "Pending";
+                    }
+
+                    const html = `
+                        <div class="${cardClass} p-5 rounded-2xl shadow-sm border hover:shadow-md transition-shadow relative overflow-hidden group">
+                            <div class="flex justify-between items-start mb-3 pr-4">
+                                <div>
+                                    <h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3>
+                                    <div class="flex items-center gap-2 text-gray-500 text-sm mt-1">
+                                        <i class="fas fa-phone text-xs transform flip-horizontal"></i> ${bill.phone}
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-400 text-xs mt-1">
+                                        <i class="far fa-clock"></i> ${displayDate}
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-gray-900">₹ ${bill.total}</div>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1">
+                                        <i class="fas ${statusIcon}"></i> ${statusText}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2 pt-3 border-t border-gray-200/50">
+                                <button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100">
+                                    <i class="fas fa-pen"></i> Edit
+                                </button>
+                                ${!isPaid ? `
+                                <button onclick="markAsPaid(${bill.rowIndex})" class="flex-1 py-2 bg-white text-green-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-50 transition-colors shadow-sm border border-gray-100">
+                                    <i class="fas fa-check"></i> Paid
+                                </button>` : ''}
+                                <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
                     resultDiv.insertAdjacentHTML('beforeend', html);
                 });
             } catch(e) { console.error(e); resultDiv.innerHTML = '<div class="text-center text-red-400 mt-10">Error loading data.</div>'; }
@@ -422,8 +471,7 @@
             try { document.getElementById('start-date').value = new Date(data.startDate).toISOString().split('T')[0]; document.getElementById('end-date').value = new Date(data.endDate).toISOString().split('T')[0]; } catch(e) {}
             calcDays();
             items.forEach(i => { i.qty = 0; i.days = 1; });
-            document.getElementById('mandap-l').value = ''; // Blank instead of 0
-            document.getElementById('mandap-w').value = ''; 
+            document.getElementById('mandap-l').value = ''; document.getElementById('mandap-w').value = '';
             const lines = data.details.split('\n');
             lines.forEach(line => {
                 if (line.includes('MANDAP:')) { const match = line.match(/(\d+)x(\d+)ft/); if(match) { document.getElementById('mandap-l').value = match[1]; document.getElementById('mandap-w').value = match[2]; } }
@@ -445,7 +493,9 @@
             try { await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'mark_paid', row: rowIndex }) }); showToast("Paid!", "success"); setTimeout(() => fetchRecent(), 1000); } catch(e) { showToast("Update failed", "error"); }
         }
 
-        function exitEditMode() { editingRowIndex = null; document.getElementById('save-btn-text').innerText = "Print & Save Bill"; document.getElementById('edit-mode-bar').classList.add('hidden'); document.getElementById('cust-name').value = ""; document.getElementById('cust-phone').value = ""; items.forEach(i => { i.qty = 0; i.days = 1; }); document.getElementById('mandap-l').value = ''; document.getElementById('mandap-w').value = ''; renderTableRows(); showToast("Edit cancelled", "info"); }
+        function exitEditMode() { editingRowIndex = null; document.getElementById('save-btn-text').innerText = "Print & Save Bill"; document.getElementById('edit-mode-bar').classList.add('hidden'); document.getElementById('cust-name').value = ""; document.getElementById('cust-phone').value = ""; items.forEach(i => { i.qty = 0; i.days = 1; }); renderTableRows(); showToast("Edit cancelled", "info"); }
     </script>
 </body>
 </html>
+
+
