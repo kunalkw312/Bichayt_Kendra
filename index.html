@@ -21,37 +21,20 @@
             body, html { background-color: white; margin: 0; padding: 0; font-size: 10pt; color: black; }
             .no-print, #tab-nav, #settings-modal, #toast, #btn-install, button { display: none !important; }
             #main-container { box-shadow: none !important; border: none !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            
-            /* Header */
             .bg-blue-600 { background: none !important; color: black !important; border-bottom: 2px solid black; padding: 0 0 10px 0 !important; margin-bottom: 10px !important; display: flex; justify-content: space-between; }
             .bg-blue-600 h1 { font-size: 20pt !important; font-weight: bold; }
-            
-            /* Compact Info Grid */
             .print-grid { display: flex; justify-content: space-between; margin-bottom: 10px; }
             .print-col { width: 48%; }
-            
-            /* Hide Card Styles */
             .bg-yellow-50, .bg-blue-50, .bg-gray-50 { background: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            
-            /* Inputs */
             input { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; }
-            
-            /* Date Section Compact */
             #date-section-print { display: block !important; font-size: 10pt; margin-top: 5px; border-top: 1px dashed #ccc; padding-top: 5px; }
             #date-section-web { display: none !important; }
-            
-            /* Table */
             table { width: 100% !important; border-collapse: collapse; margin-top: 5px; }
             th { border-bottom: 2px solid black; padding: 2px; text-align: left; font-size: 9pt; }
             td { border-bottom: 1px solid #ddd; padding: 3px 2px; font-size: 10pt; }
-            
-            /* Totals */
             .totals-area { display: flex; justify-content: flex-end; margin-top: 10px; border-top: 1px solid black; padding-top: 5px; }
             .totals-box { width: 40%; }
-            
-            /* Footer */
             .print-footer { margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; }
-            
             .col-item { width: 45%; } .col-rate { width: 15%; text-align: center; } 
             .col-qty { width: 10%; text-align: center; } .col-days { width: 10%; text-align: center; } 
             .col-total { width: 20%; text-align: right; }
@@ -63,20 +46,14 @@
 </head>
 <body>
 
-    <!-- TOAST -->
-    <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-2xl text-white font-bold hidden transition-all duration-300 z-[100] no-print flex items-center gap-3 min-w-[300px] justify-center">
-        <i id="toast-icon" class="text-xl"></i><span id="toast-message" class="text-sm"></span>
-    </div>
+    <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-2xl text-white font-bold hidden transition-all duration-300 z-[100] no-print flex items-center gap-3 min-w-[300px] justify-center"><i id="toast-icon" class="text-xl"></i><span id="toast-message" class="text-sm"></span></div>
 
     <!-- SETTINGS -->
     <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print px-4">
         <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md mx-auto">
             <h2 class="text-xl font-bold mb-4">Settings</h2>
             <input type="text" id="script-url" class="w-full p-3 border rounded mb-4" placeholder="Script URL...">
-            <div class="flex justify-end gap-2">
-                <button onclick="toggleSettings()" class="px-4 py-2 text-gray-600">Cancel</button>
-                <button onclick="saveSettings()" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
-            </div>
+            <div class="flex justify-end gap-2"><button onclick="toggleSettings()" class="px-4 py-2 text-gray-600">Cancel</button><button onclick="saveSettings()" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button></div>
         </div>
     </div>
 
@@ -84,40 +61,30 @@
         
         <!-- HEADER -->
         <div class="max-w-4xl w-full mx-auto mb-4 flex justify-between items-center no-print px-1">
-            <h1 class="text-xl font-bold text-gray-800 flex items-center">
-                <i class="fas fa-store text-blue-600 mr-2"></i>
-                <span class="hidden sm:inline">Bichayt Kendra</span>
-                <span class="sm:hidden">Bichayt</span>
-            </h1>
-            <div class="flex gap-2">
-                <button id="btn-install" class="hidden text-blue-600 font-bold text-xs bg-blue-50 px-3 py-1 rounded-full"><i class="fas fa-download mr-1"></i> App</button>
-                <button onclick="toggleSettings()" class="text-gray-500 p-2"><i class="fas fa-cog text-xl"></i></button>
-            </div>
+            <h1 class="text-xl font-bold text-gray-800 flex items-center"><i class="fas fa-store text-blue-600 mr-2"></i><span class="hidden sm:inline">Bichayt Kendra</span><span class="sm:hidden">Bichayt</span></h1>
+            <div class="flex gap-2"><button id="btn-install" class="hidden text-blue-600 font-bold text-xs bg-blue-50 px-3 py-1 rounded-full"><i class="fas fa-download mr-1"></i> App</button><button onclick="toggleSettings()" class="text-gray-500 p-2"><i class="fas fa-cog text-xl"></i></button></div>
         </div>
 
-        <!-- TABS (Fixed Active State Logic) -->
+        <!-- TABS (FIXED COLORS) -->
         <div id="tab-nav" class="max-w-4xl w-full mx-auto mb-4 flex gap-2 no-print">
-            <button onclick="switchTab('new')" id="tab-new" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold shadow text-sm">New Bill</button>
-            <button onclick="switchTab('search')" id="tab-search" class="flex-1 py-3 bg-white text-gray-600 rounded-lg font-bold shadow hover:bg-gray-50 text-sm">Search Bills</button>
+            <button onclick="switchTab('new')" id="tab-new" class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold shadow text-sm transition-colors duration-200">New Bill</button>
+            <button onclick="switchTab('search')" id="tab-search" class="flex-1 py-3 bg-white text-gray-600 rounded-lg font-bold shadow text-sm transition-colors duration-200 hover:bg-gray-100">Search Bills</button>
         </div>
 
-        <!-- === NEW BILL SECTION === -->
+        <!-- NEW BILL -->
         <div id="view-new-bill">
             <div id="main-container" class="max-w-4xl w-full mx-auto bg-white shadow-xl rounded-xl overflow-hidden print-border relative bg-white flex-grow">
-                
                 <div class="bg-blue-600 p-6 text-white flex justify-between items-start">
                     <div><h1 class="text-2xl font-bold uppercase tracking-wider">Invoice</h1><p class="text-sm opacity-90 mt-1">Bichayt Kendra & Events</p></div>
                     <div class="text-right"><div class="text-sm font-mono opacity-90" id="current-date">...</div><div class="text-xs font-mono opacity-70 mt-1 hidden print:block" id="bill-mode-label"></div></div>
                 </div>
 
                 <div class="p-4 md:p-8">
-                    
                     <div class="print-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div class="space-y-4 print-col">
                             <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Customer Name</label><input type="text" id="cust-name" class="w-full text-base font-medium border-b-2 border-gray-200 focus:border-blue-500 outline-none py-1"></div>
                             <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Phone Number</label><input type="number" id="cust-phone" class="w-full text-base font-medium border-b-2 border-gray-200 focus:border-blue-500 outline-none py-1"></div>
                         </div>
-                        
                         <div id="date-section-web" class="bg-yellow-50 p-4 rounded-lg border border-yellow-100 print-col">
                             <label class="block text-xs font-bold text-yellow-800 uppercase mb-2">Duration</label>
                             <div class="flex flex-col sm:flex-row gap-3 mb-2">
@@ -126,12 +93,7 @@
                             </div>
                             <div class="text-right border-t border-yellow-200 pt-2"><span class="text-sm text-gray-600">Total Days:</span><span class="text-lg font-bold text-yellow-900 ml-1"><span id="total-days">1</span></span></div>
                         </div>
-
-                        <div id="date-section-print" class="print-col">
-                            <div class="font-bold uppercase text-xs mb-1">Duration (<span id="print-total-days">1</span> Days)</div>
-                            <div>From: <span id="print-start-date">...</span></div>
-                            <div>To: &nbsp;&nbsp;&nbsp;&nbsp;<span id="print-end-date">...</span></div>
-                        </div>
+                        <div id="date-section-print" class="print-col"><div class="font-bold uppercase text-xs mb-1">Duration (<span id="print-total-days">1</span> Days)</div><div>From: <span id="print-start-date">...</span></div><div>To: &nbsp;&nbsp;&nbsp;&nbsp;<span id="print-end-date">...</span></div></div>
                     </div>
 
                     <div class="bg-blue-50 rounded-lg p-4 mb-6 border border-blue-100">
@@ -144,30 +106,24 @@
                         <div class="mt-2 flex justify-between items-center border-t border-blue-200 pt-2"><div class="text-sm text-blue-700"><div id="mandap-details">Size: 0x0</div></div><div class="text-xl font-bold text-blue-900">₹ <span id="mandap-price">0</span></div></div>
                     </div>
 
-                    <!-- ITEMS LIST (Tight Padding Update) -->
                     <div class="mb-4">
                         <h3 class="font-bold text-gray-800 mb-2 text-sm uppercase">Items</h3>
                         <div class="overflow-x-auto border rounded-lg border-gray-100">
                             <table class="w-full min-w-[600px]">
                                 <thead class="bg-gray-50 border-b">
-                                    <tr class="text-sm text-gray-500">
-                                        <th class="p-2 text-left w-[40%] col-item">Item Name</th>
-                                        <th class="p-1 text-center w-[15%] col-rate">Rate</th>
-                                        <th class="p-1 text-center w-[10%] col-qty">Qty</th>
-                                        <th class="p-1 text-center w-[10%] bg-yellow-50/50 col-days">Days</th>
-                                        <th class="p-2 text-right w-[25%] col-total">Total</th>
+                                    <tr class="text-xs text-gray-500">
+                                        <th class="p-2 text-left col-item">Item Name</th>
+                                        <th class="p-1 text-center col-rate">Rate</th>
+                                        <th class="p-1 text-center col-qty">Qty</th>
+                                        <th class="p-1 text-center bg-yellow-50/50 col-days">Days</th>
+                                        <th class="p-2 text-right col-total">Total</th>
                                         <th class="p-1 w-8 no-print"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="items-list"></tbody>
                             </table>
                         </div>
-                        
-                        <div class="mt-2 flex gap-2 no-print bg-gray-50 p-2 rounded-lg border border-dashed border-gray-300 items-center">
-                            <input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 p-1 border rounded text-sm">
-                            <input type="number" id="new-item-price" placeholder="Rate" class="w-20 p-1 border rounded text-sm">
-                            <button onclick="addNewItem()" class="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-green-700 shadow-md flex-shrink-0"><i class="fas fa-plus"></i></button>
-                        </div>
+                        <div class="mt-2 flex gap-2 no-print bg-gray-50 p-2 rounded-lg border border-dashed border-gray-300 items-center"><input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 p-1 border rounded text-sm"><input type="number" id="new-item-price" placeholder="Rate" class="w-20 p-1 border rounded text-sm"><button onclick="addNewItem()" class="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-green-700 shadow-md flex-shrink-0"><i class="fas fa-plus"></i></button></div>
                     </div>
 
                     <div class="totals-area">
@@ -179,10 +135,7 @@
                         </div>
                     </div>
 
-                    <div class="print-footer mt-8 text-center hidden print:block">
-                        <p class="text-xs text-gray-500 mb-8 italic">Thank you for your business!</p>
-                        <div class="flex justify-between px-8"><div class="border-t border-black w-32 pt-1 text-[10px] font-bold uppercase">Customer Sign</div><div class="border-t border-black w-32 pt-1 text-[10px] font-bold uppercase">Shop Owner Sign</div></div>
-                    </div>
+                    <div class="print-footer mt-8 text-center hidden print:block"><p class="text-xs text-gray-500 mb-8 italic">Thank you for your business!</p><div class="flex justify-between px-8"><div class="border-t border-black w-32 pt-1 text-[10px] font-bold uppercase">Customer Sign</div><div class="border-t border-black w-32 pt-1 text-[10px] font-bold uppercase">Shop Owner Sign</div></div></div>
                 </div>
             </div>
 
@@ -204,16 +157,13 @@
     </div>
 
     <script>
-        // ==========================================
-        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUlGK-r1F_fVPRQve-ovgY2FvEvCvPmTK_0yuhdeRHAMj1BTpPuVrZi22GDhDBEa49/exec"; 
-        // ==========================================
-
+        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ14-M9lOkqhK-cMHVELFMqfFBtFZIVwgmpnROliFNKYz0iUnxeOLf2kS0cxkVa0XR/exec"; 
         const STANDARD_RATE = 1500;
         const STANDARD_AREA = 15 * 15; 
+        
         let items = [ { id: 1, name: 'Mattress (Gadda)', price: 50, qty: 0, days: 1 }, { id: 2, name: 'Pillow', price: 20, qty: 0, days: 1 }, { id: 3, name: 'Bedsheet', price: 30, qty: 0, days: 1 }, { id: 4, name: 'Plastic Chair', price: 10, qty: 0, days: 1 } ];
         let editingRowIndex = null;
 
-        // PWA Setup
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('btn-install').classList.remove('hidden'); });
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
@@ -231,7 +181,7 @@
             renderTableRows(); 
         };
 
-        // --- TAB LOGIC (Fixed) ---
+        // --- FIXED TAB SWITCHING ---
         function switchTab(tab) {
             const newView = document.getElementById('view-new-bill');
             const searchView = document.getElementById('view-search');
@@ -241,94 +191,33 @@
             if(tab === 'new') {
                 newView.classList.remove('hidden');
                 searchView.classList.add('hidden');
-                // Set Active Style for New
+                
+                // Style Active (New)
                 tabNew.classList.remove('bg-white', 'text-gray-600');
                 tabNew.classList.add('bg-blue-600', 'text-white');
-                // Set Inactive Style for Search
+                
+                // Style Inactive (Search)
                 tabSearch.classList.remove('bg-blue-600', 'text-white');
                 tabSearch.classList.add('bg-white', 'text-gray-600');
             } else {
                 newView.classList.add('hidden');
                 searchView.classList.remove('hidden');
-                // Set Active Style for Search
+                
+                // Style Active (Search)
                 tabSearch.classList.remove('bg-white', 'text-gray-600');
                 tabSearch.classList.add('bg-blue-600', 'text-white');
-                // Set Inactive Style for New
+                
+                // Style Inactive (New)
                 tabNew.classList.remove('bg-blue-600', 'text-white');
                 tabNew.classList.add('bg-white', 'text-gray-600');
+                
                 fetchRecent();
             }
         }
 
         function fetchRecent() { performSearch('recent'); }
 
-        async function editInvoice(rowIndex, dataStr) {
-            const data = JSON.parse(decodeURIComponent(dataStr));
-            editingRowIndex = rowIndex;
-            document.getElementById('save-btn-text').innerText = "Update Invoice";
-            document.getElementById('edit-mode-bar').classList.remove('hidden');
-            document.getElementById('bill-mode-label').innerText = "EDIT MODE: Row " + rowIndex;
-            
-            document.getElementById('cust-name').value = data.name;
-            document.getElementById('cust-phone').value = data.phone;
-            try {
-                document.getElementById('start-date').value = new Date(data.startDate).toISOString().split('T')[0];
-                document.getElementById('end-date').value = new Date(data.endDate).toISOString().split('T')[0];
-            } catch(e) {}
-            
-            calcDays();
-            
-            items.forEach(i => { i.qty = 0; i.days = 1; });
-            document.getElementById('mandap-l').value = 0;
-            document.getElementById('mandap-w').value = 0;
-
-            const lines = data.details.split('\n');
-            lines.forEach(line => {
-                if (line.includes('MANDAP:')) {
-                    const match = line.match(/(\d+)x(\d+)ft/);
-                    if(match) { document.getElementById('mandap-l').value = match[1]; document.getElementById('mandap-w').value = match[2]; }
-                } else {
-                    const parts = line.split(':');
-                    if(parts.length > 1) {
-                        const name = parts[0].trim();
-                        const nums = parts[1].match(/(\d+)pcs x (\d+)days/);
-                        if(nums) {
-                            const foundItem = items.find(i => i.name === name);
-                            if(foundItem) { foundItem.qty = parseInt(nums[1]); foundItem.days = parseInt(nums[2]); }
-                            else { items.push({ id: Date.now(), name: name, price: 0, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); }
-                        }
-                    }
-                }
-            });
-
-            switchTab('new');
-            renderTableRows();
-            showToast("Invoice Loaded", "success");
-        }
-
-        async function deleteInvoice(rowIndex) {
-            if(!confirm("Delete this invoice?")) return;
-            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
-            try {
-                await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', row: rowIndex }) });
-                showToast("Deleted!", "success");
-                setTimeout(() => fetchRecent(), 1500);
-            } catch(e) { showToast("Error deleting", "error"); }
-        }
-
-        function exitEditMode() {
-            editingRowIndex = null;
-            document.getElementById('save-btn-text').innerText = "Print & Save Bill";
-            document.getElementById('edit-mode-bar').classList.add('hidden');
-            document.getElementById('bill-mode-label').innerText = "";
-            document.getElementById('cust-name').value = "";
-            document.getElementById('cust-phone').value = "";
-            items.forEach(i => { i.qty = 0; i.days = 1; });
-            renderTableRows();
-            showToast("Edit Cancelled", "success");
-        }
-
-        // --- CALCULATION & RENDERING ---
+        // --- MATH & RENDER ---
         function calcDays() {
             const startStr = document.getElementById('start-date').value;
             const endStr = document.getElementById('end-date').value;
@@ -343,14 +232,12 @@
                 renderTableRows();
             }
         }
-        
         function updatePrintDates() {
             const s = new Date(document.getElementById('start-date').value);
             const e = new Date(document.getElementById('end-date').value);
             document.getElementById('print-start-date').innerText = s.toLocaleDateString('en-GB');
             document.getElementById('print-end-date').innerText = e.toLocaleDateString('en-GB');
         }
-
         function recalcGrandTotalsOnly() {
             const globalDays = parseInt(document.getElementById('total-days').innerText) || 1;
             const l = parseFloat(document.getElementById('mandap-l').value) || 0;
@@ -372,7 +259,6 @@
             document.getElementById('sgst-amt').innerText = sgstAmt;
             document.getElementById('final-total').innerText = subtotal + cgstAmt + sgstAmt;
         }
-
         function renderTableRows() {
             const tbody = document.getElementById('items-list');
             tbody.innerHTML = '';
@@ -385,13 +271,66 @@
             });
             recalcGrandTotalsOnly();
         }
-
         function handleRowInput(index, field, value) { items[index][field] = parseFloat(value) || 0; const newRowTotal = items[index].price * items[index].qty * items[index].days; const span = document.getElementById(`item-total-${index}`); if(span) span.innerText = newRowTotal; recalcGrandTotalsOnly(); }
         function addNewItem() { const name = document.getElementById('new-item-name').value; const price = document.getElementById('new-item-price').value; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; if (name && price) { items.push({ id: Date.now(), name, price: parseFloat(price), qty: 0, days: globalDays }); renderTableRows(); document.getElementById('new-item-name').value = ''; document.getElementById('new-item-price').value = ''; } }
         function deleteItem(index) { if(confirm('Remove?')) { items.splice(index, 1); renderTableRows(); } }
-        function toggleSettings() { const m = document.getElementById('settings-modal'); m.classList.toggle('hidden'); m.classList.toggle('flex'); }
-        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); toggleSettings(); showToast("Settings Saved!", "success"); }
-        function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-2xl text-white font-bold transition-all duration-300 z-[100] no-print flex items-center gap-3 min-w-[300px] justify-center " + (type === 'success' ? 'bg-green-600' : 'bg-red-600'); i.className = type === 'success' ? "fas fa-check-circle" : "fas fa-exclamation-triangle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
+        
+        // --- API & SEARCH ---
+        async function performSearch(type = 'search') {
+            const query = document.getElementById('search-query').value;
+            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
+            const resultDiv = document.getElementById('search-results');
+            
+            if(!scriptUrl) { alert("Please set URL"); return; }
+            if(type === 'search' && !query) { alert("Enter text"); return; }
+            
+            resultDiv.innerHTML = '<div class="text-center mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i><br>Loading...</div>';
+            
+            let url = `${scriptUrl}?q=${encodeURIComponent(query)}`;
+            if(type === 'recent') url = `${scriptUrl}?type=recent`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                resultDiv.innerHTML = '';
+                if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-500">No results found</div>'; return; }
+                
+                data.forEach(bill => {
+                    const isPaid = bill.status === 'Paid';
+                    const displayDate = new Date(bill.date).toLocaleString('en-GB');
+                    const dataStr = encodeURIComponent(JSON.stringify(bill));
+                    
+                    const html = `<div class="bg-white p-4 rounded-lg shadow border border-gray-100 flex flex-col gap-3 relative"><div class="flex justify-between items-start"><div><h3 class="font-bold text-lg">${bill.name}</h3><p class="text-gray-600 text-sm">${bill.phone}</p><p class="text-xs text-gray-400 mt-1">${displayDate}</p></div><div class="text-right"><div class="text-xl font-bold">₹ ${bill.total}</div><span class="inline-block px-2 py-1 rounded text-xs font-bold ${isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} mt-1">${bill.status}</span></div></div><div class="flex gap-2 border-t pt-3 mt-1"><button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-pencil-alt"></i> Edit</button>${!isPaid ? `<button onclick="markAsPaid(${bill.rowIndex})" class="flex-1 py-2 bg-green-50 text-green-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-check"></i> Paid</button>` : ''}<button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-red-50 text-red-500 rounded"><i class="fas fa-trash"></i></button></div></div>`;
+                    resultDiv.insertAdjacentHTML('beforeend', html);
+                });
+            } catch(e) { console.error(e); resultDiv.innerHTML = 'Error loading.'; }
+        }
+
+        async function editInvoice(rowIndex, dataStr) {
+            const data = JSON.parse(decodeURIComponent(dataStr));
+            editingRowIndex = rowIndex;
+            document.getElementById('save-btn-text').innerText = "Update Invoice";
+            document.getElementById('edit-mode-bar').classList.remove('hidden');
+            document.getElementById('bill-mode-label').innerText = "EDIT MODE: Row " + rowIndex;
+            document.getElementById('cust-name').value = data.name;
+            document.getElementById('cust-phone').value = data.phone;
+            try { document.getElementById('start-date').value = new Date(data.startDate).toISOString().split('T')[0]; document.getElementById('end-date').value = new Date(data.endDate).toISOString().split('T')[0]; } catch(e) {}
+            calcDays();
+            items.forEach(i => { i.qty = 0; i.days = 1; });
+            document.getElementById('mandap-l').value = 0; document.getElementById('mandap-w').value = 0;
+            const lines = data.details.split('\n');
+            lines.forEach(line => {
+                if (line.includes('MANDAP:')) { const match = line.match(/(\d+)x(\d+)ft/); if(match) { document.getElementById('mandap-l').value = match[1]; document.getElementById('mandap-w').value = match[2]; } }
+                else { const parts = line.split(':'); if(parts.length > 1) { const name = parts[0].trim(); const nums = parts[1].match(/(\d+)pcs x (\d+)days/); if(nums) { const foundItem = items.find(i => i.name === name); if(foundItem) { foundItem.qty = parseInt(nums[1]); foundItem.days = parseInt(nums[2]); } else { items.push({ id: Date.now(), name: name, price: 0, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); } } } }
+            });
+            switchTab('new'); renderTableRows(); showToast("Invoice Loaded", "success");
+        }
+
+        async function deleteInvoice(rowIndex) {
+            if(!confirm("Delete this invoice?")) return;
+            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
+            try { await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', row: rowIndex }) }); showToast("Deleted!", "success"); setTimeout(() => fetchRecent(), 1500); } catch(e) { showToast("Error deleting", "error"); }
+        }
 
         async function printAndSave() {
             const custName = document.getElementById('cust-name').value;
@@ -405,74 +344,15 @@
             if (scriptUrl) {
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
                 setTimeout(triggerPrint, 1500); 
-                
                 let detailsArray = [];
                 const mandapPriceVal = parseFloat(document.getElementById('mandap-price').innerText);
-                if (mandapPriceVal > 0) {
-                    const l = document.getElementById('mandap-l').value;
-                    const w = document.getElementById('mandap-w').value;
-                    detailsArray.push(`MANDAP: ${l}x${w}ft (Rs ${mandapPriceVal})`);
-                }
+                if (mandapPriceVal > 0) { const l = document.getElementById('mandap-l').value; const w = document.getElementById('mandap-w').value; detailsArray.push(`MANDAP: ${l}x${w}ft (Rs ${mandapPriceVal})`); }
                 items.forEach(i => { if(i.qty > 0) { detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}days`); } });
                 const finalDetailsString = detailsArray.join('\n');
-
-                const payload = {
-                    action: editingRowIndex ? 'edit' : 'create',
-                    row: editingRowIndex,
-                    name: custName, phone: document.getElementById('cust-phone').value,
-                    startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value,
-                    days: document.getElementById('total-days').innerText, 
-                    details: finalDetailsString,
-                    subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText,
-                    sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText
-                };
+                const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText };
                 try { await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showToast(editingRowIndex ? "Updated!" : "Saved!", "success"); triggerPrint(); if(editingRowIndex) exitEditMode(); } 
                 catch (error) { console.error(error); showToast("Network Error!", "error"); triggerPrint(); }
             } else { showToast("No Script URL!", "error"); triggerPrint(); }
-        }
-
-        async function performSearch(type = 'search') {
-            const query = document.getElementById('search-query').value;
-            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
-            const resultDiv = document.getElementById('search-results');
-            const btn = document.getElementById('btn-search');
-            
-            if(!scriptUrl) { alert("Please set URL in settings"); return; }
-            if(type === 'search' && !query) { alert("Enter text"); return; }
-            
-            resultDiv.innerHTML = '<div class="text-center mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i><br>Loading...</div>';
-            
-            let url = `${scriptUrl}?q=${encodeURIComponent(query)}`;
-            if(type === 'recent') url = `${scriptUrl}?type=recent`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                resultDiv.innerHTML = '';
-                if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-500">No results found</div>'; return; }
-                
-                data.forEach(bill => {
-                    const isPaid = bill.status === 'Paid';
-                    const displayDate = new Date(bill.date).toLocaleString('en-GB');
-                    const dataStr = encodeURIComponent(JSON.stringify(bill));
-                    
-                    const html = `
-                        <div class="bg-white p-4 rounded-lg shadow border border-gray-100 flex flex-col gap-3 relative">
-                            <div class="flex justify-between items-start">
-                                <div><h3 class="font-bold text-lg">${bill.name}</h3><p class="text-gray-600 text-sm">${bill.phone}</p><p class="text-xs text-gray-400 mt-1">${displayDate}</p></div>
-                                <div class="text-right"><div class="text-xl font-bold">₹ ${bill.total}</div><span class="inline-block px-2 py-1 rounded text-xs font-bold ${isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} mt-1">${bill.status}</span></div>
-                            </div>
-                            <div class="flex gap-2 border-t pt-3 mt-1">
-                                <button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-pencil-alt"></i> Edit</button>
-                                ${!isPaid ? `<button onclick="markAsPaid(${bill.rowIndex})" class="flex-1 py-2 bg-green-50 text-green-600 rounded text-sm font-bold flex items-center justify-center gap-2"><i class="fas fa-check"></i> Paid</button>` : ''}
-                                <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-red-50 text-red-500 rounded"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    `;
-                    resultDiv.insertAdjacentHTML('beforeend', html);
-                });
-            } catch(e) { console.error(e); resultDiv.innerHTML = 'Error loading.'; }
         }
         
         async function markAsPaid(rowIndex) {
@@ -480,6 +360,10 @@
             const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL;
             try { await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'mark_paid', row: rowIndex }) }); showToast("Paid!", "success"); setTimeout(() => fetchRecent(), 1000); } catch(e) { showToast("Error", "error"); }
         }
+        function exitEditMode() { editingRowIndex = null; document.getElementById('save-btn-text').innerText = "Print & Save Bill"; document.getElementById('edit-mode-bar').classList.add('hidden'); document.getElementById('bill-mode-label').innerText = ""; document.getElementById('cust-name').value = ""; document.getElementById('cust-phone').value = ""; items.forEach(i => { i.qty = 0; i.days = 1; }); renderTableRows(); showToast("Edit Cancelled", "success"); }
+        function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-2xl text-white font-bold transition-all duration-300 z-[100] no-print flex items-center gap-3 min-w-[300px] justify-center " + (type === 'success' ? 'bg-green-600' : 'bg-red-600'); i.className = type === 'success' ? "fas fa-check-circle" : "fas fa-exclamation-triangle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
+        function toggleSettings() { const m = document.getElementById('settings-modal'); m.classList.toggle('hidden'); m.classList.toggle('flex'); }
+        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); toggleSettings(); showToast("Settings Saved!", "success"); }
     </script>
 </body>
 </html>
