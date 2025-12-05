@@ -74,8 +74,8 @@
         <i id="toast-icon" class="fas fa-info-circle text-lg"></i><span id="toast-message" class="font-medium">Notification</span>
     </div>
 
-    <!-- SETTINGS MODAL -->
-    <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
+    <!-- SETTINGS MODAL (Correctly Centered) -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-opacity duration-300 no-print flex">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-slide-up flex flex-col max-h-[90vh]">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                 <h3 class="font-bold text-gray-800 text-lg">⚙️ App Settings</h3>
@@ -110,7 +110,7 @@
     </div>
 
     <!-- PAYMENT MODAL -->
-    <div id="payment-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
+    <div id="payment-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-opacity duration-300 no-print flex">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-pop-in">
             <div class="p-6 text-center">
                 <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-rupee-sign text-green-600 text-xl"></i></div>
@@ -124,7 +124,6 @@
 
     <!-- MAIN APP -->
     <div class="max-w-5xl mx-auto min-h-screen flex flex-col">
-        
         <!-- HEADER -->
         <div class="px-4 py-5 flex justify-between items-center no-print">
             <div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg"><i class="fas fa-campground"></i></div><div><h1 class="text-lg font-bold text-gray-900 leading-tight">Bichayt Kendra</h1><p class="text-xs text-gray-500 font-medium">Management System</p></div></div>
@@ -143,22 +142,18 @@
         <!-- === VIEW: NEW BILL === -->
         <div id="view-new-bill" class="flex-grow flex flex-col px-4 pb-24 animate-fade-in">
             <div id="main-container" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
-                
-                <!-- VISUAL HEADER -->
                 <div class="bg-gradient-to-r from-primary to-purple-700 p-6 text-white no-print">
                     <div class="flex justify-between items-start"><div><h2 class="text-2xl font-bold tracking-tight">Invoice</h2><p class="text-white/80 text-sm mt-0.5">Bichayt Kendra & Events</p><p class="text-white/60 text-xs mt-1 font-mono uppercase" id="screen-gstin-display"></p></div><div class="text-right bg-white/10 px-3 py-1 rounded-lg backdrop-blur-sm border border-white/20"><div class="text-xs text-white/70 uppercase font-bold tracking-wider">Date</div><div class="text-sm font-mono font-bold" id="current-date">...</div></div></div>
                     <div id="edit-mode-bar" class="hidden mt-4 bg-yellow-400/20 border border-yellow-400/50 rounded-lg p-2 flex justify-between items-center"><span class="text-xs font-bold text-yellow-200 flex items-center gap-2"><i class="fas fa-edit"></i> Editing Old Bill</span><button onclick="exitEditMode()" class="text-xs bg-white text-yellow-700 px-2 py-1 rounded font-bold hover:bg-yellow-50">Cancel</button></div>
                 </div>
 
-                <!-- PRINT HEADER -->
                 <div class="print-header show-print"><div><div class="print-title">Invoice</div><div>Bichayt Kendra & Events</div><div class="gstin-display" id="print-gstin-display"></div></div><div class="print-meta">Date: <span id="print-date-text"></span><br>ID: <span id="print-id-text">...</span></div></div>
 
                 <div class="p-4 md:p-6">
-                    <!-- Customer & Dates -->
                     <div class="print-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div class="space-y-4 print-col">
-                            <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-primary">Customer Name</label><input type="text" id="cust-name" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
-                            <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-gray-500">Phone Number</label><input type="number" id="cust-phone" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
+                            <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-primary group-focus-within:text-primary transition-colors">Customer Name</label><input type="text" id="cust-name" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
+                            <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-gray-500 group-focus-within:text-primary transition-colors">Phone Number</label><input type="number" id="cust-phone" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
                         </div>
                         <div class="print-col bg-yellow-50/50 p-4 rounded-xl border border-yellow-100 hide-print">
                             <div class="flex justify-between items-center mb-3"><label class="text-xs font-bold text-yellow-700 uppercase tracking-wider">Function Dates</label><span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Global</span></div>
@@ -168,14 +163,10 @@
                         <div class="show-print print-col"><strong>Duration:</strong> <span id="print-total-days">1</span> Days<br>From: <span id="print-start-date"></span><br>To: &nbsp;&nbsp;&nbsp;&nbsp;<span id="print-end-date"></span></div>
                     </div>
 
-                    <!-- Mandap -->
                     <div id="mandap-section" class="mb-6">
                         <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100 relative overflow-hidden">
                             <div class="absolute top-0 right-0 bg-blue-100 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl no-print">MANDAP</div>
-                            <!-- Centered Pipe Display -->
-                            <div class="flex flex-col items-center justify-center mb-4 no-print bg-white/50 p-2 rounded-lg border border-blue-100">
-                                <div class="flex gap-4 text-xs font-bold text-gray-600"><div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-200"><span class="text-gray-400">Vertical (उभा):</span><span id="pipe-v" class="text-blue-600 text-sm">0</span></div><div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-200"><span class="text-gray-400">Horizontal (आडवा):</span><span id="pipe-h" class="text-blue-600 text-sm">0</span></div></div>
-                            </div>
+                            <div class="flex flex-col items-center justify-center mb-4 no-print bg-white/50 p-2 rounded-lg border border-blue-100"><div class="flex gap-4 text-xs font-bold text-gray-600"><div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-200"><span class="text-gray-400">Vertical (उभा):</span><span id="pipe-v" class="text-blue-600 text-sm">0</span></div><div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-200"><span class="text-gray-400">Horizontal (आडवा):</span><span id="pipe-h" class="text-blue-600 text-sm">0</span></div></div></div>
                             <h3 class="font-bold text-gray-800 text-sm mb-3 show-print">Mandap / Tent</h3>
                             <div class="grid grid-cols-3 gap-3 items-end">
                                 <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 mb-1 block">Length (ft)</label><input type="number" id="mandap-l" placeholder="0" step="15" min="0" onchange="snapToGrid(this)" oninput="autoCalcMandap()" class="w-full p-2 text-center text-base font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
@@ -186,16 +177,12 @@
                         </div>
                     </div>
 
-                    <!-- Items -->
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-2 no-print"><h3 class="font-bold text-gray-800 text-base">Items</h3><span class="text-[10px] text-gray-400">Scroll ></span></div>
-                        <div class="overflow-x-auto custom-scroll pb-2 border border-gray-100 rounded-xl">
-                            <table class="w-full min-w-full"><thead class="bg-gray-50 border-b border-gray-100"><tr class="text-[10px] md:text-xs font-bold text-gray-400 uppercase text-left"><th class="p-2 pl-3 w-[40%]">Item</th><th class="p-2 text-center w-[15%]">Rate</th><th class="p-2 text-center w-[10%]">Qty</th><th class="p-2 text-center w-[10%] bg-yellow-50/50 text-yellow-600">Days</th><th class="p-2 text-right pr-3 w-[20%]">Total</th><th class="p-2 w-[5%] no-print"></th></tr></thead><tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody></table>
-                        </div>
+                        <div class="overflow-x-auto custom-scroll pb-2 border border-gray-100 rounded-xl"><table class="w-full min-w-full"><thead class="bg-gray-50 border-b border-gray-100"><tr class="text-[10px] md:text-xs font-bold text-gray-400 uppercase text-left"><th class="p-2 pl-3 w-[40%]">Item</th><th class="p-2 text-center w-[15%]">Rate</th><th class="p-2 text-center w-[10%]">Qty</th><th class="p-2 text-center w-[10%] bg-yellow-50/50 text-yellow-600">Days</th><th class="p-2 text-right pr-3 w-[20%]">Total</th><th class="p-2 w-[5%] no-print"></th></tr></thead><tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody></table></div>
                         <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300"><input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20"><input type="number" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20"><button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-8 h-8 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95"><i class="fas fa-plus"></i></button></div>
                     </div>
 
-                    <!-- Totals -->
                     <div class="totals-section">
                         <div class="w-full md:w-2/3 ml-auto">
                             <div class="flex justify-between items-center mb-2 pb-2 border-b border-gray-100"><span class="text-gray-500 font-medium text-xs">Subtotal</span><span class="text-base font-bold text-gray-800">₹ <span id="subtotal">0</span></span></div>
@@ -233,11 +220,10 @@
         </div>
     </div>
 
-    <!-- FAB -->
     <div class="fixed bottom-6 left-0 right-0 px-4 flex justify-center no-print z-40" id="fab-container"><button onclick="printAndSave()" id="btn-print" class="w-full max-w-md bg-gray-900 text-white py-4 rounded-2xl shadow-2xl font-bold text-lg flex items-center justify-center gap-3 transform transition-all hover:scale-[1.02] active:scale-95 border border-gray-700"><i class="fas fa-print text-primary-400"></i> <span id="save-btn-text">Print & Save Bill</span></button></div>
 
     <script>
-        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVU52eeL6RlC_ycf8Ak7CKB2IWQdKXeCcIPchho2mCYwmuMMZYNjOkhe0_bg5AHevwcw/exec"; 
+        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqsytgDewuHtHTz3twZnKv5UR_04gw-wEiDB82If0CrzjrkbFDqN83mv7r3833y9X-RQ/exec"; 
         const DEFAULT_GSTIN = "24585435642"; 
         const STANDARD_RATE = 1500;
         const STANDARD_AREA = 15 * 15; 
@@ -261,12 +247,19 @@
             document.getElementById('setting-base-rate').value = br;
             let storedItems = localStorage.getItem('defaultItems');
             if(storedItems) { globalDefaults = JSON.parse(storedItems); }
+            
+            // Initially hide modals by default
+            document.getElementById('settings-modal').classList.add('hidden');
+            document.getElementById('payment-modal').classList.add('hidden');
+            
             initBillItems();
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start-date').value = today;
             document.getElementById('end-date').value = today;
             updatePrintDates(); renderTableRows();
             if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+            
+            fetchRecent();
         };
 
         function initBillItems() { items = globalDefaults.map(i => ({ ...i, qty: 0, days: 1 })); }
@@ -380,7 +373,19 @@
         }
 
         function fetchRecent() { performSearch('recent'); }
-        function toggleSettings() { const m = document.getElementById('settings-modal'); if(m.classList.contains('hidden')) { m.classList.remove('hidden'); m.classList.add('flex'); renderSettingsList(); } else { m.classList.add('hidden'); m.classList.remove('flex'); } }
+        
+        function toggleSettings() { 
+            const m = document.getElementById('settings-modal');
+            if(m.classList.contains('hidden')) { 
+                m.classList.remove('hidden'); 
+                m.classList.add('flex'); 
+                renderSettingsList(); 
+            } else { 
+                m.classList.add('hidden'); 
+                m.classList.remove('flex'); 
+            }
+        }
+
         function renderSettingsList() {
             const container = document.getElementById('settings-items-list'); container.innerHTML = '';
             globalDefaults.forEach((item, index) => {
@@ -393,8 +398,23 @@
         function addSettingsRow() { globalDefaults.push({ id: Date.now(), name: 'New Item', price: 0 }); renderSettingsList(); }
         function removeSettingsRow(i) { globalDefaults.splice(i, 1); renderSettingsList(); }
         function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); const gstin = document.getElementById('shop-gstin').value; localStorage.setItem('shopGstin', gstin); const br = document.getElementById('setting-base-rate').value; localStorage.setItem('mandapBaseRate', br); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(gstin); toggleSettings(); showToast("Settings Saved!", "success"); autoCalcMandap(); }
-        function openPaymentModal(row) { currentPaymentRow = row; document.getElementById('modal-payment-amount').value = ''; const m = document.getElementById('payment-modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.getElementById('modal-payment-amount').focus(); }
-        function closePaymentModal() { const m = document.getElementById('payment-modal'); m.classList.add('hidden'); m.classList.remove('flex'); currentPaymentRow = null; }
+        
+        function openPaymentModal(row) { 
+            currentPaymentRow = row; 
+            document.getElementById('modal-payment-amount').value = ''; 
+            const m = document.getElementById('payment-modal'); 
+            m.classList.remove('hidden'); 
+            m.classList.add('flex'); // Add flex to center
+            document.getElementById('modal-payment-amount').focus(); 
+        }
+        
+        function closePaymentModal() { 
+            const m = document.getElementById('payment-modal'); 
+            m.classList.add('hidden'); 
+            m.classList.remove('flex'); // Remove flex
+            currentPaymentRow = null; 
+        }
+        
         function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 transition-all duration-300 min-w-[280px] justify-center text-white font-medium " + (type === 'success' ? 'bg-secondary' : type === 'error' ? 'bg-red-500' : 'bg-gray-900'); i.className = type === 'success' ? "fas fa-check-circle" : type === 'error' ? "fas fa-exclamation-circle" : "fas fa-info-circle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
 
         async function printAndSave() {
@@ -440,13 +460,15 @@
                     if (isPaid) { cardClass = "bg-green-50 border-green-200"; textClass = "text-green-700"; statusIcon = "fa-check-circle"; statusText = "Paid"; } 
                     else if (isOngoing) { cardClass = "bg-blue-50 border-blue-200"; textClass = "text-blue-700"; statusIcon = "fa-hourglass-half"; statusText = "Ongoing"; } 
                     else { cardClass = "bg-red-50 border-red-200"; textClass = "text-red-700"; statusIcon = "fa-exclamation-circle"; statusText = "Pending"; }
+                    
+                    // UPDATED CARD LAYOUT (Balance on Right, Total removed from under it)
                     const html = `
                         <div class="${cardClass} p-5 rounded-2xl shadow-sm border hover:shadow-md transition-shadow relative overflow-hidden group">
                             <div class="flex justify-between items-start mb-3 pr-4">
                                 <div><h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3><a href="tel:${bill.phone}" class="flex items-center gap-2 text-gray-500 text-sm mt-1 hover:text-primary transition-colors"><i class="fas fa-phone text-xs transform flip-horizontal"></i> ${bill.phone}</a><div class="flex items-center gap-2 text-gray-400 text-xs mt-1"><i class="far fa-clock"></i> ${displayDate}</div></div>
                                 <div class="text-right"><div class="text-xl font-bold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">Bal: ₹ ${balance}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1"><i class="fas ${statusIcon}"></i> ${statusText}</span></div>
                             </div>
-                            <div class="mb-3 px-1 pt-2 border-t border-gray-200/50"><div class="flex justify-between text-xs text-gray-600 font-medium"><span><i class="fas fa-check-circle text-green-500 mr-1"></i> Paid: ₹${paid}</span><span><i class="fas fa-file-invoice-dollar text-gray-500 mr-1"></i> Total: ₹${total}</span></div></div>
+                            <div class="mb-3 px-1 pt-2 border-t border-gray-200/50"><div class="flex justify-between text-xs text-gray-600 font-medium"><span><i class="fas fa-check-circle text-green-500 mr-1"></i> Paid: ₹${paid}</span><span class="text-gray-400">Total Bill: ₹${total}</span></div></div>
                             <div class="flex gap-2 pt-2 border-t border-gray-200/50">
                                 <button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>
                                 ${!isPaid ? `<button onclick="openPaymentModal(${bill.rowIndex})" class="flex-1 py-2 bg-white text-green-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-plus"></i> Pay</button>` : ''}
