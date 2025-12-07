@@ -33,8 +33,8 @@
     </script>
 
     <style>
-        body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; touch-action: pan-y; }
-        .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
+        body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        .custom-scroll::-webkit-scrollbar { height: 4px; }
         .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
@@ -289,7 +289,18 @@
         <!-- === VIEW: SEARCH === -->
         <div id="view-search" class="flex-grow hidden px-4 pb-24 animate-fade-in w-full max-w-4xl mx-auto">
             <div class="bg-white p-2 rounded-2xl shadow-lg mb-6 sticky top-4 z-20 border border-gray-100">
-                <div class="relative"><i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i><input type="text" id="search-query" class="w-full pl-12 pr-24 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-700 text-sm" placeholder="Search name or phone..."><button onclick="performSearch()" id="btn-search" class="absolute right-1 top-1 bottom-1 bg-primary text-white px-5 rounded-lg font-bold shadow-md hover:bg-primaryDark transition-colors text-xs">Find</button></div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                            <input type="text" id="search-query" class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-700 text-sm" placeholder="Name or Phone...">
+                        </div>
+                        <input type="date" id="search-date" class="w-1/3 px-3 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 text-sm font-medium text-gray-600">
+                    </div>
+                    <button onclick="performSearch()" id="btn-search" class="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-md hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2">
+                        <i class="fas fa-filter"></i> Search Records
+                    </button>
+                </div>
             </div>
             <div id="search-results" class="space-y-4"><div class="flex flex-col items-center justify-center text-gray-300 mt-20"><i class="fas fa-receipt text-6xl mb-4 opacity-50"></i><p class="text-lg font-medium">Search for old bills</p></div></div>
         </div>
@@ -299,7 +310,7 @@
     <div class="fixed bottom-6 left-0 right-0 px-4 flex justify-center no-print z-40" id="fab-container"><button onclick="printAndSave()" id="btn-print" class="w-full max-w-md bg-gray-900 text-white py-4 rounded-2xl shadow-2xl font-bold text-lg flex items-center justify-center gap-3 transform transition-all hover:scale-[1.02] active:scale-95 border border-gray-700"><i class="fas fa-print text-primary-400"></i> <span id="save-btn-text">Print & Save Bill</span></button></div>
 
     <script>
-        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxB6IoTb56fF4tM9fGKfJHh-nuPQQedZiIMpxOio1YXp2VhqbCM5EhIYlrsbSjOgI4d6A/exec"; 
+        const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2LIxq0YA2x2Xn1RAJpAuPR6XtPrjDf8_MAWRnVK9sstSauTBm0LfP-swv3Vbqh9WX0g/exec"; 
         const DEFAULT_GSTIN = "24585435642"; 
         const STANDARD_RATE = 1500;
         const STANDARD_AREA = 15 * 15; 
@@ -515,11 +526,22 @@
         }
 
         async function performSearch(type = 'search') {
-            const query = document.getElementById('search-query').value; const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL; const resultDiv = document.getElementById('search-results');
+            const query = document.getElementById('search-query').value;
+            // NEW: Grab the date from the input
+            const dateVal = document.getElementById('search-date').value; 
+            const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL; 
+            const resultDiv = document.getElementById('search-results');
+            
             if(!scriptUrl) { showToast("Setup settings first", "error"); return; }
-            if(type === 'search' && !query) { showToast("Enter text", "error"); return; }
+            // Only require text if Date is NOT selected. If Date is selected, text is optional.
+            if(type === 'search' && !query && !dateVal) { showToast("Enter text or pick date", "error"); return; }
+            
             resultDiv.innerHTML = '<div class="text-center mt-12"><i class="fas fa-circle-notch fa-spin text-3xl text-primary mb-3"></i><p class="text-gray-500 font-medium">Fetching Records...</p></div>';
-            let url = `${scriptUrl}?q=${encodeURIComponent(query)}`; if(type === 'recent') url = `${scriptUrl}?type=recent`;
+            
+            // Construct URL with both text AND date parameters
+            let url = `${scriptUrl}?q=${encodeURIComponent(query)}&date=${dateVal}`; 
+            if(type === 'recent') url = `${scriptUrl}?type=recent&ts=${Date.now()}`; // Add timestamp to bust cache for Recent
+
             try {
                 const response = await fetch(url); const data = await response.json();
                 data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -542,7 +564,7 @@
                         <div class="${cardClass} p-5 rounded-2xl shadow-sm border hover:shadow-md transition-shadow relative overflow-hidden group">
                             <div class="flex justify-between items-start mb-3 pr-4">
                                 <div><h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3><a href="tel:${bill.phone}" class="flex items-center gap-2 text-gray-500 text-sm mt-1 hover:text-primary transition-colors"><i class="fas fa-phone text-xs transform flip-horizontal"></i> ${bill.phone}</a><div class="flex items-center gap-2 text-gray-400 text-xs mt-1"><i class="far fa-clock"></i> ${displayDate}</div></div>
-                                <div class="text-right"><div class="text-xl font-bold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">Bal: ₹ ${balance}</div><div class="text-xs text-gray-500 mt-1">Total: ₹${total}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1"><i class="fas ${statusIcon}"></i> ${statusText}</span></div>
+                                <div class="text-right"><div class="text-xl font-bold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">Bal: ₹ ${balance}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1"><i class="fas ${statusIcon}"></i> ${statusText}</span></div>
                             </div>
                             <div class="mb-3 px-1 pt-2 border-t border-gray-200/50"><div class="flex justify-between text-xs text-gray-600 font-medium"><span><i class="fas fa-check-circle text-green-500 mr-1"></i> Paid: ₹${paid}</span><span class="text-gray-400">Total Bill: ₹${total}</span></div></div>
                             <div class="flex gap-2 pt-2 border-t border-gray-200/50">
