@@ -45,52 +45,38 @@
         /* === PRINT STYLES === */
         @media print {
             @page { size: A4; margin: 5mm; }
-            
-            /* --- FIX FOR EXTRA BLANK PAGE --- */
             html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
             .min-h-screen { min-height: 0 !important; height: auto !important; }
             .pb-24 { padding-bottom: 0 !important; }
-            
-            /* General Print Styles */
             body { background: white; font-family: 'Noto Sans Devanagari', sans-serif; color: black; }
             
-            /* Hiding Screen Elements */
-            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group { display: none !important; }
+            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs { display: none !important; }
             
             #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; }
-            
-            /* Custom Marathi Layout */
             .print-header-marathi { display: block !important; margin-bottom: 5px; font-family: 'Noto Sans Devanagari', sans-serif; }
             
-            /* --- HEADER COLORS (RED #FF4B33) --- */
+            /* RED HEADER */
             .title-main { font-size: 26pt; font-weight: 900; text-align: center; line-height: 1.1; margin-bottom: 5px; padding-top: 5px; color: #FF4B33 !important; }
             .proprietor-box { text-align: right; font-weight: 700; font-size: 11pt; line-height: 1.3; padding: 0 5mm; margin-bottom: 2px; margin-left: auto; color: #FF4B33 !important; }
             .desc-row { text-align: center; font-size: 11pt; font-weight: 700; margin-bottom: 2px; color: #FF4B33 !important; }
             .address-row { text-align: center; font-size: 10pt; font-weight: 600; margin-bottom: 2px; color: #FF4B33 !important; }
             .gstn-row { text-align: center; font-size: 9pt; font-weight: 600; margin-bottom: 8px; color: #FF4B33 !important; }
-            
-            /* Meta Box */
             .meta-box { border-top: 1.5pt solid #FF4B33 !important; border-bottom: 1.5pt solid #FF4B33 !important; display: flex; justify-content: space-between; align-items: center; padding: 5px 5mm; font-weight: 700; font-size: 11pt; margin-bottom: 10px; color: #FF4B33 !important; }
             .doc-type-label { text-align: center; font-weight: 800; font-size: 12pt; border: 1.5pt solid #FF4B33 !important; padding: 2px 15px; border-radius: 4px; display: inline-block; background: white; color: #FF4B33 !important; }
 
-            /* --- BODY CONTENT (BLACK) --- */
             .print-table-container, .print-table-container * { color: black !important; }
             .quotation-mode .hide-on-quotation { display: none !important; visibility: hidden; }
             .invoice-mode .hide-on-invoice { display: none !important; }
 
-            /* Grid & Content */
             .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; padding: 0 5mm; }
             .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
             .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
-            
-            /* Inputs */
             input, select { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; font-weight: 600; font-size: 11pt; color: black !important; }
             input::-webkit-calendar-picker-indicator { display: none !important; }
             
-            /* SHOW THE PRINT SPAN */
+            .mandap-select-print { display: none !important; }
             .mandap-text-print { display: inline-block !important; font-weight: 700; }
             
-            /* Tables */
             .print-table-container { padding: 0 5mm; }
             table { width: 100% !important; border-collapse: collapse; margin-top: 5px; }
             th { border-top: 1pt solid black; border-bottom: 1pt solid black; text-align: center; padding: 4px; font-size: 10pt; font-weight: 800; color: black !important; }
@@ -98,26 +84,19 @@
             td:first-child, th:first-child { text-align: left; }
             td:last-child, th:last-child { text-align: right; }
 
-            /* Totals */
             .totals-section { float: right; width: 50%; margin-top: 10px; padding-right: 5mm; color: black !important; }
             .totals-final { font-size: 14pt; font-weight: 800; margin-top: 5px; border-top: 1pt solid black; padding-top: 5px; }
             
-            /* Footer Note (Signatures Removed) */
-            .print-footer { 
-                position: relative; /* Changed from fixed to flow naturally */
-                width: 100%;
-                text-align: left; 
-                font-size: 9pt; 
-                padding-bottom: 0;
-                margin-top: 20px;
-                color: black !important; 
-                clear: both; /* Ensures it sits below floated elements */
-            }
+            .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 20px; color: black !important; clear: both; }
             .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 10pt; white-space: pre-wrap; }
             
             .show-print { display: block !important; } .hide-print { display: none !important; }
         }
         .show-print, .print-header-marathi, .mandap-text-print { display: none; }
+        
+        /* History Tab Styles */
+        .tab-btn-active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
+        .tab-btn-inactive { background-color: white; color: #6b7280; border-color: #e5e7eb; }
     </style>
 </head>
 <body class="text-gray-700 font-sans">
@@ -152,12 +131,11 @@
         </div>
     </div>
 
-    <!-- CUSTOM MANDAP NAME MODAL (Pop-in) -->
+    <!-- CUSTOM MANDAP NAME MODAL -->
     <div id="custom-mandap-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-pop-in">
             <div class="p-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-1 text-center">Custom Mandap Name</h3>
-                <p class="text-xs text-gray-500 mb-4 text-center">Enter the name for this mandap</p>
                 <input type="text" id="custom-mandap-input" class="w-full p-3 border-2 border-primary/20 rounded-xl text-center font-bold text-gray-800 focus:border-primary outline-none transition-all mb-4" placeholder="e.g. Stage Decoration">
                 <div class="flex gap-3">
                     <button onclick="closeCustomMandapModal()" class="flex-1 py-2.5 text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 rounded-xl">Cancel</button>
@@ -171,11 +149,10 @@
     <div id="payment-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-pop-in">
             <div class="p-6 text-center">
-                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-rupee-sign text-green-600 text-xl"></i></div>
                 <h3 class="text-lg font-bold text-gray-900 mb-1">Add Partial Payment</h3>
                 <div class="relative mb-6 mt-4">
                     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">₹</span>
-                    <input type="number" id="modal-payment-amount" class="w-full pl-8 pr-4 py-3 border-2 border-gray-100 rounded-xl text-lg font-bold text-gray-800 focus:border-green-500 focus:ring-4 focus:ring-green-500/20 outline-none transition-all" placeholder="0">
+                    <input type="number" id="modal-payment-amount" class="w-full pl-8 pr-4 py-3 border-2 border-gray-100 rounded-xl text-lg font-bold text-gray-800 focus:border-green-500 outline-none transition-all" placeholder="0">
                 </div>
                 <div class="flex gap-3">
                     <button onclick="closePaymentModal()" class="flex-1 py-3 text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 rounded-xl">Cancel</button>
@@ -195,7 +172,6 @@
                 <div><h1 class="text-lg font-bold text-gray-900 leading-tight">Bichayt Kendra</h1><p class="text-xs text-gray-500 font-medium">Management System</p></div>
             </div>
             <div class="flex gap-2">
-                <button id="btn-install" class="hidden bg-white text-primary border border-primary/20 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm hover:bg-primary/5 transition-colors"><i class="fas fa-download mr-1"></i> Install</button>
                 <button onclick="toggleSettings()" class="w-10 h-10 bg-white text-gray-500 rounded-full shadow-sm border border-gray-100 flex items-center justify-center hover:text-primary hover:border-primary/30 transition-all"><i class="fas fa-cog"></i></button>
             </div>
         </div>
@@ -219,7 +195,6 @@
                         <div>
                             <h2 class="text-2xl font-bold tracking-tight">Invoice</h2>
                             <p class="text-white/80 text-sm mt-0.5">Bichayt Kendra & Events</p>
-                            <p class="text-white/60 text-xs mt-1 font-mono uppercase" id="screen-gstin-display"></p>
                         </div>
                         <div class="text-right bg-white/10 px-3 py-1 rounded-lg backdrop-blur-sm border border-white/20">
                             <div class="text-xs text-white/70 uppercase font-bold tracking-wider">Date</div>
@@ -234,30 +209,14 @@
 
                 <!-- NEW PRINT HEADER (MARATHI) -->
                 <div class="print-header-marathi" id="print-header-section">
-                    <!-- Title -->
                     <div class="title-main">भुंबर बिछायत व डेकोरेशन ॲण्ड कॅटरर्स</div>
-                    
-                    <!-- Proprietor & Phone (Stacked Right) -->
-                    <div class="proprietor-box">
-                        <div>प्रो.प्रा.सौरभ भुंबर</div>
-                        <div>9823528733</div>
-                    </div>
-                    
-                    <!-- Description -->
+                    <div class="proprietor-box"><div>प्रो.प्रा.सौरभ भुंबर</div><div>9823528733</div></div>
                     <div class="desc-row">सर्व प्रकारचे डेकोरेशन तसेच ईव्हेन्ट मॅनेजमेन्टचे कामे केल्या जातील</div>
-                    
-                    <!-- Address -->
                     <div class="address-row">गाडगे बाबा मार्केट, गाडगे नगर, अमरावती</div>
-                    
-                    <!-- GSTN moved here to keep box clean -->
                     <div class="gstn-row hide-on-quotation" id="print-gstin-box">GSTN NO 27BIWPB4912MIZS</div>
-
-                    <!-- Meta Box (Bill No, BADGE, Date) -->
                     <div class="meta-box">
                         <div class="w-1/3 text-left">जा.क्र.: <span id="print-id-text-marathi">...</span></div>
-                        <div class="w-1/3 text-center">
-                            <div class="doc-type-label" id="print-doc-type">इन्व्हॉइस</div>
-                        </div>
+                        <div class="w-1/3 text-center"><div class="doc-type-label" id="print-doc-type">इन्व्हॉइस</div></div>
                         <div class="w-1/3 text-right">दिनांक: <span id="print-date-marathi"></span></div>
                     </div>
                 </div>
@@ -284,13 +243,11 @@
                         </div>
                     </div>
 
-                    <!-- Multiple Mandap Section -->
+                    <!-- Mandap Section -->
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-2 no-print">
                             <h3 class="font-bold text-gray-800 text-base">Mandaps</h3>
-                            <button onclick="addMandapRow()" class="add-mandap-btn text-[10px] bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full font-bold transition-colors">
-                                <i class="fas fa-plus mr-1"></i> Add Mandap
-                            </button>
+                            <button onclick="addMandapRow()" class="add-mandap-btn text-[10px] bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full font-bold transition-colors"><i class="fas fa-plus mr-1"></i> Add Mandap</button>
                         </div>
                         <div id="mandap-list-container" class="space-y-3"></div>
                     </div>
@@ -319,13 +276,11 @@
                         </div>
                     </div>
 
-                    <!-- Custom Print Footer Input -->
                     <div class="mt-6 no-print">
                         <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Footer Note (Print Only)</label>
                         <input type="text" id="footer-text-input" placeholder="e.g. Terms & Conditions apply..." class="w-full p-2 border border-gray-200 rounded-lg text-sm focus:border-primary outline-none">
                     </div>
 
-                    <!-- Footer Section in Print (Note on Left) -->
                     <div class="print-footer show-print">
                         <div id="print-footer-custom" class="footer-note-text"></div>
                     </div>
@@ -336,12 +291,12 @@
         <!-- === VIEW: PIPE CALCULATOR === -->
         <div id="view-pipe-calc" class="flex-grow hidden px-4 pb-24 animate-fade-in w-full max-w-xl mx-auto">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <div class="text-center mb-6"><div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 text-orange-600 text-xl"><i class="fas fa-calculator"></i></div><h2 class="text-xl font-bold text-gray-800">Pipe & Ceiling Calc</h2><p class="text-xs text-gray-500">Enter dimensions to calculate materials</p></div>
+                <div class="text-center mb-6"><div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 text-orange-600 text-xl"><i class="fas fa-calculator"></i></div><h2 class="text-xl font-bold text-gray-800">Pipe & Ceiling Calc</h2></div>
                 <div class="grid grid-cols-2 gap-4 mb-8"><div><label class="block text-xs font-bold text-gray-500 uppercase mb-2">Length (ft)</label><input type="number" id="calc-l" class="w-full p-3 border-2 border-gray-100 rounded-xl text-center text-lg font-bold focus:border-orange-400 outline-none" placeholder="0" step="15" min="0" onchange="snapToGrid(this)" oninput="calcDedicatedPipes()"></div><div><label class="block text-xs font-bold text-gray-500 uppercase mb-2">Width (ft)</label><input type="number" id="calc-w" class="w-full p-3 border-2 border-gray-100 rounded-xl text-center text-lg font-bold focus:border-orange-400 outline-none" placeholder="0" step="15" min="0" onchange="snapToGrid(this)" oninput="calcDedicatedPipes()"></div></div>
                 <div class="space-y-4">
-                    <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 flex justify-between items-center"><div><h3 class="font-bold text-orange-800">Vertical Pipes</h3><p class="text-xs text-orange-600">(उभा पाईप)</p></div><div class="text-2xl font-bold text-orange-600" id="res-v">0</div></div>
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex justify-between items-center"><div><h3 class="font-bold text-blue-800">Horizontal Pipes</h3><p class="text-xs text-blue-600">(आडवा पाईप)</p></div><div class="text-2xl font-bold text-blue-600" id="res-h">0</div></div>
-                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 flex justify-between items-center"><div><h3 class="font-bold text-purple-800">Ceiling Cloths</h3><p class="text-xs text-purple-600">(सिलींग)</p></div><div class="text-2xl font-bold text-purple-600" id="res-c">0</div></div>
+                    <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 flex justify-between items-center"><div><h3 class="font-bold text-orange-800">Vertical Pipes</h3></div><div class="text-2xl font-bold text-orange-600" id="res-v">0</div></div>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex justify-between items-center"><div><h3 class="font-bold text-blue-800">Horizontal Pipes</h3></div><div class="text-2xl font-bold text-blue-600" id="res-h">0</div></div>
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 flex justify-between items-center"><div><h3 class="font-bold text-purple-800">Ceiling Cloths</h3></div><div class="text-2xl font-bold text-purple-600" id="res-c">0</div></div>
                 </div>
             </div>
         </div>
@@ -349,18 +304,20 @@
         <!-- === VIEW: SEARCH === -->
         <div id="view-search" class="flex-grow hidden px-4 pb-24 animate-fade-in w-full max-w-4xl mx-auto">
             <div class="bg-white p-2 rounded-2xl shadow-lg mb-6 sticky top-4 z-20 border border-gray-100">
-                <div class="flex flex-col gap-2">
-                    <div class="flex gap-2">
-                        <div class="relative flex-1">
-                            <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
-                            <input type="text" id="search-query" class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-700 text-sm" placeholder="Name or Phone...">
-                        </div>
-                        <input type="date" id="search-date" class="w-1/3 px-3 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 text-sm font-medium text-gray-600">
-                    </div>
-                    <button onclick="performSearch()" id="btn-search" class="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-md hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2">
-                        <i class="fas fa-filter"></i> Search Records
-                    </button>
+                <div class="flex justify-center mb-4 gap-2 no-print" id="history-tabs">
+                    <button onclick="setHistoryFilter('BILL')" id="btn-hist-bills" class="flex-1 py-2 rounded-lg text-sm font-bold border transition-all tab-btn-active">Bills</button>
+                    <button onclick="setHistoryFilter('QUOTATION')" id="btn-hist-quotes" class="flex-1 py-2 rounded-lg text-sm font-bold border transition-all tab-btn-inactive">Quotations</button>
                 </div>
+                <div class="flex gap-2">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="text" id="search-query" class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-medium text-gray-700 text-sm" placeholder="Name or Phone...">
+                    </div>
+                    <input type="date" id="search-date" class="w-1/3 px-3 py-3 bg-gray-50 rounded-xl outline-none focus:bg-white focus:ring-2 focus:ring-primary/20 text-sm font-medium text-gray-600">
+                </div>
+                <button onclick="performSearch()" id="btn-search" class="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-md hover:bg-primaryDark transition-colors text-sm flex items-center justify-center gap-2 mt-2">
+                    <i class="fas fa-filter"></i> Search Records
+                </button>
             </div>
             <div id="search-results" class="space-y-4"><div class="flex flex-col items-center justify-center text-gray-300 mt-20"><i class="fas fa-receipt text-6xl mb-4 opacity-50"></i><p class="text-lg font-medium">Search for old bills</p></div></div>
         </div>
@@ -368,10 +325,10 @@
 
     <!-- FAB ACTIONS -->
     <div class="fixed bottom-6 left-4 right-4 z-40 flex gap-3 no-print" id="fab-container">
-        <button onclick="printQuotation()" class="flex-1 bg-gray-800 text-white py-4 rounded-2xl shadow-xl font-bold text-sm flex items-center justify-center gap-2 transform transition-all hover:scale-[1.02] active:scale-95 border border-gray-700">
+        <button onclick="saveAndPrintBill('QUOTATION')" class="flex-1 bg-gray-800 text-white py-4 rounded-2xl shadow-xl font-bold text-sm flex items-center justify-center gap-2 transform transition-all hover:scale-[1.02] active:scale-95 border border-gray-700">
             <i class="fas fa-file-alt text-yellow-400"></i> Quotation
         </button>
-        <button onclick="saveAndPrintBill()" id="btn-save-print" class="flex-1 bg-primary text-white py-4 rounded-2xl shadow-xl font-bold text-sm flex items-center justify-center gap-2 transform transition-all hover:scale-[1.02] active:scale-95 border border-primaryDark">
+        <button onclick="saveAndPrintBill('BILL')" id="btn-save-print" class="flex-1 bg-primary text-white py-4 rounded-2xl shadow-xl font-bold text-sm flex items-center justify-center gap-2 transform transition-all hover:scale-[1.02] active:scale-95 border border-primaryDark">
             <i class="fas fa-save"></i> Save & Print
         </button>
     </div>
@@ -388,6 +345,8 @@
         let activeTab = 'new';
         let touchStartX = 0, touchEndX = 0, touchStartY = 0, touchEndY = 0;
         let pendingCustomIndex = null;
+        let currentHistoryFilter = 'BILL';
+        let allFetchedData = [];
 
         function fetchRecent() {
             performSearch('recent');
@@ -425,69 +384,37 @@
         function addMandapRow() { const id = Date.now(); mandaps.push({ id: id, type: 'Normal', l: '', w: '', rate: 15, total: 0, isCustom: false }); renderMandapRows(); }
         function removeMandapRow(index) { mandaps.splice(index, 1); renderMandapRows(); recalcTotals(); }
         
-        // --- CUSTOM DROPDOWN UI STATE ---
         let openDropdownIndex = null;
-
         function toggleDropdown(index) {
-            if (openDropdownIndex === index) {
-                document.getElementById(`dropdown-${index}`).classList.add('hidden');
-                openDropdownIndex = null;
-                return;
-            }
-            if (openDropdownIndex !== null) {
-                const prev = document.getElementById(`dropdown-${openDropdownIndex}`);
-                if(prev) prev.classList.add('hidden');
-            }
-            document.getElementById(`dropdown-${index}`).classList.remove('hidden');
-            openDropdownIndex = index;
+            if (openDropdownIndex === index) { document.getElementById(`dropdown-${index}`).classList.add('hidden'); openDropdownIndex = null; return; }
+            if (openDropdownIndex !== null) { const prev = document.getElementById(`dropdown-${openDropdownIndex}`); if(prev) prev.classList.add('hidden'); }
+            document.getElementById(`dropdown-${index}`).classList.remove('hidden'); openDropdownIndex = index;
         }
-
         window.addEventListener('click', (e) => {
             if (openDropdownIndex !== null) {
                 const btn = document.querySelector(`button[onclick="toggleDropdown(${openDropdownIndex})"]`);
                 const dd = document.getElementById(`dropdown-${openDropdownIndex}`);
-                if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) {
-                    dd.classList.add('hidden');
-                    openDropdownIndex = null;
-                }
+                if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) { dd.classList.add('hidden'); openDropdownIndex = null; }
             }
         });
-
         function selectPreset(index, type) {
-            mandaps[index].type = type;
-            mandaps[index].rate = MANDAP_TYPES[type];
-            document.getElementById(`dropdown-${index}`).classList.add('hidden');
-            openDropdownIndex = null;
-            renderMandapRows(); 
-            calcMandapRow(index);
+            mandaps[index].type = type; mandaps[index].rate = MANDAP_TYPES[type]; document.getElementById(`dropdown-${index}`).classList.add('hidden'); openDropdownIndex = null; renderMandapRows(); calcMandapRow(index);
         }
 
         function renderMandapRows() {
             const container = document.getElementById('mandap-list-container'); container.innerHTML = '';
             mandaps.forEach((m, index) => {
                 const div = document.createElement('div'); div.className = "bg-blue-50/50 rounded-xl p-3 border border-blue-100 relative mb-2";
-                
-                let dropdownItems = '';
-                for (const [type, _] of Object.entries(MANDAP_TYPES)) {
-                    dropdownItems += `<div onclick="selectPreset(${index}, '${type}')" class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm font-medium text-gray-700">${type}</div>`;
-                }
-
+                let dropdownItems = ''; for (const [type, _] of Object.entries(MANDAP_TYPES)) { dropdownItems += `<div onclick="selectPreset(${index}, '${type}')" class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm font-medium text-gray-700">${type}</div>`; }
                 div.innerHTML = `
                     <div class="flex justify-between items-start mb-2 relative">
                         <div class="flex-1 mr-2 relative">
                             <label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center no-print">Type</label>
-                            
                             <div class="flex items-center gap-1 mandap-input-group no-print">
                                 <input type="text" value="${m.type}" oninput="updateMandapTypeInput(${index}, this.value)" class="flex-1 bg-white border border-gray-200 rounded-lg p-1 text-xs font-bold text-gray-700 outline-none focus:border-blue-400 text-center" placeholder="Name">
-                                <button onclick="toggleDropdown(${index})" class="bg-white border border-gray-200 rounded-lg px-2 py-1 hover:bg-gray-50 focus:outline-none">
-                                    <i class="fas fa-chevron-down text-xs text-gray-500"></i>
-                                </button>
+                                <button onclick="toggleDropdown(${index})" class="bg-white border border-gray-200 rounded-lg px-2 py-1 hover:bg-gray-50 focus:outline-none"><i class="fas fa-chevron-down text-xs text-gray-500"></i></button>
                             </div>
-
-                            <div id="dropdown-${index}" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-20 overflow-hidden no-print">
-                                ${dropdownItems}
-                            </div>
-
+                            <div id="dropdown-${index}" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-20 overflow-hidden no-print">${dropdownItems}</div>
                             <span class="mandap-text-print hidden">${m.type}</span>
                         </div>
                         <button onclick="removeMandapRow(${index})" class="text-red-300 hover:text-red-500 p-1 no-print"><i class="fas fa-trash-alt"></i></button>
@@ -497,18 +424,12 @@
                         <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">W (ft)</label><input type="number" value="${m.w}" oninput="updateMandapVal(${index}, 'w', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
                         <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">Rate/sqft</label><input type="number" value="${m.rate}" oninput="updateMandapVal(${index}, 'rate', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
                         <div><label class="text-[10px] font-bold text-blue-300 uppercase pl-1 block text-right">Amount</label><div class="w-full p-2 text-right text-sm font-bold text-blue-700 bg-blue-100/50 rounded-lg">₹ <span id="mandap-total-${index}">${m.total}</span></div></div>
-                    </div>
-                `;
+                    </div>`;
                 container.appendChild(div);
             });
         }
 
-        function updateMandapTypeInput(index, val) {
-            mandaps[index].type = val;
-            const printSpan = document.querySelectorAll('.mandap-text-print')[index];
-            if(printSpan) printSpan.innerText = val;
-        }
-
+        function updateMandapTypeInput(index, val) { mandaps[index].type = val; const printSpan = document.querySelectorAll('.mandap-text-print')[index]; if(printSpan) printSpan.innerText = val; }
         function updateMandapVal(index, field, val) { mandaps[index][field] = val; calcMandapRow(index); }
         function calcMandapRow(index) { const m = mandaps[index]; const l = parseFloat(m.l) || 0; const w = parseFloat(m.w) || 0; const rate = parseFloat(m.rate) || 0; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; const area = l * w; const total = Math.round(area * rate * globalDays); m.total = total; const totalEl = document.getElementById(`mandap-total-${index}`); if(totalEl) totalEl.innerText = total; recalcTotals(); }
         function autoCalcAllMandaps() { mandaps.forEach((_, i) => calcMandapRow(i)); }
@@ -550,15 +471,19 @@
             document.getElementById('print-footer-custom').innerText = document.getElementById('footer-text-input').value;
         }
 
-        function printQuotation() { 
-            preparePrint();
-            const doc = document.documentElement; doc.classList.add('quotation-mode'); doc.classList.remove('invoice-mode'); document.getElementById('print-doc-type').innerText = "कोटेशन"; window.print(); 
-        }
-        
-        async function saveAndPrintBill() {
+        async function saveAndPrintBill(docType = 'BILL') {
             preparePrint();
             const custName = document.getElementById('cust-name').value; if (!custName) { showToast("Enter Customer Name", "error"); return; }
-            const doc = document.documentElement; doc.classList.add('invoice-mode'); doc.classList.remove('quotation-mode'); document.getElementById('print-doc-type').innerText = "इन्व्हॉइस";
+            
+            const doc = document.documentElement;
+            if(docType === 'QUOTATION') {
+                doc.classList.add('quotation-mode'); doc.classList.remove('invoice-mode'); 
+                document.getElementById('print-doc-type').innerText = "कोटेशन";
+            } else {
+                doc.classList.add('invoice-mode'); doc.classList.remove('quotation-mode'); 
+                document.getElementById('print-doc-type').innerText = "इन्व्हॉइस";
+            }
+
             const btn = document.getElementById('btn-save-print'); const originalText = btn.innerHTML; const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL; 
             let printTriggered = false; const triggerPrint = () => { if(!printTriggered) { printTriggered = true; btn.innerHTML = originalText; window.print(); } };
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB'); document.getElementById('print-date-marathi').innerText = new Date().toLocaleDateString('en-GB');
@@ -573,8 +498,19 @@
                 });
                 items.forEach(i => { if(i.qty > 0) { detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d`); } });
                 const finalDetailsString = detailsArray.join('\n');
-                const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText, paid: document.getElementById('paid-amount').value || 0 };
-                try { await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showToast(editingRowIndex ? "Updated!" : "Saved!", "success"); if(editingRowIndex) exitEditMode(); } catch (error) { console.error(error); showToast("Network Error", "error"); triggerPrint(); }
+                
+                // Add docType to payload
+                const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText, paid: document.getElementById('paid-amount').value || 0, docType: docType };
+                
+                try { 
+                    await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
+                    showToast(editingRowIndex ? "Updated!" : "Saved!", "success"); 
+                    
+                    // --- REFRESH AFTER SAVE ---
+                    setTimeout(fetchRecent, 1000); 
+
+                    if(editingRowIndex) exitEditMode(); 
+                } catch (error) { console.error(error); showToast("Network Error", "error"); triggerPrint(); }
             } else { showToast("Script URL Missing", "error"); triggerPrint(); }
         }
 
@@ -588,6 +524,90 @@
             if(tab === 'new') { newView.classList.remove('hidden'); fab.classList.remove('hidden'); btnNew.classList.add(...activeClass); btnNew.classList.remove(...inactiveClass); } 
             else if (tab === 'search') { searchView.classList.remove('hidden'); fab.classList.add('hidden'); btnSearch.classList.add(...activeClass); btnSearch.classList.remove(...inactiveClass); fetchRecent(); } 
             else if (tab === 'calc') { calcView.classList.remove('hidden'); fab.classList.add('hidden'); btnCalc.classList.add(...activeClass); btnCalc.classList.remove(...inactiveClass); }
+        }
+
+        // --- HISTORY TABS LOGIC ---
+        function setHistoryFilter(type) {
+            currentHistoryFilter = type;
+            const btnBills = document.getElementById('btn-hist-bills');
+            const btnQuotes = document.getElementById('btn-hist-quotes');
+            
+            if(type === 'BILL') {
+                btnBills.classList.add('tab-btn-active'); btnBills.classList.remove('tab-btn-inactive');
+                btnQuotes.classList.remove('tab-btn-active'); btnQuotes.classList.add('tab-btn-inactive');
+            } else {
+                btnQuotes.classList.add('tab-btn-active'); btnQuotes.classList.remove('tab-btn-inactive');
+                btnBills.classList.remove('tab-btn-active'); btnBills.classList.add('tab-btn-inactive');
+            }
+            renderHistoryList(); // Re-render with local filter
+        }
+
+        function renderHistoryList() {
+            const resultDiv = document.getElementById('search-results');
+            const filteredData = allFetchedData.filter(item => {
+                // If docType is missing, assume BILL.
+                // If status is "Quotation", treat as QUOTATION (fallback for older logic)
+                let type = item.docType || "BILL";
+                if(item.status === "Quotation") type = "QUOTATION";
+                
+                return type === currentHistoryFilter;
+            });
+
+            resultDiv.innerHTML = '';
+            if(filteredData.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-400 mt-12 py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200"><i class="far fa-folder-open text-4xl mb-2"></i><br>No records found</div>'; return; }
+            
+            const today = new Date(); today.setHours(0,0,0,0);
+            
+            filteredData.forEach(bill => {
+                if(bill.name.toLowerCase() === 'name') return;
+                const isPaid = bill.status === 'Paid'; 
+                const displayDate = new Date(bill.date).toLocaleDateString('en-GB'); 
+                const dataStr = encodeURIComponent(JSON.stringify(bill)); 
+                const endDate = new Date(bill.endDate || bill.date); 
+                const isOngoing = !isPaid && endDate >= today;
+                const paid = parseFloat(bill.paid) || 0; 
+                const total = parseFloat(bill.total) || 0; 
+                const balance = total - paid;
+                
+                let cardClass, textClass, statusIcon, statusText;
+                
+                // Use the derived type or original docType
+                const isQuotation = (bill.docType === 'QUOTATION' || bill.status === 'Quotation');
+
+                if (isQuotation) {
+                    cardClass = "bg-gray-50 border-gray-200"; textClass = "text-gray-600"; statusIcon = "fa-file-alt"; statusText = "Quotation";
+                } else if (isPaid) { 
+                    cardClass = "bg-green-50 border-green-200"; textClass = "text-green-700"; statusIcon = "fa-check-circle"; statusText = "Paid"; 
+                } else if (isOngoing) { 
+                    cardClass = "bg-blue-50 border-blue-200"; textClass = "text-blue-700"; statusIcon = "fa-hourglass-half"; statusText = "Ongoing"; 
+                } else { 
+                    cardClass = "bg-red-50 border-red-200"; textClass = "text-red-700"; statusIcon = "fa-exclamation-circle"; statusText = "Pending"; 
+                }
+                
+                let actionButtons = '';
+                if (isQuotation) {
+                    // Quotations have Edit and Delete only (convert to bill by editing)
+                    actionButtons = `<button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>
+                                     <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button>`;
+                } else {
+                    actionButtons = `<button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>
+                                     ${!isPaid ? `<button onclick="openPaymentModal(${bill.rowIndex})" class="flex-1 py-2 bg-white text-green-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-plus"></i> Pay</button>` : ''}
+                                     <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button>`;
+                }
+
+                const html = `
+                    <div class="${cardClass} p-5 rounded-2xl shadow-sm border hover:shadow-md transition-shadow relative overflow-hidden group">
+                        <div class="flex justify-between items-start mb-3 pr-4">
+                            <div><h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3><a href="tel:${bill.phone}" class="flex items-center gap-2 text-gray-500 text-sm mt-1 hover:text-primary transition-colors"><i class="fas fa-phone text-xs transform flip-horizontal"></i> ${bill.phone}</a><div class="flex items-center gap-2 text-gray-400 text-xs mt-1"><i class="far fa-clock"></i> ${displayDate}</div></div>
+                            <div class="text-right"><div class="text-xl font-bold ${balance > 0 && !isQuotation ? 'text-red-600' : 'text-gray-600'}">${isQuotation ? 'Total' : 'Bal'}: ₹ ${isQuotation ? total : balance}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1"><i class="fas ${statusIcon}"></i> ${statusText}</span></div>
+                        </div>
+                        ${!isQuotation ? `<div class="mb-3 px-1 pt-2 border-t border-gray-200/50"><div class="flex justify-between text-xs text-gray-600 font-medium"><span><i class="fas fa-check-circle text-green-500 mr-1"></i> Paid: ₹${paid}</span><span class="text-gray-400">Total Bill: ₹${total}</span></div></div>` : ''}
+                        <div class="flex gap-2 pt-2 border-t border-gray-200/50">
+                            ${actionButtons}
+                        </div>
+                    </div>`;
+                resultDiv.insertAdjacentHTML('beforeend', html);
+            });
         }
 
         async function performSearch(type = 'search') {
@@ -604,20 +624,10 @@
                 const response = await fetch(url); let data = await response.json();
                 data.sort((a, b) => (b.rowIndex || 0) - (a.rowIndex || 0));
                 
-                if (type === 'recent') { data = data.slice(0, 10); }
+                // Store globally for filtering
+                allFetchedData = data;
+                renderHistoryList(); // Render based on current filter (Bill/Quotation)
 
-                resultDiv.innerHTML = '';
-                if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-400 mt-12 py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200"><i class="far fa-folder-open text-4xl mb-2"></i><br>No records found</div>'; return; }
-                const today = new Date(); today.setHours(0,0,0,0);
-                data.forEach(bill => {
-                    if(bill.name.toLowerCase() === 'name') return;
-                    const isPaid = bill.status === 'Paid'; const displayDate = new Date(bill.date).toLocaleDateString('en-GB'); const dataStr = encodeURIComponent(JSON.stringify(bill)); const endDate = new Date(bill.endDate || bill.date); const isOngoing = !isPaid && endDate >= today;
-                    const paid = parseFloat(bill.paid) || 0; const total = parseFloat(bill.total) || 0; const balance = total - paid;
-                    let cardClass, textClass, statusIcon, statusText;
-                    if (isPaid) { cardClass = "bg-green-50 border-green-200"; textClass = "text-green-700"; statusIcon = "fa-check-circle"; statusText = "Paid"; } else if (isOngoing) { cardClass = "bg-blue-50 border-blue-200"; textClass = "text-blue-700"; statusIcon = "fa-hourglass-half"; statusText = "Ongoing"; } else { cardClass = "bg-red-50 border-red-200"; textClass = "text-red-700"; statusIcon = "fa-exclamation-circle"; statusText = "Pending"; }
-                    const html = `<div class="${cardClass} p-5 rounded-2xl shadow-sm border hover:shadow-md transition-shadow relative overflow-hidden group"><div class="flex justify-between items-start mb-3 pr-4"><div><h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3><a href="tel:${bill.phone}" class="flex items-center gap-2 text-gray-500 text-sm mt-1 hover:text-primary transition-colors"><i class="fas fa-phone text-xs transform flip-horizontal"></i> ${bill.phone}</a><div class="flex items-center gap-2 text-gray-400 text-xs mt-1"><i class="far fa-clock"></i> ${displayDate}</div></div><div class="text-right"><div class="text-xl font-bold ${balance > 0 ? 'text-red-600' : 'text-green-600'}">Bal: ₹ ${balance}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1"><i class="fas ${statusIcon}"></i> ${statusText}</span></div></div><div class="mb-3 px-1 pt-2 border-t border-gray-200/50"><div class="flex justify-between text-xs text-gray-600 font-medium"><span><i class="fas fa-check-circle text-green-500 mr-1"></i> Paid: ₹${paid}</span><span class="text-gray-400">Total Bill: ₹${total}</span></div></div><div class="flex gap-2 pt-2 border-t border-gray-200/50"><button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>${!isPaid ? `<button onclick="openPaymentModal(${bill.rowIndex})" class="flex-1 py-2 bg-white text-green-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-plus"></i> Pay</button>` : ''}<button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button></div></div>`;
-                    resultDiv.insertAdjacentHTML('beforeend', html);
-                });
             } catch(e) { console.error(e); resultDiv.innerHTML = '<div class="text-center text-red-400 mt-10">Error loading data.</div>'; }
         }
 
