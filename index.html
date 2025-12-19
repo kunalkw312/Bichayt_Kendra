@@ -45,76 +45,36 @@
         /* === PRINT STYLES === */
         @media print {
             @page { size: A4; margin: 5mm; }
-            body { background: white; margin: 0; padding: 0; font-family: 'Noto Sans Devanagari', sans-serif; color: black; }
-            .no-print, #tab-nav, #settings-modal, #payment-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn { display: none !important; }
+            
+            /* --- FIX FOR EXTRA BLANK PAGE --- */
+            html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
+            .min-h-screen { min-height: 0 !important; height: auto !important; }
+            .pb-24 { padding-bottom: 0 !important; }
+            
+            /* General Print Styles */
+            body { background: white; font-family: 'Noto Sans Devanagari', sans-serif; color: black; }
+            
+            /* Hiding Screen Elements */
+            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group { display: none !important; }
+            
             #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; }
             
             /* Custom Marathi Layout */
             .print-header-marathi { display: block !important; margin-bottom: 5px; font-family: 'Noto Sans Devanagari', sans-serif; }
             
             /* --- HEADER COLORS (RED #FF4B33) --- */
-            
-            /* Title - Bigger & Bold */
-            .title-main { 
-                font-size: 26pt; 
-                font-weight: 900; 
-                text-align: center; 
-                line-height: 1.1; 
-                margin-bottom: 5px; 
-                padding-top: 5px;
-                color: #FF4B33 !important;
-            }
-            
-            /* Proprietor Box - Aligned Right */
-            .proprietor-box { 
-                text-align: right; 
-                font-weight: 700; 
-                font-size: 11pt; 
-                line-height: 1.3; 
-                padding: 0 5mm; 
-                margin-bottom: 2px;
-                margin-left: auto; 
-                color: #FF4B33 !important;
-            }
-            
+            .title-main { font-size: 26pt; font-weight: 900; text-align: center; line-height: 1.1; margin-bottom: 5px; padding-top: 5px; color: #FF4B33 !important; }
+            .proprietor-box { text-align: right; font-weight: 700; font-size: 11pt; line-height: 1.3; padding: 0 5mm; margin-bottom: 2px; margin-left: auto; color: #FF4B33 !important; }
             .desc-row { text-align: center; font-size: 11pt; font-weight: 700; margin-bottom: 2px; color: #FF4B33 !important; }
             .address-row { text-align: center; font-size: 10pt; font-weight: 600; margin-bottom: 2px; color: #FF4B33 !important; }
             .gstn-row { text-align: center; font-size: 9pt; font-weight: 600; margin-bottom: 8px; color: #FF4B33 !important; }
             
-            /* Meta Box - The "Two Lines" and content inside */
-            .meta-box { 
-                border-top: 1.5pt solid #FF4B33 !important; 
-                border-bottom: 1.5pt solid #FF4B33 !important; 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center; 
-                padding: 5px 5mm; 
-                font-weight: 700; 
-                font-size: 11pt;
-                margin-bottom: 10px;
-                color: #FF4B33 !important; /* Text inside is red */
-            }
-
-            /* Badge inside the box */
-            .doc-type-label {
-                text-align: center;
-                font-weight: 800;
-                font-size: 12pt;
-                border: 1.5pt solid #FF4B33 !important;
-                padding: 2px 15px;
-                border-radius: 4px;
-                display: inline-block;
-                background: white;
-                color: #FF4B33 !important;
-            }
+            /* Meta Box */
+            .meta-box { border-top: 1.5pt solid #FF4B33 !important; border-bottom: 1.5pt solid #FF4B33 !important; display: flex; justify-content: space-between; align-items: center; padding: 5px 5mm; font-weight: 700; font-size: 11pt; margin-bottom: 10px; color: #FF4B33 !important; }
+            .doc-type-label { text-align: center; font-weight: 800; font-size: 12pt; border: 1.5pt solid #FF4B33 !important; padding: 2px 15px; border-radius: 4px; display: inline-block; background: white; color: #FF4B33 !important; }
 
             /* --- BODY CONTENT (BLACK) --- */
-            
-            .print-table-container, .print-table-container * {
-                color: black !important;
-            }
-
-            /* Quotation Logic */
+            .print-table-container, .print-table-container * { color: black !important; }
             .quotation-mode .hide-on-quotation { display: none !important; visibility: hidden; }
             .invoice-mode .hide-on-invoice { display: none !important; }
 
@@ -125,6 +85,10 @@
             
             /* Inputs */
             input, select { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; font-weight: 600; font-size: 11pt; color: black !important; }
+            input::-webkit-calendar-picker-indicator { display: none !important; }
+            
+            /* SHOW THE PRINT SPAN */
+            .mandap-text-print { display: inline-block !important; font-weight: 700; }
             
             /* Tables */
             .print-table-container { padding: 0 5mm; }
@@ -138,14 +102,22 @@
             .totals-section { float: right; width: 50%; margin-top: 10px; padding-right: 5mm; color: black !important; }
             .totals-final { font-size: 14pt; font-weight: 800; margin-top: 5px; border-top: 1pt solid black; padding-top: 5px; }
             
-            /* Footer */
-            .print-footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; font-size: 9pt; padding-bottom: 5mm; color: black !important; }
-            .signatures { display: flex; justify-content: space-between; margin-top: 40px; px: 10mm; }
-            .sig-line { border-top: 0.5pt solid black; width: 140px; padding-top: 5px; font-weight: bold; text-align: center; }
+            /* Footer Note (Signatures Removed) */
+            .print-footer { 
+                position: relative; /* Changed from fixed to flow naturally */
+                width: 100%;
+                text-align: left; 
+                font-size: 9pt; 
+                padding-bottom: 0;
+                margin-top: 20px;
+                color: black !important; 
+                clear: both; /* Ensures it sits below floated elements */
+            }
+            .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 10pt; white-space: pre-wrap; }
             
             .show-print { display: block !important; } .hide-print { display: none !important; }
         }
-        .show-print, .print-header-marathi { display: none; }
+        .show-print, .print-header-marathi, .mandap-text-print { display: none; }
     </style>
 </head>
 <body class="text-gray-700 font-sans">
@@ -166,10 +138,7 @@
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Google Sheet URL</label>
                     <input type="text" id="script-url" class="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" placeholder="Paste Web App URL...">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">GSTIN</label>
-                    <input type="text" id="shop-gstin" class="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-primary outline-none transition-all text-sm uppercase">
-                </div>
+                <!-- GSTIN Removed -->
                 <div class="pt-2 border-t border-gray-100">
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Default Items & Prices</label>
                     <div id="settings-items-list" class="space-y-2 mb-3"></div>
@@ -179,6 +148,21 @@
             <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
                 <button onclick="toggleSettings()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg">Close</button>
                 <button onclick="saveSettings()" class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-lg shadow-lg">Save All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM MANDAP NAME MODAL (Pop-in) -->
+    <div id="custom-mandap-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-pop-in">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-1 text-center">Custom Mandap Name</h3>
+                <p class="text-xs text-gray-500 mb-4 text-center">Enter the name for this mandap</p>
+                <input type="text" id="custom-mandap-input" class="w-full p-3 border-2 border-primary/20 rounded-xl text-center font-bold text-gray-800 focus:border-primary outline-none transition-all mb-4" placeholder="e.g. Stage Decoration">
+                <div class="flex gap-3">
+                    <button onclick="closeCustomMandapModal()" class="flex-1 py-2.5 text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 rounded-xl">Cancel</button>
+                    <button onclick="confirmCustomMandapName()" class="flex-1 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-xl shadow-lg">Save</button>
+                </div>
             </div>
         </div>
     </div>
@@ -320,7 +304,7 @@
                                 <tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody>
                             </table>
                         </div>
-                        <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300"><input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20"><input type="number" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20"><button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-8 h-8 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95"><i class="fas fa-plus"></i></button></div>
+                        <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300" id="new-item-row"><input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20"><input type="number" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20"><button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-8 h-8 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95"><i class="fas fa-plus"></i></button></div>
                     </div>
 
                     <!-- Totals -->
@@ -331,12 +315,19 @@
                             <div id="tax-rows" class="space-y-1 mb-2 hidden"><div class="flex justify-between text-xs text-gray-500"><span>CGST (9%)</span><span>+ ₹ <span id="cgst-amt">0</span></span></div><div class="flex justify-between text-xs text-gray-500"><span>SGST (9%)</span><span>+ ₹ <span id="sgst-amt">0</span></span></div></div>
                             <div class="bg-primary/5 rounded-xl p-3 flex justify-between items-center border border-primary/10 totals-final"><span class="text-primary font-bold uppercase tracking-wider text-xs">Grand Total</span><span class="text-xl font-bold text-primary">₹ <span id="final-total">0</span></span></div>
                             <div class="payment-input-area mt-4 border-t border-dashed border-gray-300 pt-3 no-print"><div class="flex justify-between items-center mb-2"><span class="text-xs font-bold text-gray-500 uppercase">Advance / Paid</span><input type="number" id="paid-amount" placeholder="0" oninput="recalcTotals()" class="w-24 text-right border-b-2 border-gray-200 focus:border-green-500 bg-transparent outline-none font-bold text-green-600"></div><div class="flex justify-between items-center"><span class="text-xs font-bold text-red-400 uppercase">Balance Due</span><span class="text-lg font-bold text-red-500">₹ <span id="balance-due">0</span></span></div></div>
-                            <div class="print-balance show-print"><div class="flex justify-between w-full text-sm"><span>Paid Amount:</span><span>₹ <span id="print-paid">0</span></span></div><div class="flex justify-between w-full text-sm mt-1 border-t border-black pt-1"><span>Balance Due:</span><span>₹ <span id="print-balance">0</span></span></div></div>
+                            <div class="print-balance show-print hide-on-quotation"><div class="flex justify-between w-full text-sm"><span>Paid Amount:</span><span>₹ <span id="print-paid">0</span></span></div><div class="flex justify-between w-full text-sm mt-1 border-t border-black pt-1"><span>Balance Due:</span><span>₹ <span id="print-balance">0</span></span></div></div>
                         </div>
                     </div>
 
-                    <div class="print-footer hide-print show-print">
-                        <div class="signatures"><div class="sig-line">Customer Sign</div><div class="sig-line">Shop Owner Sign</div></div>
+                    <!-- Custom Print Footer Input -->
+                    <div class="mt-6 no-print">
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Footer Note (Print Only)</label>
+                        <input type="text" id="footer-text-input" placeholder="e.g. Terms & Conditions apply..." class="w-full p-2 border border-gray-200 rounded-lg text-sm focus:border-primary outline-none">
+                    </div>
+
+                    <!-- Footer Section in Print (Note on Left) -->
+                    <div class="print-footer show-print">
+                        <div id="print-footer-custom" class="footer-note-text"></div>
                     </div>
                 </div>
             </div>
@@ -387,9 +378,8 @@
 
     <script>
         const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzObEvXSCD2mF7QPCUGtIdcTZUlynPlcRAdbCW0Jkj09Qbv_bFZeus1FTtzL5UIli1YJg/exec"; 
-        const DEFAULT_GSTIN = "24585435642"; 
         
-        let globalDefaults = [{ id: 1, name: 'Mattress (Gadda)', price: 50 }, { id: 2, name: 'Pillow', price: 20 }, { id: 3, name: 'Bedsheet', price: 30 }, { id: 4, name: 'Plastic Chair', price: 10 }];
+        let globalDefaults = []; 
         let items = [];
         let mandaps = []; 
         const MANDAP_TYPES = { 'Normal': 15, 'Waterproof': 25, 'Dripping': 30 };
@@ -397,8 +387,8 @@
         let currentPaymentRow = null;
         let activeTab = 'new';
         let touchStartX = 0, touchEndX = 0, touchStartY = 0, touchEndY = 0;
+        let pendingCustomIndex = null;
 
-        // --- ADDED MISSING FUNCTION ---
         function fetchRecent() {
             performSearch('recent');
         }
@@ -409,9 +399,7 @@
             let savedUrl = localStorage.getItem('scriptUrl');
             if (!savedUrl && DEFAULT_SCRIPT_URL.trim() !== "") { localStorage.setItem('scriptUrl', DEFAULT_SCRIPT_URL); savedUrl = DEFAULT_SCRIPT_URL; }
             if (savedUrl) document.getElementById('script-url').value = savedUrl;
-            let gstin = localStorage.getItem('shopGstin');
-            if (!gstin) { gstin = DEFAULT_GSTIN; localStorage.setItem('shopGstin', gstin); } 
-            if (gstin) { document.getElementById('shop-gstin').value = gstin; updateGstinDisplay(gstin); }
+            
             let storedItems = localStorage.getItem('defaultItems');
             if(storedItems) { globalDefaults = JSON.parse(storedItems); }
             initBillItems();
@@ -420,34 +408,107 @@
             document.getElementById('end-date').value = today;
             updatePrintDates(); renderTableRows();
             if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
-            
-            // This was the cause of the error - fetchRecent is now defined above
             fetchRecent();
-            
             document.addEventListener('touchstart', e => { if (e.target.closest('.custom-scroll')) return; touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; }, {passive: false});
             document.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; touchEndY = e.changedTouches[0].screenY; handleGesture(); }, {passive: false});
         };
 
         function handleGesture() { let xDiff = touchEndX - touchStartX; let yDiff = touchEndY - touchStartY; if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > 50) { if (xDiff > 0) { if (activeTab === 'calc') switchTab('new'); else if (activeTab === 'search') switchTab('calc'); } else { if (activeTab === 'new') switchTab('calc'); else if (activeTab === 'calc') switchTab('search'); } } }
-        function initBillItems() { items = globalDefaults.map(i => ({ ...i, qty: 0, days: 1 })); }
+        function initBillItems() { items = []; } 
         function updateGstinDisplay(val) { const disp = val ? `GSTIN: ${val}` : ''; document.getElementById('print-gstin-box').innerText = val ? `GSTN NO ${val}` : ''; document.getElementById('screen-gstin-display').innerText = disp; }
         
         function calculatePipes(l, w) { const l_unit = Math.ceil(l / 15); const w_unit = Math.ceil(w / 15); const vertical = (l_unit + 1) * (w_unit + 1); const horizontal = (2 * l_unit * w_unit) + l_unit + w_unit; return { v: vertical, h: horizontal }; }
         function calcDedicatedPipes() { const l = parseFloat(document.getElementById('calc-l').value) || 0; const w = parseFloat(document.getElementById('calc-w').value) || 0; if (l > 0 && w > 0) { const pipes = calculatePipes(l, w); const ceiling = Math.ceil(l/15) * Math.ceil(w/15); document.getElementById('res-v').innerText = pipes.v; document.getElementById('res-h').innerText = pipes.h; document.getElementById('res-c').innerText = ceiling; } else { document.getElementById('res-v').innerText = 0; document.getElementById('res-h').innerText = 0; document.getElementById('res-c').innerText = 0; } }
         function snapToGrid(input) { let val = parseFloat(input.value) || 0; if (val > 0 && val % 15 !== 0) { input.value = Math.round(val / 15) * 15; if(input.id.includes('calc')) calcDedicatedPipes(); } }
 
-        function addMandapRow() { const id = Date.now(); mandaps.push({ id: id, type: 'Normal', l: '', w: '', rate: 15, total: 0 }); renderMandapRows(); }
+        // --- MANDAP LOGIC WITH CUSTOM MODAL ---
+        function addMandapRow() { const id = Date.now(); mandaps.push({ id: id, type: 'Normal', l: '', w: '', rate: 15, total: 0, isCustom: false }); renderMandapRows(); }
         function removeMandapRow(index) { mandaps.splice(index, 1); renderMandapRows(); recalcTotals(); }
+        
+        // --- CUSTOM DROPDOWN UI STATE ---
+        let openDropdownIndex = null;
+
+        function toggleDropdown(index) {
+            if (openDropdownIndex === index) {
+                document.getElementById(`dropdown-${index}`).classList.add('hidden');
+                openDropdownIndex = null;
+                return;
+            }
+            if (openDropdownIndex !== null) {
+                const prev = document.getElementById(`dropdown-${openDropdownIndex}`);
+                if(prev) prev.classList.add('hidden');
+            }
+            document.getElementById(`dropdown-${index}`).classList.remove('hidden');
+            openDropdownIndex = index;
+        }
+
+        window.addEventListener('click', (e) => {
+            if (openDropdownIndex !== null) {
+                const btn = document.querySelector(`button[onclick="toggleDropdown(${openDropdownIndex})"]`);
+                const dd = document.getElementById(`dropdown-${openDropdownIndex}`);
+                if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) {
+                    dd.classList.add('hidden');
+                    openDropdownIndex = null;
+                }
+            }
+        });
+
+        function selectPreset(index, type) {
+            mandaps[index].type = type;
+            mandaps[index].rate = MANDAP_TYPES[type];
+            document.getElementById(`dropdown-${index}`).classList.add('hidden');
+            openDropdownIndex = null;
+            renderMandapRows(); 
+            calcMandapRow(index);
+        }
+
         function renderMandapRows() {
             const container = document.getElementById('mandap-list-container'); container.innerHTML = '';
             mandaps.forEach((m, index) => {
                 const div = document.createElement('div'); div.className = "bg-blue-50/50 rounded-xl p-3 border border-blue-100 relative mb-2";
-                let optionsHtml = ''; for (const [type, defaultRate] of Object.entries(MANDAP_TYPES)) { optionsHtml += `<option value="${type}" ${m.type === type ? 'selected' : ''}>${type}</option>`; }
-                div.innerHTML = `<div class="flex justify-between items-start mb-2"><div class="flex-1 mr-2"><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block">Type</label><select onchange="updateMandapType(${index}, this.value)" class="w-full bg-white border border-gray-200 rounded-lg p-1 text-xs font-bold text-gray-700 outline-none focus:border-blue-400">${optionsHtml}</select></div><button onclick="removeMandapRow(${index})" class="text-red-300 hover:text-red-500 p-1 no-print"><i class="fas fa-trash-alt"></i></button></div><div class="grid grid-cols-4 gap-2 items-end"><div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block">L (ft)</label><input type="number" value="${m.l}" oninput="updateMandapVal(${index}, 'l', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div><div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block">W (ft)</label><input type="number" value="${m.w}" oninput="updateMandapVal(${index}, 'w', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div><div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block">Rate/sqft</label><input type="number" value="${m.rate}" oninput="updateMandapVal(${index}, 'rate', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div><div><label class="text-[10px] font-bold text-blue-300 uppercase pl-1 block text-right">Amount</label><div class="w-full p-2 text-right text-sm font-bold text-blue-700 bg-blue-100/50 rounded-lg">₹ <span id="mandap-total-${index}">${m.total}</span></div></div></div>`;
+                
+                let dropdownItems = '';
+                for (const [type, _] of Object.entries(MANDAP_TYPES)) {
+                    dropdownItems += `<div onclick="selectPreset(${index}, '${type}')" class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm font-medium text-gray-700">${type}</div>`;
+                }
+
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-2 relative">
+                        <div class="flex-1 mr-2 relative">
+                            <label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center no-print">Type</label>
+                            
+                            <div class="flex items-center gap-1 mandap-input-group no-print">
+                                <input type="text" value="${m.type}" oninput="updateMandapTypeInput(${index}, this.value)" class="flex-1 bg-white border border-gray-200 rounded-lg p-1 text-xs font-bold text-gray-700 outline-none focus:border-blue-400 text-center" placeholder="Name">
+                                <button onclick="toggleDropdown(${index})" class="bg-white border border-gray-200 rounded-lg px-2 py-1 hover:bg-gray-50 focus:outline-none">
+                                    <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                                </button>
+                            </div>
+
+                            <div id="dropdown-${index}" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-20 overflow-hidden no-print">
+                                ${dropdownItems}
+                            </div>
+
+                            <span class="mandap-text-print hidden">${m.type}</span>
+                        </div>
+                        <button onclick="removeMandapRow(${index})" class="text-red-300 hover:text-red-500 p-1 no-print"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 items-end">
+                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">L (ft)</label><input type="number" value="${m.l}" oninput="updateMandapVal(${index}, 'l', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
+                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">W (ft)</label><input type="number" value="${m.w}" oninput="updateMandapVal(${index}, 'w', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
+                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">Rate/sqft</label><input type="number" value="${m.rate}" oninput="updateMandapVal(${index}, 'rate', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
+                        <div><label class="text-[10px] font-bold text-blue-300 uppercase pl-1 block text-right">Amount</label><div class="w-full p-2 text-right text-sm font-bold text-blue-700 bg-blue-100/50 rounded-lg">₹ <span id="mandap-total-${index}">${m.total}</span></div></div>
+                    </div>
+                `;
                 container.appendChild(div);
             });
         }
-        function updateMandapType(index, newType) { mandaps[index].type = newType; mandaps[index].rate = MANDAP_TYPES[newType]; renderMandapRows(); calcMandapRow(index); }
+
+        function updateMandapTypeInput(index, val) {
+            mandaps[index].type = val;
+            const printSpan = document.querySelectorAll('.mandap-text-print')[index];
+            if(printSpan) printSpan.innerText = val;
+        }
+
         function updateMandapVal(index, field, val) { mandaps[index][field] = val; calcMandapRow(index); }
         function calcMandapRow(index) { const m = mandaps[index]; const l = parseFloat(m.l) || 0; const w = parseFloat(m.w) || 0; const rate = parseFloat(m.rate) || 0; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; const area = l * w; const total = Math.round(area * rate * globalDays); m.total = total; const totalEl = document.getElementById(`mandap-total-${index}`); if(totalEl) totalEl.innerText = total; recalcTotals(); }
         function autoCalcAllMandaps() { mandaps.forEach((_, i) => calcMandapRow(i)); }
@@ -482,8 +543,20 @@
         function calcDays() { const startStr = document.getElementById('start-date').value; const endStr = document.getElementById('end-date').value; if(startStr && endStr) { const diffTime = new Date(endStr) - new Date(startStr); let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; if (diffDays < 1) diffDays = 1; document.getElementById('total-days').innerText = diffDays; document.getElementById('print-total-days').innerText = diffDays; updatePrintDates(); items.forEach(item => item.days = diffDays); renderTableRows(); autoCalcAllMandaps(); } }
         function updatePrintDates() { const s = new Date(document.getElementById('start-date').value); const e = new Date(document.getElementById('end-date').value); document.getElementById('print-start-date').innerText = s.toLocaleDateString('en-GB'); document.getElementById('print-end-date').innerText = e.toLocaleDateString('en-GB'); }
         
-        function printQuotation() { const doc = document.documentElement; doc.classList.add('quotation-mode'); doc.classList.remove('invoice-mode'); document.getElementById('print-doc-type').innerText = "कोटेशन"; window.print(); }
+        function preparePrint() {
+            const custName = document.getElementById('cust-name').value || "Bill";
+            const dateStr = new Date().toISOString().split('T')[0];
+            document.title = `${custName}_${dateStr}`;
+            document.getElementById('print-footer-custom').innerText = document.getElementById('footer-text-input').value;
+        }
+
+        function printQuotation() { 
+            preparePrint();
+            const doc = document.documentElement; doc.classList.add('quotation-mode'); doc.classList.remove('invoice-mode'); document.getElementById('print-doc-type').innerText = "कोटेशन"; window.print(); 
+        }
+        
         async function saveAndPrintBill() {
+            preparePrint();
             const custName = document.getElementById('cust-name').value; if (!custName) { showToast("Enter Customer Name", "error"); return; }
             const doc = document.documentElement; doc.classList.add('invoice-mode'); doc.classList.remove('quotation-mode'); document.getElementById('print-doc-type').innerText = "इन्व्हॉइस";
             const btn = document.getElementById('btn-save-print'); const originalText = btn.innerHTML; const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL; 
@@ -492,7 +565,12 @@
             if (scriptUrl) {
                 btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Saving...'; setTimeout(triggerPrint, 2500); 
                 let detailsArray = [];
-                mandaps.forEach(m => { if (m.total > 0) { detailsArray.push(`MANDAP [${m.type}]: ${m.l}x${m.w}ft @${m.rate} (Rs ${m.total})`); } });
+                mandaps.forEach(m => { 
+                    if (m.total > 0) { 
+                        const area = (parseFloat(m.l) || 0) * (parseFloat(m.w) || 0);
+                        detailsArray.push(`MANDAP [${m.type}]: ${m.l}x${m.w}ft (${area} sq.ft) @${m.rate} (Rs ${m.total})`); 
+                    } 
+                });
                 items.forEach(i => { if(i.qty > 0) { detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d`); } });
                 const finalDetailsString = detailsArray.join('\n');
                 const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText, paid: document.getElementById('paid-amount').value || 0 };
@@ -500,6 +578,7 @@
             } else { showToast("Script URL Missing", "error"); triggerPrint(); }
         }
 
+        // --- Common & Settings ---
         function switchTab(tab) {
             const newView = document.getElementById('view-new-bill'); const searchView = document.getElementById('view-search'); const calcView = document.getElementById('view-pipe-calc');
             const fab = document.getElementById('fab-container'); const btnNew = document.getElementById('tab-new'); const btnSearch = document.getElementById('tab-search'); const btnCalc = document.getElementById('tab-calc');
@@ -518,21 +597,14 @@
             if(type === 'search' && !query && !dateVal) { showToast("Enter text or pick date", "error"); return; }
             resultDiv.innerHTML = '<div class="text-center mt-12"><i class="fas fa-circle-notch fa-spin text-3xl text-primary mb-3"></i><p class="text-gray-500 font-medium">Fetching Records...</p></div>';
             
-            // If specific search, use query logic. If "recent" (History tab), use recent param
             let url = `${scriptUrl}?q=${encodeURIComponent(query)}&date=${dateVal}`; 
             if(type === 'recent') url = `${scriptUrl}?type=recent&ts=${Date.now()}`;
 
             try {
                 const response = await fetch(url); let data = await response.json();
-                
-                // --- FIX: Sort DESCENDING (Newest first) explicit based on RowIndex ---
-                // Apps Script now returns correct subset, but we ensure display order is correct here too.
                 data.sort((a, b) => (b.rowIndex || 0) - (a.rowIndex || 0));
                 
-                if (type === 'recent') {
-                    // Apps Script already slices, but safety check
-                    data = data.slice(0, 10);
-                }
+                if (type === 'recent') { data = data.slice(0, 10); }
 
                 resultDiv.innerHTML = '';
                 if(data.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-400 mt-12 py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200"><i class="far fa-folder-open text-4xl mb-2"></i><br>No records found</div>'; return; }
@@ -554,7 +626,7 @@
         function updateDefaultItem(i, f, v) { if(f==='price') globalDefaults[i][f]=parseFloat(v)||0; else globalDefaults[i][f]=v; }
         function addSettingsRow() { globalDefaults.push({ id: Date.now(), name: 'New Item', price: 0 }); renderSettingsList(); }
         function removeSettingsRow(i) { globalDefaults.splice(i, 1); renderSettingsList(); }
-        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); const gstin = document.getElementById('shop-gstin').value; localStorage.setItem('shopGstin', gstin); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(gstin); toggleSettings(); showToast("Settings Saved!", "success"); }
+        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); localStorage.setItem('shopGstin', document.getElementById('shop-gstin').value); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(document.getElementById('shop-gstin').value); toggleSettings(); showToast("Settings Saved!", "success"); }
         function openPaymentModal(row) { currentPaymentRow = row; document.getElementById('modal-payment-amount').value = ''; const m = document.getElementById('payment-modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.getElementById('modal-payment-amount').focus(); }
         function closePaymentModal() { const m = document.getElementById('payment-modal'); m.classList.add('hidden'); m.classList.remove('flex'); currentPaymentRow = null; }
         function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 transition-all duration-300 min-w-[280px] justify-center text-white font-medium " + (type === 'success' ? 'bg-secondary' : type === 'error' ? 'bg-red-500' : 'bg-gray-900'); i.className = type === 'success' ? "fas fa-check-circle" : type === 'error' ? "fas fa-exclamation-circle" : "fas fa-info-circle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
@@ -572,8 +644,8 @@
             lines.forEach(line => {
                 if (line.includes('MANDAP')) { 
                     const match = line.match(/MANDAP \[(.*?)\]: (\d+)x(\d+)ft @(\d+) \(Rs (\d+)\)/);
-                    if(match) { mandaps.push({ id: Date.now() + Math.random(), type: match[1], l: match[2], w: match[3], rate: parseFloat(match[4]), total: parseFloat(match[5]) }); } 
-                    else { const oldMatch = line.match(/MANDAP: (\d+)x(\d+)ft \(Rs (\d+)\)/); if (oldMatch) { mandaps.push({ id: Date.now() + Math.random(), type: 'Normal', l: oldMatch[1], w: oldMatch[2], rate: 15, total: parseFloat(oldMatch[3]) }); } }
+                    if(match) { mandaps.push({ id: Date.now() + Math.random(), type: match[1], l: match[2], w: match[3], rate: parseFloat(match[4]), total: parseFloat(match[5]), isCustom: false }); } 
+                    else { const oldMatch = line.match(/MANDAP: (\d+)x(\d+)ft \(Rs (\d+)\)/); if (oldMatch) { mandaps.push({ id: Date.now() + Math.random(), type: 'Normal', l: oldMatch[1], w: oldMatch[2], rate: 15, total: parseFloat(oldMatch[3]), isCustom: false }); } }
                 } else { const parts = line.split(':'); if(parts.length > 1) { const name = parts[0].trim(); const nums = parts[1].match(/(\d+)pcs x (\d+)d/); if(nums) { const foundItem = items.find(i => i.name === name); if(foundItem) { foundItem.qty = parseInt(nums[1]); foundItem.days = parseInt(nums[2]); } else { items.push({ id: Date.now(), name: name, price: 0, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); } } } }
             });
             renderMandapRows(); document.getElementById('gst-toggle').checked = false; switchTab('new'); renderTableRows(); showToast("Invoice Loaded", "success");
