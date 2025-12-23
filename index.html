@@ -45,56 +45,139 @@
         /* === PRINT STYLES === */
         @media print {
             @page { size: A4; margin: 5mm; }
-            html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
-            .min-h-screen { min-height: 0 !important; height: auto !important; }
-            .pb-24 { padding-bottom: 0 !important; }
-            body { background: white; font-family: 'Noto Sans Devanagari', sans-serif; color: black; }
             
-            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs { display: none !important; }
+            /* RESET */
+            html, body { 
+                height: auto !important; 
+                min-height: 0 !important; 
+                overflow: visible !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                background: white !important; 
+                font-family: 'Noto Sans Devanagari', sans-serif !important; 
+                color: black !important; 
+                display: block !important; 
+            }
             
-            #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; }
-            .print-header-marathi { display: block !important; margin-bottom: 5px; font-family: 'Noto Sans Devanagari', sans-serif; }
+            /* Hide Screen Elements */
+            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print { display: none !important; }
             
-            /* RED HEADER */
-            .title-main { font-size: 26pt; font-weight: 900; text-align: center; line-height: 1.1; margin-bottom: 5px; padding-top: 5px; color: #FF4B33 !important; }
-            .proprietor-box { text-align: right; font-weight: 700; font-size: 11pt; line-height: 1.3; padding: 0 5mm; margin-bottom: 2px; margin-left: auto; color: #FF4B33 !important; }
-            .desc-row { text-align: center; font-size: 11pt; font-weight: 700; margin-bottom: 2px; color: #FF4B33 !important; }
-            .address-row { text-align: center; font-size: 10pt; font-weight: 600; margin-bottom: 2px; color: #FF4B33 !important; }
-            .gstn-row { text-align: center; font-size: 9pt; font-weight: 600; margin-bottom: 8px; color: #FF4B33 !important; }
-            .meta-box { border-top: 1.5pt solid #FF4B33 !important; border-bottom: 1.5pt solid #FF4B33 !important; display: flex; justify-content: space-between; align-items: center; padding: 5px 5mm; font-weight: 700; font-size: 11pt; margin-bottom: 10px; color: #FF4B33 !important; }
-            .doc-type-label { text-align: center; font-weight: 800; font-size: 12pt; border: 1.5pt solid #FF4B33 !important; padding: 2px 15px; border-radius: 4px; display: inline-block; background: white; color: #FF4B33 !important; }
+            /* Container Reset */
+            #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; }
+            #view-new-bill { padding-bottom: 0 !important; display: block !important; }
+            
+            /* --- HEADER LAYOUT --- */
+            .print-header-marathi { display: block !important; margin-bottom: 0px; padding-top: 10px; }
+            
+            .title-main { 
+                font-size: 26pt; 
+                font-weight: 900; 
+                text-align: center; 
+                line-height: 1; 
+                margin-bottom: 5px; 
+                color: #FF4B33 !important; 
+            }
+            
+            /* Header Grid for Alignment */
+            .header-grid {
+                display: grid;
+                grid-template-columns: 20% 60% 20%; 
+                font-size: 10pt;
+                font-weight: 700;
+                color: #FF4B33 !important;
+                line-height: 1.3;
+            }
+            
+            .h-center { text-align: center; }
+            .h-right { text-align: right; white-space: nowrap; }
+            
+            /* Meta Box */
+            .meta-box { border-top: 1.5pt solid #FF4B33 !important; border-bottom: 1.5pt solid #FF4B33 !important; display: flex; justify-content: space-between; align-items: center; padding: 2px 5mm; font-weight: 700; font-size: 10pt; margin-bottom: 5px; color: #FF4B33 !important; margin-top: 5px; }
+            .doc-type-label { text-align: center; font-weight: 800; font-size: 11pt; border: 1.5pt solid #FF4B33 !important; padding: 0px 10px; border-radius: 4px; display: inline-block; background: white; color: #FF4B33 !important; }
 
+            /* Content - Force Black */
             .print-table-container, .print-table-container * { color: black !important; }
-            .quotation-mode .hide-on-quotation { display: none !important; visibility: hidden; }
-            .invoice-mode .hide-on-invoice { display: none !important; }
+            .print-table-container { padding: 0 5mm; }
+            
+            /* Separator Line */
+            .print-separator { 
+                border-top: 1px solid black !important; 
+                margin: 5px 0 8px 0 !important; 
+                width: 100%; 
+                height: 1px;
+                display: none; /* JS toggles 'visible' class */
+            }
+            .print-separator.visible { display: block !important; }
 
-            .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; padding: 0 5mm; }
-            .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
-            input, select { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; font-weight: 600; font-size: 11pt; color: black !important; }
+            /* Inputs */
+            input, select { 
+                border: none !important; 
+                background: transparent !important; 
+                padding: 0 !important; 
+                height: auto !important; 
+                width: 100% !important; 
+                font-weight: 600; 
+                font-size: 10pt; 
+                color: black !important; 
+                margin: 0 !important; 
+                box-shadow: none !important;
+            }
             input::-webkit-calendar-picker-indicator { display: none !important; }
             
+            /* Mandap specific */
             .mandap-select-print { display: none !important; }
-            .mandap-text-print { display: inline-block !important; font-weight: 700; }
+            .mandap-text-print { display: inline-block !important; font-weight: 700; color: black !important; }
+            .mandap-row-container { background: transparent !important; border: none !important; padding: 0 !important; margin-bottom: 2px !important; border-radius: 0 !important; }
             
-            .print-table-container { padding: 0 5mm; }
-            table { width: 100% !important; border-collapse: collapse; margin-top: 5px; }
-            th { border-top: 1pt solid black; border-bottom: 1pt solid black; text-align: center; padding: 4px; font-size: 10pt; font-weight: 800; color: black !important; }
-            td { border-bottom: 0.5pt solid #ddd; padding: 4px; font-size: 10pt; text-align: center; color: black !important; }
+            /* FORCE COLORS TO BLACK FOR DATA */
+            .mandap-label-print { color: black !important; }
+            .mandap-amount-print { color: black !important; }
+            .mandap-amount-box { color: black !important; background: transparent !important; }
+            
+            /* Tables */
+            table { width: 100% !important; border-collapse: collapse; margin-top: 2px; }
+            th { border-top: 1pt solid black; border-bottom: 1pt solid black; text-align: center; padding: 2px; font-size: 10pt; font-weight: 800; color: black !important; }
+            td { border-bottom: 0.5pt solid #ddd; padding: 2px; font-size: 10pt; text-align: center; color: black !important; }
             td:first-child, th:first-child { text-align: left; }
             td:last-child, th:last-child { text-align: right; }
 
-            .totals-section { float: right; width: 50%; margin-top: 10px; padding-right: 5mm; color: black !important; }
-            .totals-final { font-size: 14pt; font-weight: 800; margin-top: 5px; border-top: 1pt solid black; padding-top: 5px; }
+            /* Totals */
+            .totals-section { float: right; width: 50%; margin-top: 5px; padding-right: 5mm; color: black !important; }
+            .totals-final { 
+                font-size: 12pt !important; 
+                font-weight: 800 !important; 
+                margin-top: 5px !important; 
+                border-top: 1pt solid black !important; 
+                border-bottom: none !important;
+                border-left: none !important;
+                border-right: none !important;
+                padding-top: 5px !important; 
+                color: black !important; 
+                background: transparent !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            .totals-final span { color: black !important; }
+            .text-primary { color: black !important; } /* Force primary text to black in print */
             
-            .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 20px; color: black !important; clear: both; }
-            .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 10pt; white-space: pre-wrap; }
+            /* Footer Note */
+            .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 15px; color: black !important; clear: both; display: block !important; }
+            .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 9pt; white-space: pre-wrap; }
             
-            .show-print { display: block !important; } .hide-print { display: none !important; }
+            /* Utility */
+            .screen-only { display: none !important; }
+            .print-only { display: inline-block !important; color: black !important; font-weight: 700; } 
+            
+            .show-print { display: block !important; } 
+            .hide-print { display: none !important; }
+            .quotation-mode .hide-on-quotation { display: none !important; }
+            .invoice-mode .hide-on-invoice { display: none !important; }
+            .hidden { display: none !important; }
         }
-        .show-print, .print-header-marathi, .mandap-text-print { display: none; }
+        .show-print, .print-header-marathi, .mandap-text-print, .print-separator { display: none; }
+        .screen-only { display: block; }
+        .print-only { display: none; }
         
-        /* History Tab Styles */
         .tab-btn-active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
         .tab-btn-inactive { background-color: white; color: #6b7280; border-color: #e5e7eb; }
     </style>
@@ -117,7 +200,6 @@
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Google Sheet URL</label>
                     <input type="text" id="script-url" class="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" placeholder="Paste Web App URL...">
                 </div>
-                <!-- GSTIN Removed -->
                 <div class="pt-2 border-t border-gray-100">
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Default Items & Prices</label>
                     <div id="settings-items-list" class="space-y-2 mb-3"></div>
@@ -126,7 +208,7 @@
             </div>
             <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
                 <button onclick="toggleSettings()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg">Close</button>
-                <button onclick="saveSettings()" class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-lg shadow-lg">Save All</button>
+                <button id="btn-save-settings" onclick="saveSettings()" class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-lg shadow-lg flex items-center gap-2">Save All</button>
             </div>
         </div>
     </div>
@@ -190,7 +272,7 @@
             <div id="main-container" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
                 
                 <!-- VISUAL HEADER (Screen) -->
-                <div class="bg-gradient-to-r from-primary to-purple-700 p-6 text-white no-print">
+                <div class="bg-gradient-to-r from-primary to-purple-700 p-6 text-white no-print screen-header-gradient">
                     <div class="flex justify-between items-start">
                         <div>
                             <h2 class="text-2xl font-bold tracking-tight">Invoice</h2>
@@ -210,10 +292,25 @@
                 <!-- NEW PRINT HEADER (MARATHI) -->
                 <div class="print-header-marathi" id="print-header-section">
                     <div class="title-main">भुंबर बिछायत व डेकोरेशन ॲण्ड कॅटरर्स</div>
-                    <div class="proprietor-box"><div>प्रो.प्रा.सौरभ भुंबर</div><div>9823528733</div></div>
-                    <div class="desc-row">सर्व प्रकारचे डेकोरेशन तसेच ईव्हेन्ट मॅनेजमेन्टचे कामे केल्या जातील</div>
-                    <div class="address-row">गाडगे बाबा मार्केट, गाडगे नगर, अमरावती</div>
-                    <div class="gstn-row hide-on-quotation" id="print-gstin-box">GSTN NO 27BIWPB4912MIZS</div>
+                    
+                    <!-- 3-ROW HEADER GRID -->
+                    <div class="header-grid">
+                        <!-- Row 1 -->
+                        <div></div>
+                        <div></div>
+                        <div class="h-right">प्रो.प्रा.सौरभ भुंबर</div>
+
+                        <!-- Row 2 -->
+                        <div></div>
+                        <div class="h-center">सर्व प्रकारचे डेकोरेशन तसेच ईव्हेन्ट मॅनेजमेन्टचे कामे केल्या जातील</div>
+                        <div class="h-right">9823528733</div>
+
+                        <!-- Row 3 -->
+                        <div></div>
+                        <div class="h-center">गाडगे बाबा मार्केट, गाडगे नगर, अमरावती</div>
+                        <div class="h-right hide-on-quotation">GSTN NO 27BIWPB4912MIZS</div>
+                    </div>
+                    
                     <div class="meta-box">
                         <div class="w-1/3 text-left">जा.क्र.: <span id="print-id-text-marathi">...</span></div>
                         <div class="w-1/3 text-center"><div class="doc-type-label" id="print-doc-type">इन्व्हॉइस</div></div>
@@ -225,8 +322,18 @@
                     <!-- Customer & Dates -->
                     <div class="print-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div class="space-y-4 print-col">
-                            <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-primary group-focus-within:text-primary transition-colors">Customer Name</label><input type="text" id="cust-name" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
-                            <div class="relative group"><label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-gray-500 group-focus-within:text-primary transition-colors">Phone Number</label><input type="number" id="cust-phone" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm"></div>
+                            <div class="relative group">
+                                <label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-primary group-focus-within:text-primary transition-colors screen-only">Customer Name</label>
+                                <!-- Print Only Label -->
+                                <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Customer Name: </span>
+                                <input type="text" id="cust-name" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm">
+                            </div>
+                            <div class="relative group">
+                                <label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-gray-500 group-focus-within:text-primary transition-colors screen-only">Phone Number</label>
+                                <!-- Print Only Label -->
+                                <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Contact Number: </span>
+                                <input type="number" id="cust-phone" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm">
+                            </div>
                         </div>
                         <div class="print-col bg-yellow-50/50 p-4 rounded-xl border border-yellow-100 hide-print">
                             <div class="flex justify-between items-center mb-3"><label class="text-xs font-bold text-yellow-700 uppercase tracking-wider">Function Dates</label><span class="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Global</span></div>
@@ -236,12 +343,15 @@
                             </div>
                             <div class="mt-3 flex justify-end"><div class="text-xs font-bold text-gray-700 bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">Total: <span class="text-yellow-600 text-base" id="total-days">1</span> Days</div></div>
                         </div>
-                        <div class="show-print print-col">
-                            <strong>Duration:</strong> <span id="print-total-days">1</span> Days<br>
-                            From: <span id="print-start-date"></span><br>
-                            To: &nbsp;&nbsp;&nbsp;&nbsp;<span id="print-end-date"></span>
+                        <div class="show-print print-col" style="text-align: right;">
+                            <div style="margin-bottom: 2px;"><strong>From:</strong> <span id="print-start-date"></span></div>
+                            <div style="margin-bottom: 2px;"><strong>To:</strong> <span id="print-end-date"></span></div>
+                            <div style="font-size: 11pt;"><strong>Duration:</strong> <span id="print-total-days">1</span> Days</div>
                         </div>
                     </div>
+                    
+                    <!-- Line Separator (Visible only if Mandaps exist) -->
+                    <div id="print-mandap-separator" class="print-separator hidden"></div>
 
                     <!-- Mandap Section -->
                     <div class="mb-6">
@@ -345,6 +455,7 @@
 
     <script>
         const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzObEvXSCD2mF7QPCUGtIdcTZUlynPlcRAdbCW0Jkj09Qbv_bFZeus1FTtzL5UIli1YJg/exec"; 
+        const DEFAULT_GSTIN = "24585435642";
         
         let globalDefaults = []; 
         let items = [];
@@ -369,6 +480,9 @@
             if (!savedUrl && DEFAULT_SCRIPT_URL.trim() !== "") { localStorage.setItem('scriptUrl', DEFAULT_SCRIPT_URL); savedUrl = DEFAULT_SCRIPT_URL; }
             if (savedUrl) document.getElementById('script-url').value = savedUrl;
             
+            let gstin = localStorage.getItem('shopGstin');
+            if (!gstin) { gstin = DEFAULT_GSTIN; localStorage.setItem('shopGstin', gstin); } 
+            
             let storedItems = localStorage.getItem('defaultItems');
             if(storedItems) { globalDefaults = JSON.parse(storedItems); }
             initBillItems();
@@ -383,16 +497,40 @@
         };
 
         function handleGesture() { let xDiff = touchEndX - touchStartX; let yDiff = touchEndY - touchStartY; if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > 50) { if (xDiff > 0) { if (activeTab === 'calc') switchTab('new'); else if (activeTab === 'search') switchTab('calc'); } else { if (activeTab === 'new') switchTab('calc'); else if (activeTab === 'calc') switchTab('search'); } } }
-        function initBillItems() { items = []; } 
-        function updateGstinDisplay(val) { const disp = val ? `GSTIN: ${val}` : ''; document.getElementById('print-gstin-box').innerText = val ? `GSTN NO ${val}` : ''; document.getElementById('screen-gstin-display').innerText = disp; }
+        function initBillItems() { 
+             if (globalDefaults && globalDefaults.length > 0) {
+                 items = globalDefaults.map(i => ({ ...i, qty: 0, days: 1 })); 
+             } else {
+                 items = []; 
+             }
+        } 
+        function updateGstinDisplay(val) { /* GSTIN is static in print */ }
         
         function calculatePipes(l, w) { const l_unit = Math.ceil(l / 15); const w_unit = Math.ceil(w / 15); const vertical = (l_unit + 1) * (w_unit + 1); const horizontal = (2 * l_unit * w_unit) + l_unit + w_unit; return { v: vertical, h: horizontal }; }
         function calcDedicatedPipes() { const l = parseFloat(document.getElementById('calc-l').value) || 0; const w = parseFloat(document.getElementById('calc-w').value) || 0; if (l > 0 && w > 0) { const pipes = calculatePipes(l, w); const ceiling = Math.ceil(l/15) * Math.ceil(w/15); document.getElementById('res-v').innerText = pipes.v; document.getElementById('res-h').innerText = pipes.h; document.getElementById('res-c').innerText = ceiling; } else { document.getElementById('res-v').innerText = 0; document.getElementById('res-h').innerText = 0; document.getElementById('res-c').innerText = 0; } }
         function snapToGrid(input) { let val = parseFloat(input.value) || 0; if (val > 0 && val % 15 !== 0) { input.value = Math.round(val / 15) * 15; if(input.id.includes('calc')) calcDedicatedPipes(); } }
 
-        // --- MANDAP LOGIC WITH CUSTOM MODAL ---
-        function addMandapRow() { const id = Date.now(); mandaps.push({ id: id, type: 'Normal', l: '', w: '', rate: 15, total: 0, isCustom: false }); renderMandapRows(); }
-        function removeMandapRow(index) { mandaps.splice(index, 1); renderMandapRows(); recalcTotals(); }
+        function toggleMandapSeparator() {
+            const sep = document.getElementById('print-mandap-separator');
+            if (mandaps.length > 0) {
+                sep.classList.add('visible');
+            } else {
+                sep.classList.remove('visible');
+            }
+        }
+
+        function addMandapRow() { 
+            const id = Date.now(); 
+            mandaps.push({ id: id, type: 'Normal', l: '', w: '', rate: 15, total: 0, isCustom: false }); 
+            renderMandapRows(); 
+            toggleMandapSeparator();
+        }
+        function removeMandapRow(index) { 
+            mandaps.splice(index, 1); 
+            renderMandapRows(); 
+            recalcTotals(); 
+            toggleMandapSeparator();
+        }
         
         let openDropdownIndex = null;
         function toggleDropdown(index) {
@@ -414,7 +552,7 @@
         function renderMandapRows() {
             const container = document.getElementById('mandap-list-container'); container.innerHTML = '';
             mandaps.forEach((m, index) => {
-                const div = document.createElement('div'); div.className = "bg-blue-50/50 rounded-xl p-3 border border-blue-100 relative mb-2";
+                const div = document.createElement('div'); div.className = "bg-blue-50/50 rounded-xl p-3 border border-blue-100 relative mb-2 mandap-row-container";
                 let dropdownItems = ''; for (const [type, _] of Object.entries(MANDAP_TYPES)) { dropdownItems += `<div onclick="selectPreset(${index}, '${type}')" class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm font-medium text-gray-700">${type}</div>`; }
                 div.innerHTML = `
                     <div class="flex justify-between items-start mb-2 relative">
@@ -430,10 +568,10 @@
                         <button onclick="removeMandapRow(${index})" class="text-red-300 hover:text-red-500 p-1 no-print"><i class="fas fa-trash-alt"></i></button>
                     </div>
                     <div class="grid grid-cols-4 gap-2 items-end">
-                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">L (ft)</label><input type="number" value="${m.l}" oninput="updateMandapVal(${index}, 'l', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
-                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">W (ft)</label><input type="number" value="${m.w}" oninput="updateMandapVal(${index}, 'w', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
-                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center">Rate/sqft</label><input type="number" value="${m.rate}" oninput="updateMandapVal(${index}, 'rate', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
-                        <div><label class="text-[10px] font-bold text-blue-300 uppercase pl-1 block text-right">Amount</label><div class="w-full p-2 text-right text-sm font-bold text-blue-700 bg-blue-100/50 rounded-lg">₹ <span id="mandap-total-${index}">${m.total}</span></div></div>
+                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center mandap-label-print">L (ft)</label><input type="number" value="${m.l}" oninput="updateMandapVal(${index}, 'l', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
+                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center mandap-label-print">W (ft)</label><input type="number" value="${m.w}" oninput="updateMandapVal(${index}, 'w', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
+                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center mandap-label-print">Rate/sqft</label><input type="number" value="${m.rate}" oninput="updateMandapVal(${index}, 'rate', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
+                        <div><label class="text-[10px] font-bold text-blue-300 uppercase pl-1 block text-right mandap-label-print">Amount</label><div class="w-full p-2 text-right text-sm font-bold text-blue-700 bg-blue-100/50 rounded-lg mandap-amount-box">₹ <span class="mandap-amount-print" id="mandap-total-${index}">${m.total}</span></div></div>
                     </div>`;
                 container.appendChild(div);
             });
@@ -507,10 +645,16 @@
                 mandaps.forEach(m => { 
                     if (m.total > 0) { 
                         const area = (parseFloat(m.l) || 0) * (parseFloat(m.w) || 0);
+                        // SAVE ITEM PRICE IN DETAILS STRING
                         detailsArray.push(`MANDAP [${m.type}]: ${m.l}x${m.w}ft (${area} sq.ft) @${m.rate} (Rs ${m.total})`); 
                     } 
                 });
-                items.forEach(i => { if(i.qty > 0) { detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d`); } });
+                items.forEach(i => { 
+                    if(i.qty > 0) { 
+                        // SAVE ITEM PRICE IN DETAILS STRING
+                        detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d @${i.price}`); 
+                    } 
+                });
                 const finalDetailsString = detailsArray.join('\n');
                 
                 // Add docType to payload
@@ -602,10 +746,12 @@
                 if (isQuotation) {
                     // Quotations have Edit and Delete only (convert to bill by editing)
                     actionButtons = `<button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>
+                                     <button onclick="directPrint(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-print"></i> Print</button>
                                      <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button>`;
                 } else {
                     actionButtons = `<button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>
                                      ${!isPaid ? `<button onclick="openPaymentModal(${bill.rowIndex})" class="flex-1 py-2 bg-white text-green-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-plus"></i> Pay</button>` : ''}
+                                     <button onclick="directPrint(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-print"></i> Print</button>
                                      <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button>`;
                 }
 
@@ -622,6 +768,16 @@
                     </div>`;
                 resultDiv.insertAdjacentHTML('beforeend', html);
             });
+        }
+        
+        async function directPrint(rowIndex, dataStr) {
+            // Load data into edit mode temporarily
+            await editInvoice(rowIndex, dataStr);
+            // Wait slightly for DOM update then print
+            setTimeout(() => {
+                const docType = document.documentElement.classList.contains('quotation-mode') ? 'QUOTATION' : 'BILL';
+                saveAndPrintBill(docType); // Re-uses save function but effectively just reprints existing data since IDs match
+            }, 500);
         }
 
         async function performSearch(type = 'search') {
@@ -667,12 +823,41 @@
             const lines = data.details.split('\n');
             lines.forEach(line => {
                 if (line.includes('MANDAP')) { 
-                    const match = line.match(/MANDAP \[(.*?)\]: (\d+)x(\d+)ft @(\d+) \(Rs (\d+)\)/);
+                    // FIXED REGEX to handle flexible middle content like area
+                    const match = line.match(/MANDAP \[(.*?)\]: (\d+)x(\d+)ft.*?@(\d+) \(Rs (\d+)\)/);
                     if(match) { mandaps.push({ id: Date.now() + Math.random(), type: match[1], l: match[2], w: match[3], rate: parseFloat(match[4]), total: parseFloat(match[5]), isCustom: false }); } 
-                    else { const oldMatch = line.match(/MANDAP: (\d+)x(\d+)ft \(Rs (\d+)\)/); if (oldMatch) { mandaps.push({ id: Date.now() + Math.random(), type: 'Normal', l: oldMatch[1], w: oldMatch[2], rate: 15, total: parseFloat(oldMatch[3]), isCustom: false }); } }
-                } else { const parts = line.split(':'); if(parts.length > 1) { const name = parts[0].trim(); const nums = parts[1].match(/(\d+)pcs x (\d+)d/); if(nums) { const foundItem = items.find(i => i.name === name); if(foundItem) { foundItem.qty = parseInt(nums[1]); foundItem.days = parseInt(nums[2]); } else { items.push({ id: Date.now(), name: name, price: 0, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); } } } }
+                } else { 
+                    // Updated Regex to catch the rate @
+                    const parts = line.split(':'); 
+                    if(parts.length > 1) { 
+                        const name = parts[0].trim(); 
+                        // Match qty, days, and OPTIONAL rate
+                        const nums = parts[1].match(/(\d+)pcs x (\d+)d(?: @(\d+))?/); 
+                        if(nums) { 
+                            const foundItem = items.find(i => i.name === name); 
+                            // If rate (group 3) found, use it, else 0
+                            const rate = nums[3] ? parseFloat(nums[3]) : 0;
+                            if(foundItem) { 
+                                foundItem.qty = parseInt(nums[1]); 
+                                foundItem.days = parseInt(nums[2]); 
+                                foundItem.price = rate; 
+                            } else { 
+                                items.push({ id: Date.now(), name: name, price: rate, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); 
+                            } 
+                        } 
+                    } 
+                }
             });
             renderMandapRows(); document.getElementById('gst-toggle').checked = false; switchTab('new'); renderTableRows(); showToast("Invoice Loaded", "success");
+            
+            // Set Doc Type based on loaded data
+            if(data.docType === 'QUOTATION') {
+                document.documentElement.classList.add('quotation-mode');
+                document.documentElement.classList.remove('invoice-mode');
+            } else {
+                document.documentElement.classList.add('invoice-mode');
+                document.documentElement.classList.remove('quotation-mode');
+            }
         }
         function exitEditMode() { editingRowIndex = null; document.getElementById('edit-mode-bar').classList.add('hidden'); document.getElementById('cust-name').value = ""; document.getElementById('cust-phone').value = ""; items.forEach(i => { i.qty = 0; i.days = 1; }); mandaps = []; renderMandapRows(); document.getElementById('paid-amount').value = ''; renderTableRows(); showToast("Edit cancelled", "info"); }
     </script>
