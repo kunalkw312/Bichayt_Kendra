@@ -257,7 +257,17 @@
                         <div class="flex justify-between items-end mb-2 no-print"><h3 class="font-bold text-gray-800 text-base">Items</h3><span class="text-[10px] text-gray-400">Scroll ></span></div>
                         <div class="overflow-x-auto custom-scroll pb-2 border border-gray-100 rounded-xl">
                             <table class="w-full min-w-full">
-                                <thead class="bg-gray-50 border-b border-gray-100"><tr class="text-[10px] md:text-xs font-bold text-gray-400 uppercase text-left"><th class="p-2 pl-3 w-[40%]">Item</th><th class="p-2 text-center w-[15%]">Rate</th><th class="p-2 text-center w-[10%]">Qty</th><th class="p-2 text-center w-[10%] bg-yellow-50/50 text-yellow-600">Days</th><th class="p-2 text-right pr-3 w-[20%]">Total</th><th class="p-2 w-[5%] no-print"></th></tr></thead>
+                                <thead class="bg-gray-50 border-b border-gray-100">
+                                    <tr class="text-[10px] md:text-xs font-bold text-gray-400 uppercase text-left">
+                                        <th class="p-2 pl-3 w-[40%]">Item</th>
+                                        <!-- Swapped Qty and Rate Headers -->
+                                        <th class="p-2 text-center w-[10%]">Qty</th>
+                                        <th class="p-2 text-center w-[15%]">Rate</th>
+                                        <th class="p-2 text-center w-[10%] bg-yellow-50/50 text-yellow-600">Days</th>
+                                        <th class="p-2 text-right pr-3 w-[20%]">Total</th>
+                                        <th class="p-2 w-[5%] no-print"></th>
+                                    </tr>
+                                </thead>
                                 <tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody>
                             </table>
                         </div>
@@ -449,12 +459,16 @@
         }
         function recalcGrandTotalsOnly() { recalcTotals(); }
 
+        // --- Render Rows with Swapped Order ---
         function renderTableRows() {
             const tbody = document.getElementById('items-list'); tbody.innerHTML = '';
             items.forEach((item, index) => {
                 const itemTotal = item.price * item.qty * item.days; const tr = document.createElement('tr'); tr.className = 'group hover:bg-gray-50 transition-colors';
                 const priceVal = item.price === 0 ? '' : item.price; const qtyVal = item.qty === 0 ? '' : item.qty; const daysVal = item.days === 0 ? '' : item.days;
-                tr.innerHTML = `<td class="p-2 pl-3 text-gray-700 font-medium">${item.name}</td><td class="p-1 text-center"><input type="number" oninput="handleRowInput(${index}, 'price', this.value)" value="${priceVal}" class="w-full text-center bg-transparent border-b border-gray-100 focus:border-primary outline-none p-1" placeholder="0"></td><td class="p-1 text-center"><input type="number" oninput="handleRowInput(${index}, 'qty', this.value)" value="${qtyVal}" class="w-full text-center bg-gray-100 rounded-lg p-1 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none font-bold text-primary" placeholder="0"></td><td class="p-1 text-center bg-yellow-50/50"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${daysVal}" class="w-full text-center bg-transparent border-b border-yellow-200 focus:border-yellow-500 outline-none font-bold text-yellow-700 p-1" placeholder="0"></td><td class="p-2 pr-3 text-right font-bold text-gray-800">₹ <span id="item-total-${index}">${itemTotal}</span></td><td class="no-print text-center p-1"><button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 w-6 h-6 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors"><i class="fas fa-trash-alt text-xs"></i></button></td>`;
+                tr.innerHTML = `<td class="p-2 pl-3 text-gray-700 font-medium">${item.name}</td>
+                <td class="p-1 text-center"><input type="number" oninput="handleRowInput(${index}, 'qty', this.value)" value="${qtyVal}" class="w-full text-center bg-gray-100 rounded-lg p-1 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none font-bold text-primary" placeholder="0"></td>
+                <td class="p-1 text-center"><input type="number" oninput="handleRowInput(${index}, 'price', this.value)" value="${priceVal}" class="w-full text-center bg-transparent border-b border-gray-100 focus:border-primary outline-none p-1" placeholder="0"></td>
+                <td class="p-1 text-center bg-yellow-50/50"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${daysVal}" class="w-full text-center bg-transparent border-b border-yellow-200 focus:border-yellow-500 outline-none font-bold text-yellow-700 p-1" placeholder="0"></td><td class="p-2 pr-3 text-right font-bold text-gray-800">₹ <span id="item-total-${index}">${itemTotal}</span></td><td class="no-print text-center p-1"><button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 w-6 h-6 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors"><i class="fas fa-trash-alt text-xs"></i></button></td>`;
                 tbody.appendChild(tr);
             }); recalcTotals();
         }
