@@ -164,6 +164,12 @@
             .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 15px; color: black !important; clear: both; display: block !important; }
             .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 9pt; white-space: pre-wrap; }
             
+            /* Shift Duration Block */
+            .duration-block-print {
+                text-align: right;
+                transform: translateX(5.5px); /* Adjusted as requested */
+            }
+
             /* Utility */
             .screen-only { display: none !important; }
             .print-only { display: inline-block !important; color: black !important; font-weight: 700; } 
@@ -202,12 +208,8 @@
                 </div>
                 <div class="pt-2 border-t border-gray-100">
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Default Items & Prices</label>
-                    <!-- CONTAINER FOR SETTINGS ITEMS -->
                     <div id="settings-items-list" class="space-y-2 mb-3"></div>
-                    
-                    <button onclick="addSettingsRow()" class="text-sm text-primary font-bold hover:text-primaryDark flex items-center gap-1 mt-2">
-                        <i class="fas fa-plus-circle"></i> Add New Default Item
-                    </button>
+                    <button onclick="addSettingsRow()" class="text-sm text-primary font-bold hover:text-primaryDark flex items-center gap-1"><i class="fas fa-plus-circle"></i> Add New Default Item</button>
                 </div>
             </div>
             <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
@@ -347,7 +349,7 @@
                             </div>
                             <div class="mt-3 flex justify-end"><div class="text-xs font-bold text-gray-700 bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">Total: <span class="text-yellow-600 text-base" id="total-days">1</span> Days</div></div>
                         </div>
-                        <div class="show-print print-col" style="text-align: right;">
+                        <div class="show-print print-col duration-block-print">
                             <div style="margin-bottom: 2px;"><strong>From:</strong> <span id="print-start-date"></span></div>
                             <div style="margin-bottom: 2px;"><strong>To:</strong> <span id="print-end-date"></span></div>
                             <div style="font-size: 11pt;"><strong>Duration:</strong> <span id="print-total-days">1</span> Days</div>
@@ -501,8 +503,6 @@
         };
 
         function handleGesture() { let xDiff = touchEndX - touchStartX; let yDiff = touchEndY - touchStartY; if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > 50) { if (xDiff > 0) { if (activeTab === 'calc') switchTab('new'); else if (activeTab === 'search') switchTab('calc'); } else { if (activeTab === 'new') switchTab('calc'); else if (activeTab === 'calc') switchTab('search'); } } }
-        
-        // --- FIX: Ensure new bills start with saved defaults ---
         function initBillItems() { 
              if (globalDefaults && globalDefaults.length > 0) {
                  // Clone items to avoid reference issues
@@ -814,33 +814,7 @@
         function updateDefaultItem(i, f, v) { if(f==='price') globalDefaults[i][f]=parseFloat(v)||0; else globalDefaults[i][f]=v; }
         function addSettingsRow() { globalDefaults.push({ id: Date.now(), name: 'New Item', price: 0 }); renderSettingsList(); }
         function removeSettingsRow(i) { globalDefaults.splice(i, 1); renderSettingsList(); }
-        function saveSettings() { 
-            const btn = document.getElementById('btn-save-settings');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
-            btn.disabled = true;
-
-            localStorage.setItem('scriptUrl', document.getElementById('script-url').value); 
-            localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); 
-
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
-                btn.classList.add('bg-green-600');
-                btn.classList.remove('bg-primary');
-                
-                setTimeout(() => {
-                    toggleSettings(); 
-                    showToast("Settings Saved!", "success");
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
-                    btn.classList.remove('bg-green-600');
-                    btn.classList.add('bg-primary');
-                    
-                    // REFRESH NEW BILL IF EMPTY
-                    if(document.getElementById('items-list').rows.length === 0) initBillItems();
-                }, 800);
-            }, 500);
-        }
+        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); localStorage.setItem('shopGstin', document.getElementById('shop-gstin').value); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(document.getElementById('shop-gstin').value); toggleSettings(); showToast("Settings Saved!", "success"); }
         function openPaymentModal(row) { currentPaymentRow = row; document.getElementById('modal-payment-amount').value = ''; const m = document.getElementById('payment-modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.getElementById('modal-payment-amount').focus(); }
         function closePaymentModal() { const m = document.getElementById('payment-modal'); m.classList.add('hidden'); m.classList.remove('flex'); currentPaymentRow = null; }
         function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 transition-all duration-300 min-w-[280px] justify-center text-white font-medium " + (type === 'success' ? 'bg-secondary' : type === 'error' ? 'bg-red-500' : 'bg-gray-900'); i.className = type === 'success' ? "fas fa-check-circle" : type === 'error' ? "fas fa-exclamation-circle" : "fas fa-info-circle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
