@@ -99,6 +99,18 @@
             .print-table-container, .print-table-container * { color: black !important; }
             .print-table-container { padding: 0 5mm; }
             
+            /* FORCE 2 COLUMNS ON MOBILE PRINT */
+            .print-grid { 
+                display: grid !important; 
+                grid-template-columns: 1fr 1fr !important; 
+                gap: 10px !important; 
+                margin-bottom: 10px !important; 
+                padding: 0 5mm !important; 
+            }
+
+            .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+            .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
+            
             /* Separator Line */
             .print-separator { 
                 border-top: 1px solid black !important; 
@@ -164,12 +176,6 @@
             .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 15px; color: black !important; clear: both; display: block !important; }
             .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 9pt; white-space: pre-wrap; }
             
-            /* Shift Duration Block */
-            .duration-block-print {
-                text-align: right;
-                transform: translateX(5.5px); /* Adjusted as requested */
-            }
-
             /* Utility */
             .screen-only { display: none !important; }
             .print-only { display: inline-block !important; color: black !important; font-weight: 700; } 
@@ -349,7 +355,7 @@
                             </div>
                             <div class="mt-3 flex justify-end"><div class="text-xs font-bold text-gray-700 bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">Total: <span class="text-yellow-600 text-base" id="total-days">1</span> Days</div></div>
                         </div>
-                        <div class="show-print print-col duration-block-print">
+                        <div class="show-print print-col" style="text-align: right;">
                             <div style="margin-bottom: 2px;"><strong>From:</strong> <span id="print-start-date"></span></div>
                             <div style="margin-bottom: 2px;"><strong>To:</strong> <span id="print-end-date"></span></div>
                             <div style="font-size: 11pt;"><strong>Duration:</strong> <span id="print-total-days">1</span> Days</div>
@@ -511,13 +517,15 @@
                  items = []; 
              }
         } 
-        
-        function updateGstinDisplay(val) { const disp = val ? `GSTIN: ${val}` : ''; document.getElementById('print-gstin-box').innerText = val ? `GSTN NO ${val}` : ''; document.getElementById('screen-gstin-display').innerText = disp; }
+        function updateGstinDisplay(val) { /* GSTIN is static in print */ }
         
         function calculatePipes(l, w) { const l_unit = Math.ceil(l / 15); const w_unit = Math.ceil(w / 15); const vertical = (l_unit + 1) * (w_unit + 1); const horizontal = (2 * l_unit * w_unit) + l_unit + w_unit; return { v: vertical, h: horizontal }; }
         function calcDedicatedPipes() { const l = parseFloat(document.getElementById('calc-l').value) || 0; const w = parseFloat(document.getElementById('calc-w').value) || 0; if (l > 0 && w > 0) { const pipes = calculatePipes(l, w); const ceiling = Math.ceil(l/15) * Math.ceil(w/15); document.getElementById('res-v').innerText = pipes.v; document.getElementById('res-h').innerText = pipes.h; document.getElementById('res-c').innerText = ceiling; } else { document.getElementById('res-v').innerText = 0; document.getElementById('res-h').innerText = 0; document.getElementById('res-c').innerText = 0; } }
         function snapToGrid(input) { let val = parseFloat(input.value) || 0; if (val > 0 && val % 15 !== 0) { input.value = Math.round(val / 15) * 15; if(input.id.includes('calc')) calcDedicatedPipes(); } }
 
+        // --- MANDAP LOGIC WITH CUSTOM MODAL ---
+        
+        // TOGGLE SEPARATOR LINE IF MANDAP EXISTS
         function toggleMandapSeparator() {
             const sep = document.getElementById('print-mandap-separator');
             if (mandaps.length > 0) {
@@ -673,9 +681,11 @@
                     showToast(editingRowIndex ? "Updated!" : "Saved!", "success"); 
                     
                     // --- REFRESH AFTER SAVE ---
-                    setTimeout(fetchRecent, 1000); 
+                    setTimeout(fetchRecent, 5000); 
 
-                    if(editingRowIndex) exitEditMode(); 
+                    // Delay reset to allow printing
+                     setTimeout(() => { if(editingRowIndex) exitEditMode(); }, 5000);
+
                 } catch (error) { console.error(error); showToast("Network Error", "error"); triggerPrint(); }
             } else { showToast("Script URL Missing", "error"); triggerPrint(); }
         }
@@ -814,7 +824,34 @@
         function updateDefaultItem(i, f, v) { if(f==='price') globalDefaults[i][f]=parseFloat(v)||0; else globalDefaults[i][f]=v; }
         function addSettingsRow() { globalDefaults.push({ id: Date.now(), name: 'New Item', price: 0 }); renderSettingsList(); }
         function removeSettingsRow(i) { globalDefaults.splice(i, 1); renderSettingsList(); }
-        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); localStorage.setItem('shopGstin', document.getElementById('shop-gstin').value); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(document.getElementById('shop-gstin').value); toggleSettings(); showToast("Settings Saved!", "success"); }
+        function saveSettings() { 
+            const btn = document.getElementById('btn-save-settings');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            localStorage.setItem('scriptUrl', document.getElementById('script-url').value); 
+            // Save logic
+            localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); 
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                btn.classList.add('bg-green-600');
+                btn.classList.remove('bg-primary');
+                
+                setTimeout(() => {
+                    toggleSettings(); 
+                    showToast("Settings Saved!", "success");
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-primary');
+                    
+                    // REFRESH NEW BILL IF EMPTY
+                    if(document.getElementById('items-list').rows.length === 0) initBillItems();
+                }, 800);
+            }, 500);
+        }
         function openPaymentModal(row) { currentPaymentRow = row; document.getElementById('modal-payment-amount').value = ''; const m = document.getElementById('payment-modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.getElementById('modal-payment-amount').focus(); }
         function closePaymentModal() { const m = document.getElementById('payment-modal'); m.classList.add('hidden'); m.classList.remove('flex'); currentPaymentRow = null; }
         function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 transition-all duration-300 min-w-[280px] justify-center text-white font-medium " + (type === 'success' ? 'bg-secondary' : type === 'error' ? 'bg-red-500' : 'bg-gray-900'); i.className = type === 'success' ? "fas fa-check-circle" : type === 'error' ? "fas fa-exclamation-circle" : "fas fa-info-circle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
