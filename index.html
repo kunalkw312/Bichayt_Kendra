@@ -105,7 +105,7 @@
                 margin: 5px 0 8px 0 !important; 
                 width: 100%; 
                 height: 1px;
-                display: none; /* JS toggles 'visible' class */
+                display: none; 
             }
             .print-separator.visible { display: block !important; }
 
@@ -158,7 +158,7 @@
                 box-shadow: none !important;
             }
             .totals-final span { color: black !important; }
-            .text-primary { color: black !important; } /* Force primary text to black in print */
+            .text-primary { color: black !important; } 
             
             /* Footer Note */
             .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 15px; color: black !important; clear: both; display: block !important; }
@@ -202,13 +202,17 @@
                 </div>
                 <div class="pt-2 border-t border-gray-100">
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Default Items & Prices</label>
+                    <!-- CONTAINER FOR SETTINGS ITEMS -->
                     <div id="settings-items-list" class="space-y-2 mb-3"></div>
-                    <button onclick="addSettingsRow()" class="text-sm text-primary font-bold hover:text-primaryDark flex items-center gap-1"><i class="fas fa-plus-circle"></i> Add New Default Item</button>
+                    
+                    <button onclick="addSettingsRow()" class="text-sm text-primary font-bold hover:text-primaryDark flex items-center gap-1 mt-2">
+                        <i class="fas fa-plus-circle"></i> Add New Default Item
+                    </button>
                 </div>
             </div>
             <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
                 <button onclick="toggleSettings()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg">Close</button>
-                <button id="btn-save-settings" onclick="saveSettings()" class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-lg shadow-lg flex items-center gap-2">Save All</button>
+                <button onclick="saveSettings()" id="btn-save-settings" class="px-6 py-2 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-lg shadow-lg flex items-center gap-2">Save All</button>
             </div>
         </div>
     </div>
@@ -497,14 +501,18 @@
         };
 
         function handleGesture() { let xDiff = touchEndX - touchStartX; let yDiff = touchEndY - touchStartY; if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > 50) { if (xDiff > 0) { if (activeTab === 'calc') switchTab('new'); else if (activeTab === 'search') switchTab('calc'); } else { if (activeTab === 'new') switchTab('calc'); else if (activeTab === 'calc') switchTab('search'); } } }
+        
+        // --- FIX: Ensure new bills start with saved defaults ---
         function initBillItems() { 
              if (globalDefaults && globalDefaults.length > 0) {
+                 // Clone items to avoid reference issues
                  items = globalDefaults.map(i => ({ ...i, qty: 0, days: 1 })); 
              } else {
                  items = []; 
              }
         } 
-        function updateGstinDisplay(val) { /* GSTIN is static in print */ }
+        
+        function updateGstinDisplay(val) { const disp = val ? `GSTIN: ${val}` : ''; document.getElementById('print-gstin-box').innerText = val ? `GSTN NO ${val}` : ''; document.getElementById('screen-gstin-display').innerText = disp; }
         
         function calculatePipes(l, w) { const l_unit = Math.ceil(l / 15); const w_unit = Math.ceil(w / 15); const vertical = (l_unit + 1) * (w_unit + 1); const horizontal = (2 * l_unit * w_unit) + l_unit + w_unit; return { v: vertical, h: horizontal }; }
         function calcDedicatedPipes() { const l = parseFloat(document.getElementById('calc-l').value) || 0; const w = parseFloat(document.getElementById('calc-w').value) || 0; if (l > 0 && w > 0) { const pipes = calculatePipes(l, w); const ceiling = Math.ceil(l/15) * Math.ceil(w/15); document.getElementById('res-v').innerText = pipes.v; document.getElementById('res-h').innerText = pipes.h; document.getElementById('res-c').innerText = ceiling; } else { document.getElementById('res-v').innerText = 0; document.getElementById('res-h').innerText = 0; document.getElementById('res-c').innerText = 0; } }
@@ -639,25 +647,25 @@
             const btn = document.getElementById('btn-save-print'); const originalText = btn.innerHTML; const scriptUrl = localStorage.getItem('scriptUrl') || DEFAULT_SCRIPT_URL; 
             let printTriggered = false; const triggerPrint = () => { if(!printTriggered) { printTriggered = true; btn.innerHTML = originalText; window.print(); } };
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB'); document.getElementById('print-date-marathi').innerText = new Date().toLocaleDateString('en-GB');
+            
+            let detailsArray = [];
+            mandaps.forEach(m => { 
+                if (m.total > 0) { 
+                    const area = (parseFloat(m.l) || 0) * (parseFloat(m.w) || 0);
+                    // SAVE ITEM PRICE IN DETAILS STRING
+                    detailsArray.push(`MANDAP [${m.type}]: ${m.l}x${m.w}ft (${area} sq.ft) @${m.rate} (Rs ${m.total})`); 
+                } 
+            });
+            items.forEach(i => { 
+                if(i.qty > 0) { 
+                    // SAVE ITEM PRICE IN DETAILS STRING
+                    detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d @${i.price}`); 
+                } 
+            });
+            const finalDetailsString = detailsArray.join('\n');
+            
             if (scriptUrl) {
                 btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Saving...'; setTimeout(triggerPrint, 2500); 
-                let detailsArray = [];
-                mandaps.forEach(m => { 
-                    if (m.total > 0) { 
-                        const area = (parseFloat(m.l) || 0) * (parseFloat(m.w) || 0);
-                        // SAVE ITEM PRICE IN DETAILS STRING
-                        detailsArray.push(`MANDAP [${m.type}]: ${m.l}x${m.w}ft (${area} sq.ft) @${m.rate} (Rs ${m.total})`); 
-                    } 
-                });
-                items.forEach(i => { 
-                    if(i.qty > 0) { 
-                        // SAVE ITEM PRICE IN DETAILS STRING
-                        detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d @${i.price}`); 
-                    } 
-                });
-                const finalDetailsString = detailsArray.join('\n');
-                
-                // Add docType to payload
                 const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText, paid: document.getElementById('paid-amount').value || 0, docType: docType };
                 
                 try { 
@@ -806,7 +814,33 @@
         function updateDefaultItem(i, f, v) { if(f==='price') globalDefaults[i][f]=parseFloat(v)||0; else globalDefaults[i][f]=v; }
         function addSettingsRow() { globalDefaults.push({ id: Date.now(), name: 'New Item', price: 0 }); renderSettingsList(); }
         function removeSettingsRow(i) { globalDefaults.splice(i, 1); renderSettingsList(); }
-        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); localStorage.setItem('shopGstin', document.getElementById('shop-gstin').value); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(document.getElementById('shop-gstin').value); toggleSettings(); showToast("Settings Saved!", "success"); }
+        function saveSettings() { 
+            const btn = document.getElementById('btn-save-settings');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            localStorage.setItem('scriptUrl', document.getElementById('script-url').value); 
+            localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); 
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                btn.classList.add('bg-green-600');
+                btn.classList.remove('bg-primary');
+                
+                setTimeout(() => {
+                    toggleSettings(); 
+                    showToast("Settings Saved!", "success");
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-primary');
+                    
+                    // REFRESH NEW BILL IF EMPTY
+                    if(document.getElementById('items-list').rows.length === 0) initBillItems();
+                }, 800);
+            }, 500);
+        }
         function openPaymentModal(row) { currentPaymentRow = row; document.getElementById('modal-payment-amount').value = ''; const m = document.getElementById('payment-modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.getElementById('modal-payment-amount').focus(); }
         function closePaymentModal() { const m = document.getElementById('payment-modal'); m.classList.add('hidden'); m.classList.remove('flex'); currentPaymentRow = null; }
         function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 transition-all duration-300 min-w-[280px] justify-center text-white font-medium " + (type === 'success' ? 'bg-secondary' : type === 'error' ? 'bg-red-500' : 'bg-gray-900'); i.className = type === 'success' ? "fas fa-check-circle" : type === 'error' ? "fas fa-exclamation-circle" : "fas fa-info-circle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
