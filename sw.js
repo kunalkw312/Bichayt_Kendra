@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bichayt-shop-v13'; // Bump version
+const CACHE_NAME = 'bichayt-shop-v14'; // Bump version
 const ASSETS = [
   './',
   './index.html',
@@ -22,3 +22,4 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   e.respondWith(caches.match(e.request).then((cachedResponse) => cachedResponse || fetch(e.request)));
 });
+
