@@ -42,6 +42,10 @@
         .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
+        /* === SCREEN ONLY UTILS === */
+        .screen-only { display: block; }
+        .print-only { display: none; }
+
         /* === PRINT STYLES === */
         @media print {
             @page { size: A4; margin: 5mm; }
@@ -59,9 +63,12 @@
                 display: block !important; 
             }
             
-            /* Hide Screen Elements */
+            /* Show/Hide Logic */
             .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print { display: none !important; }
             
+            .screen-only { display: none !important; }
+            .print-only { display: inline-block !important; color: black !important; font-weight: 700; } 
+
             /* Container Reset */
             #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; }
             #view-new-bill { padding-bottom: 0 !important; display: block !important; }
@@ -78,18 +85,38 @@
                 color: #FF4B33 !important; 
             }
             
-            /* Header Grid for Alignment */
-            .header-grid {
-                display: grid;
-                grid-template-columns: 20% 60% 20%; 
-                font-size: 10pt;
-                font-weight: 700;
-                color: #FF4B33 !important;
-                line-height: 1.3;
+            .desc-row { 
+                text-align: center; 
+                font-size: 10pt; 
+                font-weight: 700; 
+                margin-bottom: 5px; 
+                color: #FF4B33 !important; 
             }
             
-            .h-center { text-align: center; }
-            .h-right { text-align: right; white-space: nowrap; }
+            /* Flex Row for Address and Proprietor */
+            .info-row-flex {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                padding: 0 5mm;
+                margin-bottom: 2px;
+                color: #FF4B33 !important;
+            }
+
+            .address-col {
+                text-align: left;
+                font-size: 10pt;
+                font-weight: 600;
+                width: 60%;
+            }
+
+            .proprietor-col { 
+                text-align: right; 
+                font-weight: 700; 
+                font-size: 10pt; 
+                line-height: 1.1; 
+                width: 40%;
+            }
             
             /* Meta Box */
             .meta-box { border-top: 1.5pt solid #FF4B33 !important; border-bottom: 1.5pt solid #FF4B33 !important; display: flex; justify-content: space-between; align-items: center; padding: 2px 5mm; font-weight: 700; font-size: 10pt; margin-bottom: 5px; color: #FF4B33 !important; margin-top: 5px; }
@@ -99,25 +126,13 @@
             .print-table-container, .print-table-container * { color: black !important; }
             .print-table-container { padding: 0 5mm; }
             
-            /* FORCE 2 COLUMNS ON MOBILE PRINT */
-            .print-grid { 
-                display: grid !important; 
-                grid-template-columns: 1fr 1fr !important; 
-                gap: 10px !important; 
-                margin-bottom: 10px !important; 
-                padding: 0 5mm !important; 
-            }
-
-            .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
-            
             /* Separator Line */
             .print-separator { 
                 border-top: 1px solid black !important; 
                 margin: 5px 0 8px 0 !important; 
                 width: 100%; 
                 height: 1px;
-                display: none; 
+                display: none; /* JS toggles 'visible' class */
             }
             .print-separator.visible { display: block !important; }
 
@@ -136,12 +151,14 @@
             }
             input::-webkit-calendar-picker-indicator { display: none !important; }
             
+            /* Force specific colors */
+            #cust-name, #cust-phone, #mandap-price-input { color: black !important; }
+            
             /* Mandap specific */
             .mandap-select-print { display: none !important; }
             .mandap-text-print { display: inline-block !important; font-weight: 700; color: black !important; }
             .mandap-row-container { background: transparent !important; border: none !important; padding: 0 !important; margin-bottom: 2px !important; border-radius: 0 !important; }
             
-            /* FORCE COLORS TO BLACK FOR DATA */
             .mandap-label-print { color: black !important; }
             .mandap-amount-print { color: black !important; }
             .mandap-amount-box { color: black !important; background: transparent !important; }
@@ -177,18 +194,22 @@
             .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 9pt; white-space: pre-wrap; }
             
             /* Utility */
-            .screen-only { display: none !important; }
-            .print-only { display: inline-block !important; color: black !important; font-weight: 700; } 
-            
             .show-print { display: block !important; } 
             .hide-print { display: none !important; }
             .quotation-mode .hide-on-quotation { display: none !important; }
             .invoice-mode .hide-on-invoice { display: none !important; }
             .hidden { display: none !important; }
+            
+            /* FIX FOR MOBILE PRINT GRID */
+            .print-grid { 
+                display: grid !important; 
+                grid-template-columns: 1fr 1fr !important; 
+                gap: 10px !important; 
+                margin-bottom: 10px !important; 
+                padding: 0 5mm !important; 
+            }
         }
         .show-print, .print-header-marathi, .mandap-text-print, .print-separator { display: none; }
-        .screen-only { display: block; }
-        .print-only { display: none; }
         
         .tab-btn-active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
         .tab-btn-inactive { background-color: white; color: #6b7280; border-color: #e5e7eb; }
@@ -304,23 +325,16 @@
                 <!-- NEW PRINT HEADER (MARATHI) -->
                 <div class="print-header-marathi" id="print-header-section">
                     <div class="title-main">भुंबर बिछायत व डेकोरेशन ॲण्ड कॅटरर्स</div>
+                    <div class="desc-row">सर्व प्रकारचे डेकोरेशन तसेच ईव्हेन्ट मॅनेजमेन्टचे कामे केल्या जातील</div>
                     
-                    <!-- 3-ROW HEADER GRID -->
-                    <div class="header-grid">
-                        <!-- Row 1 -->
-                        <div></div>
-                        <div></div>
-                        <div class="h-right">प्रो.प्रा.सौरभ भुंबर</div>
-
-                        <!-- Row 2 -->
-                        <div></div>
-                        <div class="h-center">सर्व प्रकारचे डेकोरेशन तसेच ईव्हेन्ट मॅनेजमेन्टचे कामे केल्या जातील</div>
-                        <div class="h-right">9823528733</div>
-
-                        <!-- Row 3 -->
-                        <div></div>
-                        <div class="h-center">गाडगे बाबा मार्केट, गाडगे नगर, अमरावती</div>
-                        <div class="h-right hide-on-quotation">GSTN NO 27BIWPB4912MIZS</div>
+                    <!-- FLEX ROW FOR ADDRESS AND PROPRIETOR -->
+                    <div class="info-row-flex">
+                        <div class="address-col">गाडगे बाबा मार्केट, गाडगे नगर, अमरावती</div>
+                        <div class="proprietor-col">
+                            <div>प्रो.प्रा.सौरभ भुंबर</div>
+                            <div>9823528733</div>
+                            <div class="text-[9pt] hide-on-quotation" style="color:#FF4B33 !important;">GSTN NO 27BIWPB4912MIZS</div>
+                        </div>
                     </div>
                     
                     <div class="meta-box">
@@ -393,7 +407,14 @@
                                 <tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody>
                             </table>
                         </div>
-                        <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300" id="new-item-row"><input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20"><input type="number" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20"><button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-8 h-8 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95"><i class="fas fa-plus"></i></button></div>
+                        <!-- FIX: IMPROVED NEW ITEM ROW FOR MOBILE -->
+                        <div class="mt-2 flex items-center gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300" id="new-item-row">
+                            <input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 min-w-0 bg-white border-none rounded-lg shadow-sm px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none placeholder-gray-400">
+                            <input type="number" id="new-item-price" placeholder="Rate" class="w-16 flex-shrink-0 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-sm text-center focus:ring-2 focus:ring-primary/20 outline-none placeholder-gray-400">
+                            <button onclick="addNewItem()" class="w-10 h-10 flex-shrink-0 bg-primary hover:bg-primaryDark text-white rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Totals -->
@@ -523,9 +544,6 @@
         function calcDedicatedPipes() { const l = parseFloat(document.getElementById('calc-l').value) || 0; const w = parseFloat(document.getElementById('calc-w').value) || 0; if (l > 0 && w > 0) { const pipes = calculatePipes(l, w); const ceiling = Math.ceil(l/15) * Math.ceil(w/15); document.getElementById('res-v').innerText = pipes.v; document.getElementById('res-h').innerText = pipes.h; document.getElementById('res-c').innerText = ceiling; } else { document.getElementById('res-v').innerText = 0; document.getElementById('res-h').innerText = 0; document.getElementById('res-c').innerText = 0; } }
         function snapToGrid(input) { let val = parseFloat(input.value) || 0; if (val > 0 && val % 15 !== 0) { input.value = Math.round(val / 15) * 15; if(input.id.includes('calc')) calcDedicatedPipes(); } }
 
-        // --- MANDAP LOGIC WITH CUSTOM MODAL ---
-        
-        // TOGGLE SEPARATOR LINE IF MANDAP EXISTS
         function toggleMandapSeparator() {
             const sep = document.getElementById('print-mandap-separator');
             if (mandaps.length > 0) {
@@ -824,34 +842,7 @@
         function updateDefaultItem(i, f, v) { if(f==='price') globalDefaults[i][f]=parseFloat(v)||0; else globalDefaults[i][f]=v; }
         function addSettingsRow() { globalDefaults.push({ id: Date.now(), name: 'New Item', price: 0 }); renderSettingsList(); }
         function removeSettingsRow(i) { globalDefaults.splice(i, 1); renderSettingsList(); }
-        function saveSettings() { 
-            const btn = document.getElementById('btn-save-settings');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
-            btn.disabled = true;
-
-            localStorage.setItem('scriptUrl', document.getElementById('script-url').value); 
-            // Save logic
-            localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); 
-
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
-                btn.classList.add('bg-green-600');
-                btn.classList.remove('bg-primary');
-                
-                setTimeout(() => {
-                    toggleSettings(); 
-                    showToast("Settings Saved!", "success");
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
-                    btn.classList.remove('bg-green-600');
-                    btn.classList.add('bg-primary');
-                    
-                    // REFRESH NEW BILL IF EMPTY
-                    if(document.getElementById('items-list').rows.length === 0) initBillItems();
-                }, 800);
-            }, 500);
-        }
+        function saveSettings() { localStorage.setItem('scriptUrl', document.getElementById('script-url').value); localStorage.setItem('shopGstin', document.getElementById('shop-gstin').value); localStorage.setItem('defaultItems', JSON.stringify(globalDefaults)); updateGstinDisplay(document.getElementById('shop-gstin').value); toggleSettings(); showToast("Settings Saved!", "success"); }
         function openPaymentModal(row) { currentPaymentRow = row; document.getElementById('modal-payment-amount').value = ''; const m = document.getElementById('payment-modal'); m.classList.remove('hidden'); m.classList.add('flex'); document.getElementById('modal-payment-amount').focus(); }
         function closePaymentModal() { const m = document.getElementById('payment-modal'); m.classList.add('hidden'); m.classList.remove('flex'); currentPaymentRow = null; }
         function showToast(message, type) { const t = document.getElementById('toast'); const i = document.getElementById('toast-icon'); document.getElementById('toast-message').innerText = message; t.className = "fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 transition-all duration-300 min-w-[280px] justify-center text-white font-medium " + (type === 'success' ? 'bg-secondary' : type === 'error' ? 'bg-red-500' : 'bg-gray-900'); i.className = type === 'success' ? "fas fa-check-circle" : type === 'error' ? "fas fa-exclamation-circle" : "fas fa-info-circle"; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 4000); }
