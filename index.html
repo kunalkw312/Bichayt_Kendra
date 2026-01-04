@@ -60,7 +60,7 @@
             }
             
             /* Hide Screen Elements */
-            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print, .row-actions { display: none !important; }
+            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print { display: none !important; }
             
             /* Container Reset */
             #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; }
@@ -99,7 +99,7 @@
             .print-table-container, .print-table-container * { color: black !important; }
             .print-table-container { padding: 0 5mm; }
             
-            /* FORCE 2 COLUMNS ON MOBILE PRINT */
+            /* Print Grid for Customer Info */
             .print-grid { 
                 display: grid !important; 
                 grid-template-columns: 1fr 1fr !important; 
@@ -109,7 +109,8 @@
             }
 
             .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
+            /* Removed border-b-2 to remove underline in print generally if applied to containers */
+            .border-b-2 { border-bottom: none !important; } 
             
             /* Separator Line */
             .print-separator { 
@@ -136,15 +137,21 @@
             }
             input::-webkit-calendar-picker-indicator { display: none !important; }
             
-            /* Hide the actual inputs for Name/Phone in print, show spans instead */
+            /* Hide inputs in print */
             .input-hide-print { display: none !important; }
             
+            /* Customer Name/Phone Display Spans - NO BORDER/UNDERLINE */
+            #p-cust-name-display, #p-cust-phone-display {
+                border: none !important;
+                border-bottom: none !important;
+                text-decoration: none !important;
+            }
+
             /* Mandap specific */
             .mandap-select-print { display: none !important; }
             .mandap-text-print { display: inline-block !important; font-weight: 700; color: black !important; }
             .mandap-row-container { background: transparent !important; border: none !important; padding: 0 !important; margin-bottom: 2px !important; border-radius: 0 !important; }
             
-            /* FORCE COLORS TO BLACK FOR DATA */
             .mandap-label-print { color: black !important; }
             .mandap-amount-print { color: black !important; }
             .mandap-amount-box { color: black !important; background: transparent !important; }
@@ -195,6 +202,29 @@
         
         .tab-btn-active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
         .tab-btn-inactive { background-color: white; color: #6b7280; border-color: #e5e7eb; }
+
+        /* SUGGESTION LIST STYLE */
+        #suggestion-list {
+            position: absolute;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        .suggestion-item:hover {
+            background-color: #f3f4f6;
+            color: #4f46e5;
+        }
     </style>
 </head>
 <body class="text-gray-700 font-sans">
@@ -343,16 +373,18 @@
                                 <!-- Print Only Label -->
                                 <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Customer Name: </span>
                                 <!-- Using Span for Print Value to ensure visibility -->
-                                <span id="p-cust-name-display" class="print-only font-bold text-sm border-b border-black min-w-[150px] inline-block"></span>
-                                <input type="text" id="cust-name" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
+                                <span id="p-cust-name-display" class="print-only font-bold text-sm min-w-[150px] inline-block"></span>
+                                <!-- Removed underline from input -->
+                                <input type="text" id="cust-name" class="w-full p-3 border border-gray-200 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
                             </div>
                             <div class="relative group">
                                 <label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-gray-500 group-focus-within:text-primary transition-colors screen-only">Phone Number</label>
                                 <!-- Print Only Label -->
                                 <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Contact Number: </span>
                                 <!-- Using Span for Print Value -->
-                                <span id="p-cust-phone-display" class="print-only font-bold text-sm border-b border-black min-w-[150px] inline-block"></span>
-                                <input type="number" id="cust-phone" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
+                                <span id="p-cust-phone-display" class="print-only font-bold text-sm min-w-[150px] inline-block"></span>
+                                <!-- Removed underline from input -->
+                                <input type="number" id="cust-phone" class="w-full p-3 border border-gray-200 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
                             </div>
                         </div>
                         <div class="print-col bg-yellow-50/50 p-4 rounded-xl border border-yellow-100 hide-print">
@@ -401,8 +433,13 @@
                                 <tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody>
                             </table>
                         </div>
-                        <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300" id="new-item-row">
-                            <input type="text" id="new-item-name" placeholder="Item Name" class="flex-1 min-w-0 bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20">
+                        <!-- ADD NEW ITEM ROW WITH SUGGESTION SUPPORT -->
+                        <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300 relative" id="new-item-row">
+                            <div class="relative flex-1 min-w-0">
+                                <input type="text" id="new-item-name" placeholder="Item Name" autocomplete="off" class="w-full bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20">
+                                <!-- SUGGESTION LIST CONTAINER -->
+                                <div id="suggestion-list" class="hidden"></div>
+                            </div>
                             <input type="number" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20">
                             <button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-10 h-10 flex-none shrink-0 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95">
                                 <i class="fas fa-plus"></i>
@@ -490,9 +527,72 @@
         let editingRowIndex = null;
         let currentPaymentRow = null;
         let activeTab = 'new';
+        let touchStartX = 0, touchEndX = 0, touchStartY = 0, touchEndY = 0;
         let pendingCustomIndex = null;
         let currentHistoryFilter = 'BILL';
         let allFetchedData = [];
+
+        // --- ITEM CATALOG FOR AUTO-SUGGESTION ---
+        const ITEM_CATALOG = [
+            { en: "khurchi", mr: "खुर्ची" }, { en: "chair", mr: "खुर्ची" },
+            { en: "ganj", mr: "गंज (छोटा मिडीयम मोठा)" },
+            { en: "zhakani", mr: "झाकणी (छोटा मिडीयम मोठा)" }, { en: "jakani", mr: "झाकणी (छोटा मिडीयम मोठा)" },
+            { en: "khomcha", mr: "खॉमचा" },
+            { en: "poli bhatta", mr: "पोळी भट्टा" },
+            { en: "pak kadhai", mr: "पाक कढई (छोटा मिडीयम मोठा)" },
+            { en: "tel kadhai", mr: "तेल कढई (छोटा मिडीयम मोठा)" },
+            { en: "bhatti", mr: "भट्टी (सिंगल डबल)" },
+            { en: "sarata", mr: "सराटा (छोटा मिडीयम मोठा)" },
+            { en: "poli path", mr: "पोळी पाठ" }, { en: "path", mr: "पाठ" },
+            { en: "pavshi", mr: "पावशी" },
+            { en: "drum", mr: "ड्रम" },
+            { en: "dandiganj", mr: "दांडिगंज" },
+            { en: "bucket", mr: "बकेट" },
+            { en: "dhame", mr: "धामे" },
+            { en: "chamche", mr: "चमचे" }, { en: "spoon", mr: "चमचे" },
+            { en: "bhat vadhani", mr: "भात वाढणी" },
+            { en: "plate", mr: "प्लेट" },
+            { en: "vati", mr: "वाटी" }, { en: "bowl", mr: "वाटी" },
+            { en: "carat", mr: "कॅरेट" },
+            { en: "table", mr: "टेबल" },
+            { en: "steel tub", mr: "स्टील टब" },
+            { en: "gadi", mr: "गादी" }, { en: "mattress", mr: "गादी" },
+            { en: "chadar", mr: "चादर" }, { en: "bedsheet", mr: "चादर" },
+            { en: "blanket", mr: "ब्लॅंकेट" },
+            { en: "ushi", mr: "उशी" }, { en: "pillow", mr: "उशी" },
+            { en: "ushi cover", mr: "उशी कावर" }, { en: "pillow cover", mr: "उशी कावर" },
+            { en: "load", mr: "लोड" }, { en: "load cover", mr: "लोड कव्हर" },
+            { en: "sag patra", mr: "साग पात्र" },
+            { en: "spirit lamp", mr: "स्पिरिट लॅम्प" }, { en: "spirit lamp sadha", mr: "स्पिरिट लॅम्प साधा" },
+            { en: "chaku", mr: "चाकू" }, { en: "knife", mr: "चाकू" },
+            { en: "chilani", mr: "चिलनी" },
+            { en: "vagralu", mr: "वगराळू" },
+            { en: "pohe chamcha", mr: "पोहे चम्मच" },
+            { en: "steel tat", mr: "स्टील ताट" }, { en: "steel plate", mr: "स्टील प्लेट" },
+            { en: "steel vati", mr: "स्टील वाटी" },
+            { en: "dustbin", mr: "डस्टबिन" },
+            { en: "besing", mr: "बेसिंग" },
+            { en: "jalebi kadhai", mr: "जलेबी कढई" },
+            { en: "chimta", mr: "चिमटा" },
+            { en: "jug", mr: "जग" },
+            { en: "steel glass", mr: "स्टील ग्लास" }, { en: "plastic glass", mr: "प्लास्टिक ग्लास" },
+            { en: "kopar", mr: "कोपर" },
+            { en: "satranji", mr: "सतरंगी" }, { en: "carpet", mr: "सतरंगी" },
+            { en: "green mat", mr: "ग्रीन मेटिंग" },
+            { en: "belan", mr: "बेलन" },
+            { en: "tea thermos", mr: "चहा थर्मास" },
+            { en: "vip khurchi", mr: "VIP खुर्ची" }, { en: "vip chair", mr: "VIP खुर्ची" },
+            { en: "samai", mr: "समई" },
+            { en: "sofa", mr: "सोफे" }, { en: "vip sofa", mr: "VIP सोफे" },
+            { en: "focus", mr: "फोकस" },
+            { en: "generator", mr: "जनरेटर" },
+            { en: "parde", mr: "परदे" }, { en: "curtains", mr: "परदे" },
+            { en: "ceiling", mr: "सिलिंग" },
+            { en: "parlight", mr: "पार्लाईट" },
+            { en: "drop parde", mr: "ड्रॉप परदे" },
+            { en: "sound system", mr: "साऊंड सिस्टिम साधा" },
+            { en: "sound system program", mr: "साऊंड सिस्टिम सांस्कृतिक कार्यक्रम" }
+        ];
 
         function fetchRecent() {
             performSearch('recent');
@@ -500,7 +600,7 @@
 
         window.onload = function() {
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB');
-            // document.getElementById('print-date-marathi').innerText = new Date().toLocaleDateString('en-GB'); // REMOVED to allow manual date
+            document.getElementById('print-date-marathi').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; // Blank space for manual date
             let savedUrl = localStorage.getItem('scriptUrl');
             if (!savedUrl && DEFAULT_SCRIPT_URL.trim() !== "") { localStorage.setItem('scriptUrl', DEFAULT_SCRIPT_URL); savedUrl = DEFAULT_SCRIPT_URL; }
             if (savedUrl) document.getElementById('script-url').value = savedUrl;
@@ -517,7 +617,53 @@
             updatePrintDates(); renderTableRows();
             if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
             fetchRecent();
+            
+            // --- AUTO-SUGGESTION LISTENER ---
+            const itemInput = document.getElementById('new-item-name');
+            itemInput.addEventListener('input', function() {
+                const val = this.value.toLowerCase();
+                const list = document.getElementById('suggestion-list');
+                list.innerHTML = '';
+                
+                if (!val) {
+                    list.classList.add('hidden');
+                    return;
+                }
+
+                // Filter items
+                const matches = ITEM_CATALOG.filter(i => 
+                    i.en.startsWith(val) || i.mr.startsWith(val) || i.en.includes(val) || i.mr.includes(val)
+                );
+
+                if (matches.length > 0) {
+                    list.classList.remove('hidden');
+                    matches.slice(0, 8).forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        div.innerText = item.mr; // Show Marathi Name
+                        div.onclick = function() {
+                            itemInput.value = item.mr;
+                            list.classList.add('hidden');
+                            document.getElementById('new-item-price').focus();
+                        };
+                        list.appendChild(div);
+                    });
+                } else {
+                    list.classList.add('hidden');
+                }
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!document.getElementById('new-item-row').contains(e.target)) {
+                    document.getElementById('suggestion-list').classList.add('hidden');
+                }
+            });
+            // ---------------------------------
         };
+
+        // --- GESTURE REMOVED --- 
+        // No touchstart/touchend listeners added for tab switching
 
         function initBillItems() { 
              if (globalDefaults && globalDefaults.length > 0) {
@@ -835,13 +981,11 @@
         async function directPrint(rowIndex, dataStr) {
             // Load data into edit mode temporarily
             await editInvoice(rowIndex, dataStr);
-            // Wait LONGER for DOM update then print
+            // Wait slightly for DOM update then print
             setTimeout(() => {
-                // Ensure Doc Type is correct in DOM
-                const data = JSON.parse(decodeURIComponent(dataStr));
-                const docType = (data.docType || (data.status === 'Quotation' ? 'QUOTATION' : 'BILL'));
-                saveAndPrintBill(docType); 
-            }, 800);
+                const docType = document.documentElement.classList.contains('quotation-mode') ? 'QUOTATION' : 'BILL';
+                saveAndPrintBill(docType); // Re-uses save function but effectively just reprints existing data since IDs match
+            }, 500);
         }
 
         async function performSearch(type = 'search') {
