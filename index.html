@@ -60,7 +60,7 @@
             }
             
             /* Hide Screen Elements */
-            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print { display: none !important; }
+            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print, .row-actions { display: none !important; }
             
             /* Container Reset */
             #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; }
@@ -99,7 +99,7 @@
             .print-table-container, .print-table-container * { color: black !important; }
             .print-table-container { padding: 0 5mm; }
             
-            /* Print Grid for Customer Info */
+            /* FORCE 2 COLUMNS ON MOBILE PRINT */
             .print-grid { 
                 display: grid !important; 
                 grid-template-columns: 1fr 1fr !important; 
@@ -109,8 +109,7 @@
             }
 
             .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            /* Removed border-b-2 to remove underline in print generally if applied to containers */
-            .border-b-2 { border-bottom: none !important; } 
+            .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
             
             /* Separator Line */
             .print-separator { 
@@ -137,7 +136,7 @@
             }
             input::-webkit-calendar-picker-indicator { display: none !important; }
             
-            /* Hide inputs in print */
+            /* Hide the actual inputs for Name/Phone in print, show spans instead */
             .input-hide-print { display: none !important; }
             
             /* Customer Name/Phone Display Spans - NO BORDER/UNDERLINE */
@@ -152,19 +151,21 @@
             .mandap-text-print { display: inline-block !important; font-weight: 700; color: black !important; }
             .mandap-row-container { background: transparent !important; border: none !important; padding: 0 !important; margin-bottom: 2px !important; border-radius: 0 !important; }
             
+            /* FORCE COLORS TO BLACK FOR DATA */
             .mandap-label-print { color: black !important; }
             .mandap-amount-print { color: black !important; }
             .mandap-amount-box { color: black !important; background: transparent !important; }
             
             /* Tables */
             table { width: 100% !important; border-collapse: collapse; margin-top: 2px; }
+            tr { break-inside: avoid; page-break-inside: avoid; }
             th { border-top: 1pt solid black; border-bottom: 1pt solid black; text-align: center; padding: 2px; font-size: 10pt; font-weight: 800; color: black !important; }
             td { border-bottom: 0.5pt solid #ddd; padding: 2px; font-size: 10pt; text-align: center; color: black !important; }
             td:first-child, th:first-child { text-align: left; }
             td:last-child, th:last-child { text-align: right; }
 
             /* Totals */
-            .totals-section { float: right; width: 50%; margin-top: 5px; padding-right: 5mm; color: black !important; }
+            .totals-section { float: right; width: 50%; margin-top: 5px; padding-right: 5mm; color: black !important; page-break-inside: avoid; break-inside: avoid; }
             .totals-final { 
                 font-size: 12pt !important; 
                 font-weight: 800 !important; 
@@ -374,7 +375,6 @@
                                 <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Customer Name: </span>
                                 <!-- Using Span for Print Value to ensure visibility -->
                                 <span id="p-cust-name-display" class="print-only font-bold text-sm min-w-[150px] inline-block"></span>
-                                <!-- Removed underline from input -->
                                 <input type="text" id="cust-name" class="w-full p-3 border border-gray-200 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
                             </div>
                             <div class="relative group">
@@ -383,7 +383,6 @@
                                 <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Contact Number: </span>
                                 <!-- Using Span for Print Value -->
                                 <span id="p-cust-phone-display" class="print-only font-bold text-sm min-w-[150px] inline-block"></span>
-                                <!-- Removed underline from input -->
                                 <input type="number" id="cust-phone" class="w-full p-3 border border-gray-200 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
                             </div>
                         </div>
@@ -440,7 +439,8 @@
                                 <!-- SUGGESTION LIST CONTAINER -->
                                 <div id="suggestion-list" class="hidden"></div>
                             </div>
-                            <input type="number" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20">
+                            <!-- CHANGED TO TEXT TYPE AS REQUESTED -->
+                            <input type="text" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20">
                             <button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-10 h-10 flex-none shrink-0 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95">
                                 <i class="fas fa-plus"></i>
                             </button>
@@ -752,7 +752,12 @@
 
         function recalcTotals() {
             const mandapSum = mandaps.reduce((acc, m) => acc + (m.total || 0), 0);
-            const itemsTotal = items.reduce((sum, item) => sum + (item.price * item.qty * item.days), 0);
+            const itemsTotal = items.reduce((sum, item) => {
+                const q = parseFloat(item.qty) || 0;
+                const p = parseFloat(item.price) || 0;
+                const d = parseFloat(item.days) || 1;
+                return sum + (q * p * d);
+            }, 0);
             const subtotal = mandapSum + itemsTotal; document.getElementById('subtotal').innerText = subtotal;
             const isGstEnabled = document.getElementById('gst-toggle').checked;
             const taxRows = document.getElementById('tax-rows');
@@ -769,19 +774,26 @@
         function renderTableRows() {
             const tbody = document.getElementById('items-list'); tbody.innerHTML = '';
             items.forEach((item, index) => {
-                const itemTotal = item.price * item.qty * item.days; 
+                // Ensure text can be entered and parsed. If NaN, it treats as 0 for calculation but keeps text in input.
+                const qtyVal = item.qty; 
+                const priceVal = item.price;
+                
+                // For calculation display
+                const q = parseFloat(qtyVal) || 0;
+                const p = parseFloat(priceVal) || 0;
+                const d = parseFloat(item.days) || 1;
+                const itemTotal = q * p * d; 
+                
                 const tr = document.createElement('tr'); 
                 tr.className = 'group hover:bg-gray-50 transition-colors';
-                const priceVal = item.price === 0 ? '' : item.price; 
-                const qtyVal = item.qty === 0 ? '' : item.qty; 
                 const daysVal = item.days === 0 ? '' : item.days;
                 
                 tr.innerHTML = `
                 <td class="p-2 pl-3">
                     <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)" class="w-full text-sm font-medium text-gray-700 bg-transparent border-none focus:ring-0">
                 </td>
-                <td class="p-1 text-center"><input type="number" oninput="handleRowInput(${index}, 'qty', this.value)" value="${qtyVal}" class="w-full text-center bg-gray-100 rounded-lg p-1 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none font-bold text-primary" placeholder="0"></td>
-                <td class="p-1 text-center"><input type="number" oninput="handleRowInput(${index}, 'price', this.value)" value="${priceVal}" class="w-full text-center bg-transparent border-b border-gray-100 focus:border-primary outline-none p-1" placeholder="0"></td>
+                <td class="p-1 text-center"><input type="text" oninput="handleRowInput(${index}, 'qty', this.value)" value="${qtyVal}" class="w-full text-center bg-gray-100 rounded-lg p-1 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none font-bold text-primary" placeholder="0"></td>
+                <td class="p-1 text-center"><input type="text" oninput="handleRowInput(${index}, 'price', this.value)" value="${priceVal}" class="w-full text-center bg-transparent border-b border-gray-100 focus:border-primary outline-none p-1" placeholder="0"></td>
                 <td class="p-1 text-center bg-yellow-50/50"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${daysVal}" class="w-full text-center bg-transparent border-b border-yellow-200 focus:border-yellow-500 outline-none font-bold text-yellow-700 p-1" placeholder="0"></td>
                 <td class="p-2 pr-3 text-right font-bold text-gray-800">₹ <span id="item-total-${index}">${itemTotal}</span></td>
                 <td class="no-print text-center p-1 row-actions flex justify-end gap-1">
@@ -795,8 +807,23 @@
         }
 
         function updateItemName(index, val) { items[index].name = val; }
-        function handleRowInput(index, field, value) { items[index][field] = parseFloat(value) || 0; const newRowTotal = items[index].price * items[index].qty * items[index].days; const span = document.getElementById(`item-total-${index}`); if(span) span.innerText = newRowTotal; recalcTotals(); }
-        function addNewItem() { const name = document.getElementById('new-item-name').value; const price = document.getElementById('new-item-price').value; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; if (name && price) { items.push({ id: Date.now(), name, price: parseFloat(price), qty: 0, days: globalDays }); renderTableRows(); document.getElementById('new-item-name').value = ''; document.getElementById('new-item-price').value = ''; } }
+        
+        function handleRowInput(index, field, value) {
+            items[index][field] = value; // Store raw value (string or number)
+            
+            // Calculate for specific row display immediately
+            const q = parseFloat(items[index].qty) || 0;
+            const p = parseFloat(items[index].price) || 0;
+            const d = parseFloat(items[index].days) || 1;
+            const newRowTotal = q * p * d;
+            
+            const span = document.getElementById(`item-total-${index}`);
+            if(span) span.innerText = newRowTotal;
+            
+            recalcTotals(); 
+        }
+        
+        function addNewItem() { const name = document.getElementById('new-item-name').value; const price = document.getElementById('new-item-price').value; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; if (name) { items.push({ id: Date.now(), name, price: price, qty: 0, days: globalDays }); renderTableRows(); document.getElementById('new-item-name').value = ''; document.getElementById('new-item-price').value = ''; } }
         function deleteItem(index) { if(confirm('Remove?')) { items.splice(index, 1); renderTableRows(); } }
         
         function moveItem(index, direction) {
@@ -842,9 +869,6 @@
             let printTriggered = false; const triggerPrint = () => { if(!printTriggered) { printTriggered = true; btn.innerHTML = originalText; window.print(); } };
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB'); 
             
-            // Fix: Date line is empty space in print
-            // document.getElementById('print-date-marathi').innerText = ... (Handled by static space in HTML)
-            
             let detailsArray = [];
             mandaps.forEach(m => { 
                 if (m.total > 0) { 
@@ -853,9 +877,8 @@
                 } 
             });
             items.forEach(i => { 
-                if(i.qty > 0) { 
-                    detailsArray.push(`${i.name}: ${i.qty}pcs x ${i.days}d @${i.price}`); 
-                } 
+                // Save even if qty is text or 0, just push string
+                detailsArray.push(`${i.name}: ${i.qty}* x ${i.days}d @${i.price}`); 
             });
             const finalDetailsString = detailsArray.join('\n');
             const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText, paid: document.getElementById('paid-amount').value || 0, docType: docType };
@@ -1040,17 +1063,19 @@
                     if(parts.length > 1) { 
                         const name = parts[0].trim(); 
                         // Match qty, days, and OPTIONAL rate
-                        const nums = parts[1].match(/(\d+)pcs x (\d+)d(?: @(\d+))?/); 
+                        const nums = parts[1].match(/(.*?)\* x (\d+)d(?: @(.*))?/); 
                         if(nums) { 
                             const foundItem = items.find(i => i.name === name); 
                             // If rate (group 3) found, use it, else 0
-                            const rate = nums[3] ? parseFloat(nums[3]) : 0;
+                            const qty = nums[1].trim(); // Text Qty
+                            const rate = nums[3] ? nums[3].trim() : 0; // Text Rate
+                            
                             if(foundItem) { 
-                                foundItem.qty = parseInt(nums[1]); 
+                                foundItem.qty = qty; 
                                 foundItem.days = parseInt(nums[2]); 
                                 foundItem.price = rate; 
                             } else { 
-                                items.push({ id: Date.now(), name: name, price: rate, qty: parseInt(nums[1]), days: parseInt(nums[2]) }); 
+                                items.push({ id: Date.now(), name: name, price: rate, qty: qty, days: parseInt(nums[2]) }); 
                             } 
                         } 
                     } 
