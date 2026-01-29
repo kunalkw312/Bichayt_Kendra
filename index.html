@@ -42,11 +42,41 @@
         .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
+        /* SUGGESTION LIST STYLE */
+        #suggestion-list {
+            position: absolute;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .suggestion-item { padding: 10px 12px; cursor: pointer; font-size: 0.875rem; color: #374151; border-bottom: 1px solid #f3f4f6; }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:active, .suggestion-item:hover { background-color: #e0e7ff; color: #4338ca; }
+
+        /* Input Styles */
+        .input-minimal {
+            width: 100%;
+            background: transparent;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 4px;
+            outline: none;
+            font-weight: 600;
+            transition: border-color 0.2s;
+            border-radius: 0;
+            text-align: center;
+        }
+        .input-minimal:focus { border-bottom-color: #4f46e5; }
+        .text-left-input { text-align: left !important; }
+
         /* === PRINT STYLES === */
         @media print {
             @page { size: A4; margin: 5mm; }
             
-            /* RESET */
             html, body { 
                 height: auto !important; 
                 min-height: 0 !important; 
@@ -59,24 +89,15 @@
                 display: block !important; 
             }
             
-            /* Hide Screen Elements */
-            .no-print, #tab-nav, #settings-modal, #payment-modal, #custom-mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .add-mandap-btn, #new-item-row, .mandap-input-group, #history-tabs, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print, .row-actions { display: none !important; }
+            .no-print, #tab-nav, #settings-modal, #payment-modal, #mandap-modal, #toast, #btn-install, .fab-button, .gst-toggle-container, .payment-input-area, .row-actions, #add-buttons-container, #edit-mode-bar, .bg-gradient-to-r, .edit-btn-print, #new-item-input-row { display: none !important; }
             
-            /* Container Reset */
             #main-container { box-shadow: none !important; border: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; background: transparent !important; border-radius: 0 !important; }
             #view-new-bill { padding-bottom: 0 !important; display: block !important; }
             
             /* --- HEADER LAYOUT --- */
             .print-header-marathi { display: block !important; margin-bottom: 0px; padding-top: 10px; }
             
-            .title-main { 
-                font-size: 26pt; 
-                font-weight: 900; 
-                text-align: center; 
-                line-height: 1; 
-                margin-bottom: 5px; 
-                color: #FF4B33 !important; 
-            }
+            .title-main { font-size: 26pt; font-weight: 900; text-align: center; line-height: 1; margin-bottom: 5px; color: #FF4B33 !important; }
             
             /* Header Grid */
             .header-grid {
@@ -87,11 +108,9 @@
                 color: #FF4B33 !important;
                 line-height: 1.3;
             }
-            
             .h-center { text-align: center; }
             .h-right { text-align: right; white-space: nowrap; }
             
-            /* Meta Box */
             .meta-box { border-top: 1.5pt solid #FF4B33 !important; border-bottom: 1.5pt solid #FF4B33 !important; display: flex; justify-content: space-between; align-items: center; padding: 2px 5mm; font-weight: 700; font-size: 10pt; margin-bottom: 5px; color: #FF4B33 !important; margin-top: 5px; }
             .doc-type-label { text-align: center; font-weight: 800; font-size: 11pt; border: 1.5pt solid #FF4B33 !important; padding: 0px 10px; border-radius: 4px; display: inline-block; background: white; color: #FF4B33 !important; }
 
@@ -99,63 +118,51 @@
             .print-table-container, .print-table-container * { color: black !important; }
             .print-table-container { padding: 0 5mm; }
             
-            /* FORCE 2 COLUMNS ON MOBILE PRINT */
-            .print-grid { 
-                display: grid !important; 
-                grid-template-columns: 1fr 1fr !important; 
-                gap: 10px !important; 
-                margin-bottom: 10px !important; 
-                padding: 0 5mm !important; 
-            }
-
+            .print-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; margin-bottom: 10px !important; padding: 0 5mm !important; }
             .bg-blue-50, .bg-yellow-50, .bg-white, .shadow-lg, .rounded-2xl, .rounded-xl { background: none !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
-            .border-b-2 { border-bottom: 0.5pt solid #ccc !important; }
+            .border-b-2, .border-b, .border { border: none !important; }
             
             /* Separator Line */
-            .print-separator { 
-                border-top: 1px solid black !important; 
-                margin: 5px 0 8px 0 !important; 
-                width: 100%; 
-                height: 1px;
-                display: none; 
-            }
-            .print-separator.visible { display: block !important; }
+            .print-separator { border-top: 1px solid black !important; margin: 5px 0 8px 0 !important; width: 100%; height: 1px; display: block !important; }
+            .print-separator.hidden { display: none !important; }
 
             /* Inputs */
-            input, select { 
-                border: none !important; 
-                background: transparent !important; 
-                padding: 0 !important; 
-                height: auto !important; 
-                width: 100% !important; 
-                font-weight: 600; 
-                font-size: 10pt; 
-                color: black !important; 
-                margin: 0 !important; 
-                box-shadow: none !important;
-            }
+            input, select { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; width: 100% !important; font-weight: 600; font-size: 10pt; color: black !important; margin: 0 !important; box-shadow: none !important; }
             input::-webkit-calendar-picker-indicator { display: none !important; }
-            
-            /* Hide the actual inputs for Name/Phone in print, show spans instead */
             .input-hide-print { display: none !important; }
             
-            /* Customer Name/Phone Display Spans - NO BORDER/UNDERLINE */
-            #p-cust-name-display, #p-cust-phone-display {
-                border: none !important;
-                border-bottom: none !important;
-                text-decoration: none !important;
+            #p-cust-name-display, #p-cust-phone-display { border: none !important; border-bottom: none !important; text-decoration: none !important; }
+            
+            /* Mandap Suffixes in Print - FIXED: Shifted Left for Alignment */
+            .mandap-qty-wrapper, .mandap-rate-wrapper {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 100% !important;
+                /* SHIFT LEFT APPLIED HERE */
+                transform: translateX(-9px) !important; 
+            }
+            .mandap-qty-wrapper input, .mandap-rate-wrapper input {
+                width: 4rem !important; /* Constrain width so it doesn't push right */
+                flex: 0 0 auto !important;
+                text-align: right !important; /* Align number against the suffix */
+                margin-right: 2px !important;
+            }
+            .mandap-qty-wrapper::after { 
+                content: 'Sq.ft'; 
+                color: black !important; 
+                font-size: 9pt;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+            .mandap-rate-wrapper::after { 
+                content: '/sq.ft'; 
+                color: black !important; 
+                font-size: 9pt;
+                font-weight: bold;
+                white-space: nowrap;
             }
 
-            /* Mandap specific */
-            .mandap-select-print { display: none !important; }
-            .mandap-text-print { display: inline-block !important; font-weight: 700; color: black !important; }
-            .mandap-row-container { background: transparent !important; border: none !important; padding: 0 !important; margin-bottom: 2px !important; border-radius: 0 !important; }
-            
-            /* FORCE COLORS TO BLACK FOR DATA */
-            .mandap-label-print { color: black !important; }
-            .mandap-amount-print { color: black !important; }
-            .mandap-amount-box { color: black !important; background: transparent !important; }
-            
             /* Tables */
             table { width: 100% !important; border-collapse: collapse; margin-top: 2px; }
             tr { break-inside: avoid; page-break-inside: avoid; }
@@ -166,66 +173,25 @@
 
             /* Totals */
             .totals-section { float: right; width: 50%; margin-top: 5px; padding-right: 5mm; color: black !important; page-break-inside: avoid; break-inside: avoid; }
-            .totals-final { 
-                font-size: 12pt !important; 
-                font-weight: 800 !important; 
-                margin-top: 5px !important; 
-                border-top: 1pt solid black !important; 
-                border-bottom: none !important;
-                border-left: none !important;
-                border-right: none !important;
-                padding-top: 5px !important; 
-                color: black !important; 
-                background: transparent !important;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-            }
-            .totals-final span { color: black !important; }
-            .text-primary { color: black !important; } 
+            .totals-final { font-size: 12pt !important; font-weight: 800 !important; margin-top: 5px !important; border-top: 1pt solid black !important; padding-top: 5px !important; color: black !important; background: transparent !important; }
             
-            /* Footer Note */
             .print-footer { position: relative; width: 100%; text-align: left; font-size: 9pt; padding-bottom: 0; margin-top: 15px; color: black !important; clear: both; display: block !important; }
             .footer-note-text { color: #FF4B33 !important; font-weight: 700; font-size: 9pt; white-space: pre-wrap; }
             
-            /* Utility */
             .screen-only { display: none !important; }
             .print-only { display: inline-block !important; color: black !important; font-weight: 700; } 
-            
             .show-print { display: block !important; } 
             .hide-print { display: none !important; }
             .quotation-mode .hide-on-quotation { display: none !important; }
             .invoice-mode .hide-on-invoice { display: none !important; }
             .hidden { display: none !important; }
         }
-        .show-print, .print-header-marathi, .mandap-text-print, .print-separator { display: none; }
+        .show-print, .print-header-marathi, .print-separator { display: none; }
         .screen-only { display: block; }
         .print-only { display: none; }
         
         .tab-btn-active { background-color: #4f46e5; color: white; border-color: #4f46e5; }
         .tab-btn-inactive { background-color: white; color: #6b7280; border-color: #e5e7eb; }
-
-        /* SUGGESTION LIST STYLE */
-        #suggestion-list {
-            position: absolute;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 50;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .suggestion-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            color: #374151;
-        }
-        .suggestion-item:hover {
-            background-color: #f3f4f6;
-            color: #4f46e5;
-        }
     </style>
 </head>
 <body class="text-gray-700 font-sans">
@@ -234,7 +200,6 @@
         <i id="toast-icon" class="fas fa-info-circle text-lg"></i><span id="toast-message" class="font-medium">Notification</span>
     </div>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-slide-up flex flex-col max-h-[90vh]">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
@@ -259,21 +224,42 @@
         </div>
     </div>
 
-    <!-- CUSTOM MANDAP NAME MODAL -->
-    <div id="custom-mandap-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
+    <div id="mandap-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-pop-in">
             <div class="p-6">
-                <h3 class="text-lg font-bold text-gray-900 mb-1 text-center">Custom Mandap Name</h3>
-                <input type="text" id="custom-mandap-input" class="w-full p-3 border-2 border-primary/20 rounded-xl text-center font-bold text-gray-800 focus:border-primary outline-none transition-all mb-4" placeholder="e.g. Stage Decoration">
-                <div class="flex gap-3">
-                    <button onclick="closeCustomMandapModal()" class="flex-1 py-2.5 text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 rounded-xl">Cancel</button>
-                    <button onclick="confirmCustomMandapName()" class="flex-1 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primaryDark rounded-xl shadow-lg">Save</button>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-xl"><i class="fas fa-dungeon"></i></div>
+                <h3 class="text-lg font-bold text-gray-900 mb-1 text-center">Add Mandap / Stage</h3>
+                <p class="text-xs text-gray-500 mb-4 text-center">Enter dimensions to auto-calculate</p>
+                
+                <div class="space-y-3">
+                    <div class="relative">
+                         <label class="text-[10px] font-bold text-gray-400 uppercase">Name / Type</label>
+                         <input type="text" id="m-name" class="w-full p-2 border-2 border-gray-100 rounded-xl font-bold text-gray-800 focus:border-blue-500 outline-none" placeholder="e.g. Waterproof Stage">
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="flex-1">
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Length (ft)</label>
+                            <input type="number" id="m-len" inputmode="decimal" class="w-full p-2 border-2 border-gray-100 rounded-xl text-center font-bold focus:border-blue-500 outline-none" placeholder="0">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-[10px] font-bold text-gray-400 uppercase">Width (ft)</label>
+                            <input type="number" id="m-wid" inputmode="decimal" class="w-full p-2 border-2 border-gray-100 rounded-xl text-center font-bold focus:border-blue-500 outline-none" placeholder="0">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-400 uppercase">Rate (per sq.ft)</label>
+                        <input type="number" id="m-rate" inputmode="decimal" class="w-full p-2 border-2 border-gray-100 rounded-xl text-center font-bold focus:border-blue-500 outline-none" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button onclick="closeMandapModal()" class="flex-1 py-2.5 text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 rounded-xl">Cancel</button>
+                    <button onclick="confirmAddMandap()" class="flex-1 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg">Add to List</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
     <div id="payment-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity duration-300 no-print">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-pop-in">
             <div class="p-6 text-center">
@@ -290,10 +276,8 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div class="max-w-5xl mx-auto min-h-screen flex flex-col">
         
-        <!-- HEADER -->
         <div class="px-4 py-5 flex justify-between items-center no-print">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg"><i class="fas fa-campground"></i></div>
@@ -304,7 +288,6 @@
             </div>
         </div>
 
-        <!-- TABS -->
         <div id="tab-nav" class="px-4 mb-6 no-print">
             <div class="bg-white p-1.5 rounded-xl shadow-sm border border-gray-100 flex gap-1">
                 <button onclick="switchTab('new')" id="tab-new" class="flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 bg-primary text-white shadow-md"><i class="fas fa-file-invoice"></i> New Bill</button>
@@ -313,11 +296,9 @@
             </div>
         </div>
 
-        <!-- === VIEW: NEW BILL === -->
         <div id="view-new-bill" class="flex-grow flex flex-col px-4 pb-24 animate-fade-in">
             <div id="main-container" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
                 
-                <!-- VISUAL HEADER (Screen) -->
                 <div class="bg-gradient-to-r from-primary to-purple-700 p-6 text-white no-print screen-header-gradient">
                     <div class="flex justify-between items-start">
                         <div>
@@ -335,23 +316,18 @@
                     </div>
                 </div>
 
-                <!-- NEW PRINT HEADER (MARATHI) -->
                 <div class="print-header-marathi" id="print-header-section">
                     <div class="title-main">भुंबर बिछायत व डेकोरेशन ॲण्ड कॅटरर्स</div>
                     
-                    <!-- 3-ROW HEADER GRID -->
                     <div class="header-grid">
-                        <!-- Row 1 -->
                         <div></div>
                         <div></div>
                         <div class="h-right">प्रो.प्रा.सौरभ भुंबर</div>
 
-                        <!-- Row 2 -->
                         <div></div>
                         <div class="h-center">सर्व प्रकारचे डेकोरेशन तसेच ईव्हेन्ट मॅनेजमेन्टचे कामे केल्या जातील</div>
                         <div class="h-right">9823528733</div>
 
-                        <!-- Row 3 -->
                         <div></div>
                         <div class="h-center">गाडगे बाबा मार्केट, गाडगे नगर, अमरावती</div>
                         <div class="h-right hide-on-quotation">GSTN NO 27BIWPB4912MIZS</div>
@@ -360,28 +336,22 @@
                     <div class="meta-box">
                         <div class="w-1/3 text-left">जा.क्र.: <span id="print-id-text-marathi">...</span></div>
                         <div class="w-1/3 text-center"><div class="doc-type-label" id="print-doc-type">इन्व्हॉइस</div></div>
-                        <!-- Blank Date for Manual Entry -->
                         <div class="w-1/3 text-right">दिनांक: <span id="print-date-marathi">________________</span></div>
                     </div>
                 </div>
 
                 <div class="p-4 md:p-6 print-table-container">
-                    <!-- Customer & Dates -->
                     <div class="print-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div class="space-y-4 print-col">
                             <div class="relative group">
                                 <label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-primary group-focus-within:text-primary transition-colors screen-only">Customer Name</label>
-                                <!-- Print Only Label -->
                                 <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Customer Name: </span>
-                                <!-- Using Span for Print Value to ensure visibility -->
                                 <span id="p-cust-name-display" class="print-only font-bold text-sm min-w-[150px] inline-block"></span>
                                 <input type="text" id="cust-name" class="w-full p-3 border border-gray-200 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
                             </div>
                             <div class="relative group">
                                 <label class="absolute -top-2.5 left-3 bg-white px-1 text-xs font-bold text-gray-500 group-focus-within:text-primary transition-colors screen-only">Phone Number</label>
-                                <!-- Print Only Label -->
                                 <span class="print-only font-bold text-sm whitespace-nowrap mr-2">Contact Number: </span>
-                                <!-- Using Span for Print Value -->
                                 <span id="p-cust-phone-display" class="print-only font-bold text-sm min-w-[150px] inline-block"></span>
                                 <input type="number" id="cust-phone" class="w-full p-3 border border-gray-200 rounded-xl outline-none focus:border-primary font-medium text-sm input-hide-print">
                             </div>
@@ -401,28 +371,16 @@
                         </div>
                     </div>
                     
-                    <!-- Line Separator (Visible only if Mandaps exist) -->
                     <div id="print-mandap-separator" class="print-separator hidden"></div>
 
-                    <!-- Mandap Section -->
                     <div class="mb-6">
-                        <div class="flex justify-between items-end mb-2 no-print">
-                            <h3 class="font-bold text-gray-800 text-base">Mandaps</h3>
-                            <button onclick="addMandapRow()" class="add-mandap-btn text-[10px] bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-full font-bold transition-colors"><i class="fas fa-plus mr-1"></i> Add Mandap</button>
-                        </div>
-                        <div id="mandap-list-container" class="space-y-3"></div>
-                    </div>
-
-                    <!-- Items -->
-                    <div class="mb-6">
-                        <div class="flex justify-between items-end mb-2 no-print"><h3 class="font-bold text-gray-800 text-base">Items</h3><span class="text-[10px] text-gray-400">Scroll ></span></div>
+                        <div class="flex justify-between items-end mb-2 no-print"><h3 class="font-bold text-gray-800 text-base">Items & Services</h3><span class="text-[10px] text-gray-400">Scroll ></span></div>
                         <div class="overflow-x-auto custom-scroll pb-2 border border-gray-100 rounded-xl">
                             <table class="w-full min-w-full">
                                 <thead class="bg-gray-50 border-b border-gray-100">
                                     <tr class="text-[10px] md:text-xs font-bold text-gray-400 uppercase text-left">
-                                        <th class="p-2 pl-3 w-[40%]">Item</th>
-                                        <!-- Swapped Qty and Rate Headers -->
-                                        <th class="p-2 text-center w-[10%]">Qty</th>
+                                        <th class="p-2 pl-3 w-[40%]">Item Description</th>
+                                        <th class="p-2 text-center w-[15%]">Qty</th>
                                         <th class="p-2 text-center w-[15%]">Rate</th>
                                         <th class="p-2 text-center w-[10%] bg-yellow-50/50 text-yellow-600">Days</th>
                                         <th class="p-2 text-right pr-3 w-[20%]">Total</th>
@@ -432,22 +390,23 @@
                                 <tbody id="items-list" class="divide-y divide-gray-50 text-xs md:text-sm"></tbody>
                             </table>
                         </div>
-                        <!-- ADD NEW ITEM ROW WITH SUGGESTION SUPPORT -->
-                        <div class="mt-2 flex gap-2 no-print p-2 bg-gray-50 rounded-xl border border-dashed border-gray-300 relative" id="new-item-row">
-                            <div class="relative flex-1 min-w-0">
-                                <input type="text" id="new-item-name" placeholder="Item Name" autocomplete="off" class="w-full bg-white border-none rounded-lg shadow-sm px-3 py-2 text-xs focus:ring-2 focus:ring-primary/20">
-                                <!-- SUGGESTION LIST CONTAINER -->
-                                <div id="suggestion-list" class="hidden"></div>
+                        
+                        <div id="add-buttons-container" class="mt-3 flex flex-col gap-2 no-print">
+                            <div class="relative" id="new-item-input-row">
+                                <div class="flex gap-2">
+                                     <input type="text" id="new-item-name" placeholder="Item Name (e.g. Chair)" class="flex-1 p-3 bg-white border border-gray-200 rounded-xl outline-none text-sm font-medium focus:ring-2 focus:ring-primary/20">
+                                     <div id="suggestion-list" class="hidden"></div>
+                                     <input type="text" id="new-item-price" inputmode="decimal" placeholder="Rate" class="w-20 p-3 bg-white border border-gray-200 rounded-xl outline-none text-sm font-medium text-center focus:ring-2 focus:ring-primary/20">
+                                     <button onclick="addNewItem()" class="w-12 bg-gray-100 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-plus"></i></button>
+                                </div>
                             </div>
-                            <!-- CHANGED TO TEXT TYPE AS REQUESTED -->
-                            <input type="text" id="new-item-price" placeholder="Rate" class="w-16 bg-white border-none rounded-lg shadow-sm px-2 py-2 text-xs text-center focus:ring-2 focus:ring-primary/20">
-                            <button onclick="addNewItem()" class="bg-primary hover:bg-primaryDark text-white w-10 h-10 flex-none shrink-0 rounded-lg shadow-lg flex items-center justify-center transition-transform active:scale-95">
-                                <i class="fas fa-plus"></i>
+                            
+                            <button onclick="openMandapModal()" class="w-full py-3 bg-blue-50 border-2 border-dashed border-blue-200 rounded-xl text-blue-600 font-bold hover:bg-blue-100 hover:border-blue-300 transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-dungeon"></i> Add Mandap / Stage
                             </button>
                         </div>
                     </div>
 
-                    <!-- Totals -->
                     <div class="totals-section">
                         <div class="w-full md:w-2/3 ml-auto">
                             <div class="flex justify-between items-center mb-2 pb-2 border-b border-gray-100"><span class="text-gray-500 font-medium text-xs">Subtotal</span><span class="text-base font-bold text-gray-800">₹ <span id="subtotal">0</span></span></div>
@@ -471,7 +430,6 @@
             </div>
         </div>
 
-        <!-- === VIEW: PIPE CALCULATOR === -->
         <div id="view-pipe-calc" class="flex-grow hidden px-4 pb-24 animate-fade-in w-full max-w-xl mx-auto">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <div class="text-center mb-6"><div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 text-orange-600 text-xl"><i class="fas fa-calculator"></i></div><h2 class="text-xl font-bold text-gray-800">Pipe & Ceiling Calc</h2></div>
@@ -484,7 +442,6 @@
             </div>
         </div>
 
-        <!-- === VIEW: SEARCH === -->
         <div id="view-search" class="flex-grow hidden px-4 pb-24 animate-fade-in w-full max-w-4xl mx-auto">
             <div class="bg-white p-2 rounded-2xl shadow-lg mb-6 sticky top-4 z-20 border border-gray-100">
                 <div class="flex justify-center mb-4 gap-2 no-print" id="history-tabs">
@@ -506,7 +463,6 @@
         </div>
     </div>
 
-    <!-- FAB ACTIONS -->
     <div class="fixed bottom-6 left-4 right-4 z-40 flex gap-3 no-print" id="fab-container">
         <button onclick="saveAndPrintBill('QUOTATION')" class="flex-1 bg-gray-800 text-white py-4 rounded-2xl shadow-xl font-bold text-sm flex items-center justify-center gap-2 transform transition-all hover:scale-[1.02] active:scale-95 border border-gray-700">
             <i class="fas fa-file-alt text-yellow-400"></i> Quotation
@@ -521,9 +477,7 @@
         const DEFAULT_GSTIN = "24585435642";
         
         let globalDefaults = []; 
-        let items = [];
-        let mandaps = []; 
-        const MANDAP_TYPES = { 'Normal': 15, 'Waterproof': 25, 'Dripping': 30 };
+        let items = []; // NOW UNIFIED LIST
         let editingRowIndex = null;
         let currentPaymentRow = null;
         let activeTab = 'new';
@@ -578,7 +532,7 @@
             { en: "steel glass", mr: "स्टील ग्लास" }, { en: "plastic glass", mr: "प्लास्टिक ग्लास" },
             { en: "kopar", mr: "कोपर" },
             { en: "satranji", mr: "सतरंगी" }, { en: "carpet", mr: "सतरंगी" },
-            { en: "green mat", mr: "ग्रीन मेटिंग" },
+            { en: "green mat", mr: "ग्रीन मेटिंग" }, { en: "green mating", mr: "ग्रीन मेटिंग" },
             { en: "belan", mr: "बेलन" },
             { en: "tea thermos", mr: "चहा थर्मास" },
             { en: "vip khurchi", mr: "VIP खुर्ची" }, { en: "vip chair", mr: "VIP खुर्ची" },
@@ -594,13 +548,11 @@
             { en: "sound system program", mr: "साऊंड सिस्टिम सांस्कृतिक कार्यक्रम" }
         ];
 
-        function fetchRecent() {
-            performSearch('recent');
-        }
+        function fetchRecent() { performSearch('recent'); }
 
         window.onload = function() {
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB');
-            document.getElementById('print-date-marathi').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; // Blank space for manual date
+            document.getElementById('print-date-marathi').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
             let savedUrl = localStorage.getItem('scriptUrl');
             if (!savedUrl && DEFAULT_SCRIPT_URL.trim() !== "") { localStorage.setItem('scriptUrl', DEFAULT_SCRIPT_URL); savedUrl = DEFAULT_SCRIPT_URL; }
             if (savedUrl) document.getElementById('script-url').value = savedUrl;
@@ -624,23 +576,14 @@
                 const val = this.value.toLowerCase();
                 const list = document.getElementById('suggestion-list');
                 list.innerHTML = '';
-                
-                if (!val) {
-                    list.classList.add('hidden');
-                    return;
-                }
-
-                // Filter items
-                const matches = ITEM_CATALOG.filter(i => 
-                    i.en.startsWith(val) || i.mr.startsWith(val) || i.en.includes(val) || i.mr.includes(val)
-                );
-
+                if (!val) { list.classList.add('hidden'); return; }
+                const matches = ITEM_CATALOG.filter(i => i.en.startsWith(val) || i.mr.startsWith(val) || i.en.includes(val) || i.mr.includes(val));
                 if (matches.length > 0) {
                     list.classList.remove('hidden');
                     matches.slice(0, 8).forEach(item => {
                         const div = document.createElement('div');
                         div.className = 'suggestion-item';
-                        div.innerText = item.mr; // Show Marathi Name
+                        div.innerText = item.mr; 
                         div.onclick = function() {
                             itemInput.value = item.mr;
                             list.classList.add('hidden');
@@ -648,26 +591,18 @@
                         };
                         list.appendChild(div);
                     });
-                } else {
-                    list.classList.add('hidden');
-                }
+                } else { list.classList.add('hidden'); }
             });
-
-            // Hide suggestions when clicking outside
             document.addEventListener('click', function(e) {
-                if (!document.getElementById('new-item-row').contains(e.target)) {
+                if (!document.getElementById('new-item-input-row').contains(e.target)) {
                     document.getElementById('suggestion-list').classList.add('hidden');
                 }
             });
-            // ---------------------------------
         };
-
-        // --- GESTURE REMOVED --- 
-        // No touchstart/touchend listeners added for tab switching
 
         function initBillItems() { 
              if (globalDefaults && globalDefaults.length > 0) {
-                 items = globalDefaults.map(i => ({ ...i, qty: 0, days: 1 })); 
+                 items = globalDefaults.map(i => ({ ...i, qty: "0", days: 1, type: 'ITEM' })); 
              } else {
                  items = []; 
              }
@@ -678,152 +613,73 @@
         function calcDedicatedPipes() { const l = parseFloat(document.getElementById('calc-l').value) || 0; const w = parseFloat(document.getElementById('calc-w').value) || 0; if (l > 0 && w > 0) { const pipes = calculatePipes(l, w); const ceiling = Math.ceil(l/15) * Math.ceil(w/15); document.getElementById('res-v').innerText = pipes.v; document.getElementById('res-h').innerText = pipes.h; document.getElementById('res-c').innerText = ceiling; } else { document.getElementById('res-v').innerText = 0; document.getElementById('res-h').innerText = 0; document.getElementById('res-c').innerText = 0; } }
         function snapToGrid(input) { let val = parseFloat(input.value) || 0; if (val > 0 && val % 15 !== 0) { input.value = Math.round(val / 15) * 15; if(input.id.includes('calc')) calcDedicatedPipes(); } }
 
-        function toggleMandapSeparator() {
-            const sep = document.getElementById('print-mandap-separator');
-            if (mandaps.length > 0) {
-                sep.classList.add('visible');
+        // --- NEW MANDAP LOGIC (INTEGRATED INTO ITEMS) ---
+        function openMandapModal() {
+            document.getElementById('m-name').value = '';
+            document.getElementById('m-len').value = '';
+            document.getElementById('m-wid').value = '';
+            document.getElementById('m-rate').value = '';
+            const modal = document.getElementById('mandap-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeMandapModal() {
+            const modal = document.getElementById('mandap-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmAddMandap() {
+            const name = document.getElementById('m-name').value;
+            const l = parseFloat(document.getElementById('m-len').value) || 0;
+            const w = parseFloat(document.getElementById('m-wid').value) || 0;
+            const rate = parseFloat(document.getElementById('m-rate').value) || 0;
+
+            if (name && l > 0 && w > 0 && rate > 0) {
+                const area = l * w;
+                const formattedName = `${name} (${l}x${w})`;
+                const qtyStr = `${area}`; // Store area number
+                const rateStr = `${rate}`;
+                
+                // Add Mandap Item
+                items.push({
+                    id: Date.now(),
+                    name: formattedName,
+                    qty: qtyStr,
+                    price: rateStr,
+                    days: parseInt(document.getElementById('total-days').innerText),
+                    type: 'MANDAP' // Important tag for sorting
+                });
+                
+                renderTableRows();
+                closeMandapModal();
             } else {
-                sep.classList.remove('visible');
+                showToast("Please fill all fields", "error");
             }
         }
 
-        function addMandapRow() { 
-            const id = Date.now(); 
-            mandaps.push({ id: id, type: 'Normal', l: '', w: '', rate: 15, total: 0, isCustom: false }); 
-            renderMandapRows(); 
-            toggleMandapSeparator();
-        }
-        function removeMandapRow(index) { 
-            mandaps.splice(index, 1); 
-            renderMandapRows(); 
-            recalcTotals(); 
-            toggleMandapSeparator();
-        }
-        
-        let openDropdownIndex = null;
-        function toggleDropdown(index) {
-            if (openDropdownIndex === index) { document.getElementById(`dropdown-${index}`).classList.add('hidden'); openDropdownIndex = null; return; }
-            if (openDropdownIndex !== null) { const prev = document.getElementById(`dropdown-${openDropdownIndex}`); if(prev) prev.classList.add('hidden'); }
-            document.getElementById(`dropdown-${index}`).classList.remove('hidden'); openDropdownIndex = index;
-        }
-        window.addEventListener('click', (e) => {
-            if (openDropdownIndex !== null) {
-                const btn = document.querySelector(`button[onclick="toggleDropdown(${openDropdownIndex})"]`);
-                const dd = document.getElementById(`dropdown-${openDropdownIndex}`);
-                if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) { dd.classList.add('hidden'); openDropdownIndex = null; }
+        // --- ITEM LOGIC ---
+        function addNewItem() { 
+            const nameVal = document.getElementById('new-item-name').value;
+            const priceVal = document.getElementById('new-item-price').value; 
+            const daysVal = parseInt(document.getElementById('total-days').innerText) || 1;
+
+            if(nameVal) {
+                 items.push({ 
+                    id: Date.now(), 
+                    name: nameVal, 
+                    price: priceVal, 
+                    qty: "", 
+                    days: daysVal, 
+                    type: 'ITEM' 
+                }); 
+                document.getElementById('new-item-name').value = '';
+                document.getElementById('new-item-price').value = ''; 
+                renderTableRows(); 
             }
-        });
-        function selectPreset(index, type) {
-            mandaps[index].type = type; mandaps[index].rate = MANDAP_TYPES[type]; document.getElementById(`dropdown-${index}`).classList.add('hidden'); openDropdownIndex = null; renderMandapRows(); calcMandapRow(index);
         }
 
-        function renderMandapRows() {
-            const container = document.getElementById('mandap-list-container'); container.innerHTML = '';
-            mandaps.forEach((m, index) => {
-                const div = document.createElement('div'); div.className = "bg-blue-50/50 rounded-xl p-3 border border-blue-100 relative mb-2 mandap-row-container";
-                let dropdownItems = ''; for (const [type, _] of Object.entries(MANDAP_TYPES)) { dropdownItems += `<div onclick="selectPreset(${index}, '${type}')" class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm font-medium text-gray-700">${type}</div>`; }
-                div.innerHTML = `
-                    <div class="flex justify-between items-start mb-2 relative">
-                        <div class="flex-1 mr-2 relative">
-                            <label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center no-print">Type</label>
-                            <div class="flex items-center gap-1 mandap-input-group no-print">
-                                <input type="text" value="${m.type}" oninput="updateMandapTypeInput(${index}, this.value)" class="flex-1 bg-white border border-gray-200 rounded-lg p-1 text-xs font-bold text-gray-700 outline-none focus:border-blue-400 text-center" placeholder="Name">
-                                <button onclick="toggleDropdown(${index})" class="bg-white border border-gray-200 rounded-lg px-2 py-1 hover:bg-gray-50 focus:outline-none"><i class="fas fa-chevron-down text-xs text-gray-500"></i></button>
-                            </div>
-                            <div id="dropdown-${index}" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-20 overflow-hidden no-print">${dropdownItems}</div>
-                            <span class="mandap-text-print hidden">${m.type}</span>
-                        </div>
-                        <button onclick="removeMandapRow(${index})" class="text-red-300 hover:text-red-500 p-1 no-print"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                    <div class="grid grid-cols-4 gap-2 items-end">
-                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center mandap-label-print">L (ft)</label><input type="number" value="${m.l}" oninput="updateMandapVal(${index}, 'l', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
-                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center mandap-label-print">W (ft)</label><input type="number" value="${m.w}" oninput="updateMandapVal(${index}, 'w', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none" placeholder="0"></div>
-                        <div><label class="text-[10px] font-bold text-gray-400 uppercase pl-1 block text-center mandap-label-print">Rate/sqft</label><input type="number" value="${m.rate}" oninput="updateMandapVal(${index}, 'rate', this.value)" class="w-full p-2 text-center text-sm font-bold text-gray-700 bg-white border border-gray-200 rounded-lg focus:border-blue-400 outline-none"></div>
-                        <div><label class="text-[10px] font-bold text-blue-300 uppercase pl-1 block text-right mandap-label-print">Amount</label><div class="w-full p-2 text-right text-sm font-bold text-blue-700 bg-blue-100/50 rounded-lg mandap-amount-box">₹ <span class="mandap-amount-print" id="mandap-total-${index}">${m.total}</span></div></div>
-                    </div>`;
-                container.appendChild(div);
-            });
-        }
-
-        function updateMandapTypeInput(index, val) { mandaps[index].type = val; const printSpan = document.querySelectorAll('.mandap-text-print')[index]; if(printSpan) printSpan.innerText = val; }
-        function updateMandapVal(index, field, val) { mandaps[index][field] = val; calcMandapRow(index); }
-        function calcMandapRow(index) { const m = mandaps[index]; const l = parseFloat(m.l) || 0; const w = parseFloat(m.w) || 0; const rate = parseFloat(m.rate) || 0; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; const area = l * w; const total = Math.round(area * rate * globalDays); m.total = total; const totalEl = document.getElementById(`mandap-total-${index}`); if(totalEl) totalEl.innerText = total; recalcTotals(); }
-        function autoCalcAllMandaps() { mandaps.forEach((_, i) => calcMandapRow(i)); }
-
-        function recalcTotals() {
-            const mandapSum = mandaps.reduce((acc, m) => acc + (m.total || 0), 0);
-            const itemsTotal = items.reduce((sum, item) => {
-                const q = parseFloat(item.qty) || 0;
-                const p = parseFloat(item.price) || 0;
-                const d = parseFloat(item.days) || 1;
-                return sum + (q * p * d);
-            }, 0);
-            const subtotal = mandapSum + itemsTotal; document.getElementById('subtotal').innerText = subtotal;
-            const isGstEnabled = document.getElementById('gst-toggle').checked;
-            const taxRows = document.getElementById('tax-rows');
-            let cgstAmt = 0, sgstAmt = 0;
-            if (isGstEnabled) { taxRows.classList.remove('hidden', 'no-tax-print'); cgstAmt = Math.round((subtotal * 9) / 100); sgstAmt = Math.round((subtotal * 9) / 100); } else { taxRows.classList.add('hidden', 'no-tax-print'); }
-            document.getElementById('cgst-amt').innerText = cgstAmt; document.getElementById('sgst-amt').innerText = sgstAmt;
-            const total = subtotal + cgstAmt + sgstAmt; document.getElementById('final-total').innerText = total;
-            const paid = parseFloat(document.getElementById('paid-amount').value) || 0;
-            document.getElementById('balance-due').innerText = total - paid; document.getElementById('print-paid').innerText = paid; document.getElementById('print-balance').innerText = total - paid;
-        }
-        function recalcGrandTotalsOnly() { recalcTotals(); }
-
-        // --- Render Rows with Editable Name & Up/Down Buttons ---
-        function renderTableRows() {
-            const tbody = document.getElementById('items-list'); tbody.innerHTML = '';
-            items.forEach((item, index) => {
-                // Ensure text can be entered and parsed. If NaN, it treats as 0 for calculation but keeps text in input.
-                const qtyVal = item.qty; 
-                const priceVal = item.price;
-                
-                // For calculation display
-                const q = parseFloat(qtyVal) || 0;
-                const p = parseFloat(priceVal) || 0;
-                const d = parseFloat(item.days) || 1;
-                const itemTotal = q * p * d; 
-                
-                const tr = document.createElement('tr'); 
-                tr.className = 'group hover:bg-gray-50 transition-colors';
-                const daysVal = item.days === 0 ? '' : item.days;
-                
-                tr.innerHTML = `
-                <td class="p-2 pl-3">
-                    <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)" class="w-full text-sm font-medium text-gray-700 bg-transparent border-none focus:ring-0">
-                </td>
-                <td class="p-1 text-center"><input type="text" oninput="handleRowInput(${index}, 'qty', this.value)" value="${qtyVal}" class="w-full text-center bg-gray-100 rounded-lg p-1 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none font-bold text-primary" placeholder="0"></td>
-                <td class="p-1 text-center"><input type="text" oninput="handleRowInput(${index}, 'price', this.value)" value="${priceVal}" class="w-full text-center bg-transparent border-b border-gray-100 focus:border-primary outline-none p-1" placeholder="0"></td>
-                <td class="p-1 text-center bg-yellow-50/50"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${daysVal}" class="w-full text-center bg-transparent border-b border-yellow-200 focus:border-yellow-500 outline-none font-bold text-yellow-700 p-1" placeholder="0"></td>
-                <td class="p-2 pr-3 text-right font-bold text-gray-800">₹ <span id="item-total-${index}">${itemTotal}</span></td>
-                <td class="no-print text-center p-1 row-actions flex justify-end gap-1">
-                    <button onclick="moveItem(${index}, -1)" class="text-gray-400 hover:text-blue-500"><i class="fas fa-arrow-up"></i></button>
-                    <button onclick="moveItem(${index}, 1)" class="text-gray-400 hover:text-blue-500"><i class="fas fa-arrow-down"></i></button>
-                    <button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 ml-1"><i class="fas fa-trash-alt text-xs"></i></button>
-                </td>`;
-                tbody.appendChild(tr);
-            }); 
-            recalcTotals();
-        }
-
-        function updateItemName(index, val) { items[index].name = val; }
-        
-        function handleRowInput(index, field, value) {
-            items[index][field] = value; // Store raw value (string or number)
-            
-            // Calculate for specific row display immediately
-            const q = parseFloat(items[index].qty) || 0;
-            const p = parseFloat(items[index].price) || 0;
-            const d = parseFloat(items[index].days) || 1;
-            const newRowTotal = q * p * d;
-            
-            const span = document.getElementById(`item-total-${index}`);
-            if(span) span.innerText = newRowTotal;
-            
-            recalcTotals(); 
-        }
-        
-        function addNewItem() { const name = document.getElementById('new-item-name').value; const price = document.getElementById('new-item-price').value; const globalDays = parseInt(document.getElementById('total-days').innerText) || 1; if (name) { items.push({ id: Date.now(), name, price: price, qty: 0, days: globalDays }); renderTableRows(); document.getElementById('new-item-name').value = ''; document.getElementById('new-item-price').value = ''; } }
         function deleteItem(index) { if(confirm('Remove?')) { items.splice(index, 1); renderTableRows(); } }
         
         function moveItem(index, direction) {
@@ -832,15 +688,14 @@
                 const temp = items[index];
                 items[index] = items[newIndex];
                 items[newIndex] = temp;
-                renderTableRows();
+                renderTableRows(false);
             }
         }
 
-        function calcDays() { const startStr = document.getElementById('start-date').value; const endStr = document.getElementById('end-date').value; if(startStr && endStr) { const diffTime = new Date(endStr) - new Date(startStr); let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; if (diffDays < 1) diffDays = 1; document.getElementById('total-days').innerText = diffDays; document.getElementById('print-total-days').innerText = diffDays; updatePrintDates(); items.forEach(item => item.days = diffDays); renderTableRows(); autoCalcAllMandaps(); } }
+        function calcDays() { const startStr = document.getElementById('start-date').value; const endStr = document.getElementById('end-date').value; if(startStr && endStr) { const diffTime = new Date(endStr) - new Date(startStr); let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; if (diffDays < 1) diffDays = 1; document.getElementById('total-days').innerText = diffDays; document.getElementById('print-total-days').innerText = diffDays; updatePrintDates(); items.forEach(item => item.days = diffDays); renderTableRows(); } }
         function updatePrintDates() { const s = new Date(document.getElementById('start-date').value); const e = new Date(document.getElementById('end-date').value); document.getElementById('print-start-date').innerText = s.toLocaleDateString('en-GB'); document.getElementById('print-end-date').innerText = e.toLocaleDateString('en-GB'); }
         
         function preparePrint() {
-            // FIX: Explicitly set values for print spans from inputs
             document.getElementById('p-cust-name-display').innerText = document.getElementById('cust-name').value;
             document.getElementById('p-cust-phone-display').innerText = document.getElementById('cust-phone').value;
             
@@ -848,12 +703,14 @@
             const dateStr = new Date().toISOString().split('T')[0];
             document.title = `${custName}_${dateStr}`;
             document.getElementById('print-footer-custom').innerText = document.getElementById('footer-text-input').value;
+            
+            const hasMandap = items.some(i => i.type === 'MANDAP');
+            const sep = document.getElementById('print-mandap-separator');
+            if(hasMandap) sep.classList.add('visible'); else sep.classList.remove('visible');
         }
 
         async function saveAndPrintBill(docType = 'BILL') {
             const custName = document.getElementById('cust-name').value; if (!custName) { showToast("Enter Customer Name", "error"); return; }
-            
-            // Prepare Print Data BEFORE printing
             preparePrint();
             
             const doc = document.documentElement;
@@ -870,35 +727,21 @@
             document.getElementById('current-date').innerText = new Date().toLocaleString('en-GB'); 
             
             let detailsArray = [];
-            mandaps.forEach(m => { 
-                if (m.total > 0) { 
-                    const area = (parseFloat(m.l) || 0) * (parseFloat(m.w) || 0);
-                    detailsArray.push(`MANDAP [${m.type}]: ${m.l}x${m.w}ft (${area} sq.ft) @${m.rate} (Rs ${m.total})`); 
-                } 
-            });
             items.forEach(i => { 
-                // Save even if qty is text or 0, just push string
-                detailsArray.push(`${i.name}: ${i.qty}* x ${i.days}d @${i.price}`); 
+                // Format: Name: Qty * x Days d @ Price
+                detailsArray.push(`${i.name}: ${i.qty}* x ${i.days}d @${i.price} [${i.type || 'ITEM'}]`); 
             });
+            
             const finalDetailsString = detailsArray.join('\n');
             const payload = { action: editingRowIndex ? 'edit' : 'create', row: editingRowIndex, name: custName, phone: document.getElementById('cust-phone').value, startDate: document.getElementById('start-date').value, endDate: document.getElementById('end-date').value, days: document.getElementById('total-days').innerText, details: finalDetailsString, subtotal: document.getElementById('subtotal').innerText, cgst: document.getElementById('cgst-amt').innerText, sgst: document.getElementById('sgst-amt').innerText, total: document.getElementById('final-total').innerText, paid: document.getElementById('paid-amount').value || 0, docType: docType };
                 
             if (scriptUrl) {
                 btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Saving...'; 
-                
-                // Print First (Data is ready)
                 setTimeout(triggerPrint, 500);
-
                 try { 
                     await fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); 
                     showToast(editingRowIndex ? "Updated!" : "Saved!", "success"); 
-                    
-                    // REFRESH AFTER 5 SECONDS
-                    setTimeout(() => {
-                        fetchRecent();
-                        if(editingRowIndex) exitEditMode();
-                    }, 5000); 
-
+                    setTimeout(() => { fetchRecent(); if(editingRowIndex) exitEditMode(); }, 5000); 
                 } catch (error) { console.error(error); showToast("Network Error", "error"); }
             } else { showToast("Script URL Missing", "error"); triggerPrint(); }
         }
@@ -915,38 +758,25 @@
             else if (tab === 'calc') { calcView.classList.remove('hidden'); fab.classList.add('hidden'); btnCalc.classList.add(...activeClass); btnCalc.classList.remove(...inactiveClass); }
         }
 
-        // --- HISTORY TABS LOGIC ---
         function setHistoryFilter(type) {
             currentHistoryFilter = type;
             const btnBills = document.getElementById('btn-hist-bills');
             const btnQuotes = document.getElementById('btn-hist-quotes');
-            
-            if(type === 'BILL') {
-                btnBills.classList.add('tab-btn-active'); btnBills.classList.remove('tab-btn-inactive');
-                btnQuotes.classList.remove('tab-btn-active'); btnQuotes.classList.add('tab-btn-inactive');
-            } else {
-                btnQuotes.classList.add('tab-btn-active'); btnQuotes.classList.remove('tab-btn-inactive');
-                btnBills.classList.remove('tab-btn-active'); btnBills.classList.add('tab-btn-inactive');
-            }
-            renderHistoryList(); // Re-render with local filter
+            if(type === 'BILL') { btnBills.classList.add('tab-btn-active'); btnBills.classList.remove('tab-btn-inactive'); btnQuotes.classList.remove('tab-btn-active'); btnQuotes.classList.add('tab-btn-inactive'); } 
+            else { btnQuotes.classList.add('tab-btn-active'); btnQuotes.classList.remove('tab-btn-inactive'); btnBills.classList.remove('tab-btn-active'); btnBills.classList.add('tab-btn-inactive'); }
+            renderHistoryList();
         }
 
         function renderHistoryList() {
             const resultDiv = document.getElementById('search-results');
             const filteredData = allFetchedData.filter(item => {
-                // If docType is missing, assume BILL.
-                // If status is "Quotation", treat as QUOTATION (fallback for older logic)
                 let type = item.docType || "BILL";
                 if(item.status === "Quotation") type = "QUOTATION";
-                
                 return type === currentHistoryFilter;
             });
-
             resultDiv.innerHTML = '';
             if(filteredData.length === 0) { resultDiv.innerHTML = '<div class="text-center text-gray-400 mt-12 py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200"><i class="far fa-folder-open text-4xl mb-2"></i><br>No records found</div>'; return; }
-            
             const today = new Date(); today.setHours(0,0,0,0);
-            
             filteredData.forEach(bill => {
                 if(bill.name.toLowerCase() === 'name') return;
                 const isPaid = bill.status === 'Paid'; 
@@ -957,25 +787,15 @@
                 const paid = parseFloat(bill.paid) || 0; 
                 const total = parseFloat(bill.total) || 0; 
                 const balance = total - paid;
-                
                 let cardClass, textClass, statusIcon, statusText;
-                
-                // Use the derived type or original docType
                 const isQuotation = (bill.docType === 'QUOTATION' || bill.status === 'Quotation');
-
-                if (isQuotation) {
-                    cardClass = "bg-gray-50 border-gray-200"; textClass = "text-gray-600"; statusIcon = "fa-file-alt"; statusText = "Quotation";
-                } else if (isPaid) { 
-                    cardClass = "bg-green-50 border-green-200"; textClass = "text-green-700"; statusIcon = "fa-check-circle"; statusText = "Paid"; 
-                } else if (isOngoing) { 
-                    cardClass = "bg-blue-50 border-blue-200"; textClass = "text-blue-700"; statusIcon = "fa-hourglass-half"; statusText = "Ongoing"; 
-                } else { 
-                    cardClass = "bg-red-50 border-red-200"; textClass = "text-red-700"; statusIcon = "fa-exclamation-circle"; statusText = "Pending"; 
-                }
+                if (isQuotation) { cardClass = "bg-gray-50 border-gray-200"; textClass = "text-gray-600"; statusIcon = "fa-file-alt"; statusText = "Quotation"; } 
+                else if (isPaid) { cardClass = "bg-green-50 border-green-200"; textClass = "text-green-700"; statusIcon = "fa-check-circle"; statusText = "Paid"; } 
+                else if (isOngoing) { cardClass = "bg-blue-50 border-blue-200"; textClass = "text-blue-700"; statusIcon = "fa-hourglass-half"; statusText = "Ongoing"; } 
+                else { cardClass = "bg-red-50 border-red-200"; textClass = "text-red-700"; statusIcon = "fa-exclamation-circle"; statusText = "Pending"; }
                 
                 let actionButtons = '';
                 if (isQuotation) {
-                    // Quotations have Edit and Delete only (convert to bill by editing)
                     actionButtons = `<button onclick="editInvoice(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-pen"></i> Edit</button>
                                      <button onclick="directPrint(${bill.rowIndex}, '${dataStr}')" class="flex-1 py-2 bg-white text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-print"></i> Print</button>
                                      <button onclick="deleteInvoice(${bill.rowIndex})" class="w-10 flex items-center justify-center bg-white text-red-500 rounded-lg hover:bg-red-50 transition-colors shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button>`;
@@ -992,22 +812,17 @@
                             <div><h3 class="font-bold text-gray-900 text-lg">${bill.name}</h3><a href="tel:${bill.phone}" class="flex items-center gap-2 text-gray-500 text-sm mt-1 hover:text-primary transition-colors"><i class="fas fa-phone text-xs transform flip-horizontal"></i> ${bill.phone}</a><div class="flex items-center gap-2 text-gray-400 text-xs mt-1"><i class="far fa-clock"></i> ${displayDate}</div></div>
                             <div class="text-right"><div class="text-xl font-bold ${balance > 0 && !isQuotation ? 'text-red-600' : 'text-gray-600'}">${isQuotation ? 'Total' : 'Bal'}: ₹ ${isQuotation ? total : balance}</div><span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${textClass} bg-white/50 border border-white mt-1"><i class="fas ${statusIcon}"></i> ${statusText}</span></div>
                         </div>
-                        ${!isQuotation ? `<div class="mb-3 px-1 pt-2 border-t border-gray-200/50"><div class="flex justify-between text-xs text-gray-600 font-medium"><span><i class="fas fa-check-circle text-green-500 mr-1"></i> Paid: ₹${paid}</span><span class="text-gray-400">Total Bill: ₹${total}</span></div></div>` : ''}
-                        <div class="flex gap-2 pt-2 border-t border-gray-200/50">
-                            ${actionButtons}
-                        </div>
+                        <div class="flex gap-2 pt-2 border-t border-gray-200/50">${actionButtons}</div>
                     </div>`;
                 resultDiv.insertAdjacentHTML('beforeend', html);
             });
         }
         
         async function directPrint(rowIndex, dataStr) {
-            // Load data into edit mode temporarily
             await editInvoice(rowIndex, dataStr);
-            // Wait slightly for DOM update then print
             setTimeout(() => {
                 const docType = document.documentElement.classList.contains('quotation-mode') ? 'QUOTATION' : 'BILL';
-                saveAndPrintBill(docType); // Re-uses save function but effectively just reprints existing data since IDs match
+                saveAndPrintBill(docType); 
             }, 500);
         }
 
@@ -1017,18 +832,13 @@
             if(!scriptUrl) { showToast("Setup settings first", "error"); return; }
             if(type === 'search' && !query && !dateVal) { showToast("Enter text or pick date", "error"); return; }
             resultDiv.innerHTML = '<div class="text-center mt-12"><i class="fas fa-circle-notch fa-spin text-3xl text-primary mb-3"></i><p class="text-gray-500 font-medium">Fetching Records...</p></div>';
-            
             let url = `${scriptUrl}?q=${encodeURIComponent(query)}&date=${dateVal}`; 
             if(type === 'recent') url = `${scriptUrl}?type=recent&ts=${Date.now()}`;
-
             try {
                 const response = await fetch(url); let data = await response.json();
                 data.sort((a, b) => (b.rowIndex || 0) - (a.rowIndex || 0));
-                
-                // Store globally for filtering
                 allFetchedData = data;
-                renderHistoryList(); // Render based on current filter (Bill/Quotation)
-
+                renderHistoryList(); 
             } catch(e) { console.error(e); resultDiv.innerHTML = '<div class="text-center text-red-400 mt-10">Error loading data.</div>'; }
         }
 
@@ -1049,41 +859,46 @@
             document.getElementById('edit-mode-bar').classList.remove('hidden');
             document.getElementById('cust-name').value = data.name; document.getElementById('cust-phone').value = data.phone;
             try { document.getElementById('start-date').value = new Date(data.startDate).toISOString().split('T')[0]; document.getElementById('end-date').value = new Date(data.endDate).toISOString().split('T')[0]; } catch(e) {}
-            calcDays(); items.forEach(i => { i.qty = 0; i.days = 1; }); document.getElementById('paid-amount').value = data.paid || 0;
-            mandaps = [];
+            calcDays(); items = []; // Clear current
+            
+            // Unified Parsing Logic for Mandaps AND Items
             const lines = data.details.split('\n');
             lines.forEach(line => {
-                if (line.includes('MANDAP')) { 
-                    // FIXED REGEX to handle flexible middle content like area
-                    const match = line.match(/MANDAP \[(.*?)\]: (\d+)x(\d+)ft.*?@(\d+) \(Rs (\d+)\)/);
-                    if(match) { mandaps.push({ id: Date.now() + Math.random(), type: match[1], l: match[2], w: match[3], rate: parseFloat(match[4]), total: parseFloat(match[5]), isCustom: false }); } 
-                } else { 
-                    // Updated Regex to catch the rate @
-                    const parts = line.split(':'); 
-                    if(parts.length > 1) { 
-                        const name = parts[0].trim(); 
-                        // Match qty, days, and OPTIONAL rate
-                        const nums = parts[1].match(/(.*?)\* x (\d+)d(?: @(.*))?/); 
-                        if(nums) { 
-                            const foundItem = items.find(i => i.name === name); 
-                            // If rate (group 3) found, use it, else 0
-                            const qty = nums[1].trim(); // Text Qty
-                            const rate = nums[3] ? nums[3].trim() : 0; // Text Rate
-                            
-                            if(foundItem) { 
-                                foundItem.qty = qty; 
-                                foundItem.days = parseInt(nums[2]); 
-                                foundItem.price = rate; 
-                            } else { 
-                                items.push({ id: Date.now(), name: name, price: rate, qty: qty, days: parseInt(nums[2]) }); 
-                            } 
-                        } 
-                    } 
+                // Check if Mandap (contains [MANDAP] tag we added in save)
+                if (line.includes('[MANDAP]')) {
+                    // Reconstruct from string: "Name (LxW): Qty x Days @ Price [MANDAP]"
+                    const match = line.match(/(.*?): (.*?)\*? x (\d+)d @(.*?) \[MANDAP\]/);
+                    if(match) {
+                        items.push({
+                            id: Date.now() + Math.random(),
+                            name: match[1].trim(),
+                            qty: match[2].trim(),
+                            days: parseInt(match[3]),
+                            price: match[4].trim(),
+                            type: 'MANDAP'
+                        });
+                    }
+                } else {
+                     // Standard Item: "Name: Qty* x Days @ Price"
+                     const match = line.match(/(.*?): (.*?)\* x (\d+)d @(.*?)(?: \[ITEM\])?$/);
+                     if(match) {
+                        items.push({
+                            id: Date.now() + Math.random(),
+                            name: match[1].trim(),
+                            qty: match[2].trim(),
+                            days: parseInt(match[3]),
+                            price: match[4].trim(),
+                            type: 'ITEM'
+                        });
+                     }
                 }
             });
-            renderMandapRows(); document.getElementById('gst-toggle').checked = false; switchTab('new'); renderTableRows(); showToast("Invoice Loaded", "success");
             
-            // Set Doc Type based on loaded data
+            // Sort to ensure Mandaps top
+            items.sort((a,b) => (a.type === 'MANDAP' ? -1 : 1));
+            
+            renderTableRows(false); document.getElementById('gst-toggle').checked = false; switchTab('new'); renderTableRows(false); showToast("Invoice Loaded", "success");
+            
             if(data.docType === 'QUOTATION') {
                 document.documentElement.classList.add('quotation-mode');
                 document.documentElement.classList.remove('invoice-mode');
@@ -1092,7 +907,92 @@
                 document.documentElement.classList.remove('quotation-mode');
             }
         }
-        function exitEditMode() { editingRowIndex = null; document.getElementById('edit-mode-bar').classList.add('hidden'); document.getElementById('cust-name').value = ""; document.getElementById('cust-phone').value = ""; items.forEach(i => { i.qty = 0; i.days = 1; }); mandaps = []; renderMandapRows(); document.getElementById('paid-amount').value = ''; renderTableRows(); showToast("Edit cancelled", "info"); }
+        function exitEditMode() { editingRowIndex = null; document.getElementById('edit-mode-bar').classList.add('hidden'); document.getElementById('cust-name').value = ""; document.getElementById('cust-phone').value = ""; items = []; initBillItems(); renderTableRows(); document.getElementById('paid-amount').value = ''; showToast("Edit cancelled", "info"); }
+
+        function recalcTotals() {
+            const itemsTotal = items.reduce((sum, item) => {
+                const q = parseFloat(item.qty) || 0;
+                const p = parseFloat(item.price) || 0;
+                const d = parseFloat(item.days) || 1;
+                return sum + (q * p * d);
+            }, 0);
+            
+            const subtotal = itemsTotal; 
+            document.getElementById('subtotal').innerText = subtotal;
+            const isGstEnabled = document.getElementById('gst-toggle').checked;
+            const taxRows = document.getElementById('tax-rows');
+            let cgstAmt = 0, sgstAmt = 0;
+            if (isGstEnabled) { taxRows.classList.remove('hidden', 'no-tax-print'); cgstAmt = Math.round((subtotal * 9) / 100); sgstAmt = Math.round((subtotal * 9) / 100); } else { taxRows.classList.add('hidden', 'no-tax-print'); }
+            document.getElementById('cgst-amt').innerText = cgstAmt; document.getElementById('sgst-amt').innerText = sgstAmt;
+            const total = subtotal + cgstAmt + sgstAmt; document.getElementById('final-total').innerText = total;
+            const paid = parseFloat(document.getElementById('paid-amount').value) || 0;
+            document.getElementById('balance-due').innerText = total - paid; document.getElementById('print-paid').innerText = paid; document.getElementById('print-balance').innerText = total - paid;
+        }
+        function recalcGrandTotalsOnly() { recalcTotals(); }
+
+        // --- Render Rows with Editable Name & Up/Down Buttons ---
+        function renderTableRows(doSort = true) {
+            // Sort: Mandaps first only if requested (doSort is true by default)
+            if (doSort) {
+                items.sort((a,b) => (a.type === 'MANDAP' && b.type !== 'MANDAP' ? -1 : (a.type !== 'MANDAP' && b.type === 'MANDAP' ? 1 : 0)));
+            }
+
+            const tbody = document.getElementById('items-list'); tbody.innerHTML = '';
+            items.forEach((item, index) => {
+                const q = parseFloat(item.qty) || 0;
+                const p = parseFloat(item.price) || 0;
+                const d = parseFloat(item.days) || 1;
+                const itemTotal = q * p * d; 
+                
+                const tr = document.createElement('tr'); 
+                tr.className = 'group hover:bg-gray-50 transition-colors';
+                
+                const isMandap = item.type === 'MANDAP';
+                // Suffix classes for mandap
+                const qtySuffix = isMandap ? 'mandap-qty-wrapper relative' : '';
+                const rateSuffix = isMandap ? 'mandap-rate-wrapper relative' : '';
+                
+                tr.innerHTML = `
+                <td class="p-2 pl-3">
+                    <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)" class="w-full text-sm font-medium ${isMandap ? 'text-blue-700 font-bold' : 'text-gray-700'} bg-transparent border-none focus:ring-0">
+                </td>
+                <td class="p-1 text-center">
+                    <div class="${qtySuffix}">
+                        <input type="text" inputmode="decimal" oninput="handleRowInput(${index}, 'qty', this.value)" value="${item.qty}" class="w-full text-center bg-gray-100 rounded-lg p-1 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none font-bold text-primary" placeholder="0">
+                    </div>
+                </td>
+                <td class="p-1 text-center">
+                    <div class="${rateSuffix}">
+                        <input type="text" inputmode="decimal" oninput="handleRowInput(${index}, 'price', this.value)" value="${item.price}" class="w-full text-center bg-transparent border-b border-gray-100 focus:border-primary outline-none p-1" placeholder="0">
+                    </div>
+                </td>
+                <td class="p-1 text-center bg-yellow-50/50"><input type="number" oninput="handleRowInput(${index}, 'days', this.value)" value="${item.days}" class="w-full text-center bg-transparent border-b border-yellow-200 focus:border-yellow-500 outline-none font-bold text-yellow-700 p-1" placeholder="0"></td>
+                <td class="p-2 pr-3 text-right font-bold text-gray-800">₹ <span id="item-total-${index}">${itemTotal}</span></td>
+                <td class="no-print text-center p-1 row-actions flex justify-end gap-1">
+                    <button onclick="moveItem(${index}, -1)" class="text-gray-400 hover:text-blue-500"><i class="fas fa-arrow-up"></i></button>
+                    <button onclick="moveItem(${index}, 1)" class="text-gray-400 hover:text-blue-500"><i class="fas fa-arrow-down"></i></button>
+                    <button onclick="deleteItem(${index})" class="text-red-300 hover:text-red-500 ml-1"><i class="fas fa-trash-alt text-xs"></i></button>
+                </td>`;
+                tbody.appendChild(tr);
+            }); 
+            recalcTotals();
+        }
+
+        function updateItemName(index, val) { items[index].name = val; }
+        
+        function handleRowInput(index, field, value) {
+            items[index][field] = value; 
+            
+            const q = parseFloat(items[index].qty) || 0;
+            const p = parseFloat(items[index].price) || 0;
+            const d = parseFloat(items[index].days) || 1;
+            const newRowTotal = q * p * d;
+            
+            const span = document.getElementById(`item-total-${index}`);
+            if(span) span.innerText = newRowTotal;
+            
+            recalcTotals(); 
+        }
     </script>
 </body>
 </html>
